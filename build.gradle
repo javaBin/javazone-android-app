@@ -10,8 +10,9 @@ buildscript {
         espressoVersion = "3.2.0"
         extJunitVersion = "1.1.1"
         kotlinVersion = "1.3.72"
+        kotlinxSerializationVersion = "0.20.0"
         lifecycleVersion = "2.2.0"
-        junitVersion = "5.3.2"
+        junitVersion = '5.6.2'
         truthVersion = "1.0.1"
     }
     repositories {
@@ -25,6 +26,7 @@ buildscript {
         classpath "de.mannodermaus.gradle.plugins:android-junit5:$androidJunitVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
     }
 }
 

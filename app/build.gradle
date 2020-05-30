@@ -4,6 +4,8 @@ apply plugin: "kotlin-android"
 
 apply plugin: "kotlin-android-extensions"
 
+apply plugin: 'kotlinx-serialization'
+
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
@@ -41,6 +43,7 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarLibVersion"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationVersion"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
