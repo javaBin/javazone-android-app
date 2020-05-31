@@ -5,10 +5,12 @@ import java.time.LocalDate
 
 data class ConferenceConfig(
     val name: String,
+    val workshopDay: LocalDate,
     val days: Set<LocalDate>,
     val url: URL) {
     constructor(
         name: String,
+        workshopDay: LocalDate,
         days: Set<LocalDate>,
-        url: String) : this(name = name, days = days, url = URL(url))
+        url: String) : this(name = name, workshopDay = workshopDay, days = days, url = URL(url))
 }

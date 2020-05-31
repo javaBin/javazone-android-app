@@ -11,7 +11,7 @@ internal class SessionsDtoTest {
     private val path = Paths.get("src/test/res")
 
     @Test
-    fun test() {
+    fun `parsing json works`() {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("sessions.json")))
 
         val json = Json(JsonConfiguration.Stable)

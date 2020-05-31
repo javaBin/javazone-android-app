@@ -11,7 +11,7 @@ internal class ConferenceConfigDtoTest {
     private val path = Paths.get("src/test/res")
 
     @Test
-    fun test() {
+    fun `parsing json works`() {
         val expected = ConferenceConfigDto(
             conferenceName = "JavaZone 2019",
             workshopDate = "10.09.2019",

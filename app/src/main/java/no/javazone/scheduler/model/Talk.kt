@@ -11,7 +11,7 @@ sealed class Talk(
     open val length: Int,
     open val intendedAudience: String,
     open val language: String,
-    open val video: String,
+    open val video: String?,
     open val abstract: String,
     open val speakers: Set<Speaker>
 ) {
@@ -26,7 +26,7 @@ data class Presentation(
     override val length: Int,
     override val intendedAudience: String,
     override val language: String,
-    override val video: String,
+    override val video: String?,
     override val abstract: String,
     override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
 
@@ -42,7 +42,7 @@ data class Lightning(
     override val length: Int,
     override val intendedAudience: String,
     override val language: String,
-    override val video: String,
+    override val video: String?,
     override val abstract: String,
     override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
 
@@ -58,7 +58,7 @@ data class Workshop(
     override val length: Int,
     override val intendedAudience: String,
     override val language: String,
-    override val video: String,
+    override val video: String?,
     override val abstract: String,
     override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
 
