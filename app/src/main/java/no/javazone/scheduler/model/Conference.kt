@@ -3,7 +3,7 @@ package no.javazone.scheduler.model
 import java.net.URL
 import java.time.LocalDate
 
-data class ConferenceConfig(
+data class Conference(
     val name: String,
     val workshopDay: LocalDate,
     val days: Set<LocalDate>,

@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import java.nio.file.Paths
 
-internal class ConferenceConfigDtoTest {
+internal class ConferenceDtoTest {
     private val path = Paths.get("src/test/res")
 
     @Test
     fun `parsing json works`() {
-        val expected = ConferenceConfigDto(
+        val expected = ConferenceDto(
             conferenceName = "JavaZone 2019",
             workshopDate = "10.09.2019",
             conferenceDates = listOf("11.09.2019", "12.09.2019"),
@@ -20,7 +20,7 @@ internal class ConferenceConfigDtoTest {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("config.json")))
 
         val json = Json(JsonConfiguration.Stable)
-        val result = json.parse(ConferenceConfigDto.serializer(), jsonStringBuffer)
+        val result = json.parse(ConferenceDto.serializer(), jsonStringBuffer)
 
         assertThat(result).isNotNull()
         assertThat(result).isEqualTo(expected)
