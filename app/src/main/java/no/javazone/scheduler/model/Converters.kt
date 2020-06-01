@@ -1,22 +1,12 @@
 package no.javazone.scheduler.model
 
 import android.util.Log
-import no.javazone.scheduler.dto.ConferenceDto
 import no.javazone.scheduler.dto.SessionDto
 import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.dto.SpeakerDto
-import java.time.LocalDate
 import java.time.OffsetDateTime
 
 private const val TAG = "Converters"
-
-fun ConferenceDto.toModel(): Conference =
-    Conference(
-        name = conferenceName,
-        workshopDay = workshopDate.let { LocalDate.parse(it) },
-        days = conferenceDates.map { LocalDate.parse(it) }.toSet(),
-        url = conferenceUrl
-    )
 
 fun SessionsDto.toModel(): List<Session> = convertDtoSessions(sessions)
 
