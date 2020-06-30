@@ -13,6 +13,8 @@ buildscript {
         kotlinxSerializationVersion = "0.20.0"
         lifecycleVersion = "2.2.0"
         junitVersion = '5.6.2'
+        retroFit2Version = "2.9.0"
+        retroFitKotlinSerializationVersion = "0.5.0"
         truthVersion = "1.0.1"
         workVersion = "2.3.4"
     }
