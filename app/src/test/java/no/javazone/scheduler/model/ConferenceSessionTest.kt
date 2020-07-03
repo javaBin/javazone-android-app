@@ -9,17 +9,17 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-class SessionTest {
+class ConferenceSessionTest {
     @Test
     fun `no session should be created for a room without a talk`() {
-        assertThrows<IllegalStateException> { Session(Room.create("room 1"), emptyList()) }
+        assertThrows<IllegalStateException> { ConferenceSession(ConferenceRoom.create("room 1"), emptyList()) }
     }
 
     @Test
     fun `session slot is based on talks start and endtime`() {
         val startTime = OffsetDateTime.of(LocalDate.now(), LocalTime.NOON, ZoneOffset.UTC)
-        val talk1 = Lightning(
-            sessionId = UUID.randomUUID().toString(),
+        val talk1 = Talk(
+            id = UUID.randomUUID().toString(),
             title = "test1",
             startTime = startTime,
             endTime = startTime.plusMinutes(20L),
@@ -28,10 +28,11 @@ class SessionTest {
             language = "en",
             video = "",
             abstract = "",
-            speakers = setOf(Speaker(name = "test", bio = "test"))
+            speakers = setOf(Speaker(name = "test", bio = "test")),
+            format = ConferenceFormat.LIGHTNING_TALK
         )
-        val talk2 = Lightning(
-            sessionId = UUID.randomUUID().toString(),
+        val talk2 = Talk(
+            id = UUID.randomUUID().toString(),
             title = "test1",
             startTime = talk1.endTime,
             endTime = talk1.endTime.plusMinutes(20L),
@@ -40,10 +41,11 @@ class SessionTest {
             language = "en",
             video = "",
             abstract = "",
-            speakers = setOf(Speaker(name = "test", bio = "test"))
+            speakers = setOf(Speaker(name = "test", bio = "test")),
+            format = ConferenceFormat.LIGHTNING_TALK
         )
 
-        val result = Session(room = Room.create("room 1"), talks = listOf(talk1, talk2))
+        val result = ConferenceSession(room = ConferenceRoom.create("room 1"), talks = listOf(talk1, talk2))
 
         assertThat(result.startTime).isEqualTo(talk1.startTime)
         assertThat(result.endTime).isEqualTo(talk2.endTime)

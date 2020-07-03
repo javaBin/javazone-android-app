@@ -30,11 +30,11 @@ internal class ConvertersTest {
         val result = dto.toModel()
 
         assertThat(result).isNotEmpty()
-        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first() is Workshop }).hasSize(workshops)
-        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first() is Presentation }).hasSize(presentations)
-        assertThat(result.filter { it.talks.first() is Lightning }.flatMap { it.talks }).hasSize(44)
+        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.WORKSHOP }).hasSize(workshops)
+        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.PRESENTATION }).hasSize(presentations)
+        assertThat(result.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }.flatMap { it.talks }).hasSize(44)
 
-        val test = result.filter { it.talks.size == 1 }.filter { it.talks.first() is Lightning }
+        val test = result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }
         assertThat(test).isNotEmpty()
     }
 }
