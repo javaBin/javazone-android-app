@@ -14,7 +14,7 @@ interface ConferenceService {
     suspend fun getConference(): ConferenceDto
 
     companion object {
-        @OptIn(UnstableDefault::class)
+        @UnstableDefault
         fun create(): ConferenceService =
             Retrofit.Builder()
                 .addConverterFactory(Json.asConverterFactory(APPLICATION_JSON))

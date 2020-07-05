@@ -15,7 +15,7 @@ interface SessionService {
     suspend fun getSessions(@Path("conference") conference: String): SessionsDto
 
     companion object {
-        @OptIn(UnstableDefault::class)
+        @UnstableDefault
         fun create(baseUrl: String = JAVAZONE_BASE_URL): SessionService {
             return Retrofit.Builder()
                 .addConverterFactory(Json.asConverterFactory(APPLICATION_JSON))

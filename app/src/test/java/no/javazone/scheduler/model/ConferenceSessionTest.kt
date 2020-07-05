@@ -1,6 +1,7 @@
 package no.javazone.scheduler.model
 
 import com.google.common.truth.Truth.assertThat
+import no.javazone.scheduler.BuildConfig
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
@@ -12,7 +13,14 @@ import java.util.*
 class ConferenceSessionTest {
     @Test
     fun `no session should be created for a room without a talk`() {
-        assertThrows<IllegalStateException> { ConferenceSession(ConferenceRoom.create("room 1"), emptyList()) }
+        if (BuildConfig.DEBUG) {
+            assertThrows<IllegalStateException> {
+                ConferenceSession(
+                    ConferenceRoom.create("room 1"),
+                    emptyList()
+                )
+            }
+        }
     }
 
     @Test
