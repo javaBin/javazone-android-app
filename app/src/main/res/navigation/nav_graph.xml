@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/view_pager_fragment">
+
+    <fragment
+        android:id="@+id/view_pager_fragment"
+        android:name="no.javazone.scheduler.adapters.ConferenceSessionPagerAdapter">
+        <action
+            android:id="@+id/action_view_pager_fragment_to_talk_detail_fragment"
+            app:destination="@id/talk_detail_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment android:id="@+id/talk_detail_fragment" >
+        <argument android:name="talkId" />
+    </fragment>
+</navigation>

@@ -12,6 +12,7 @@ buildscript {
         kotlinVersion = "1.5.20"
         kotlinxSerializationVersion = "1.0-M1-1.4.0-rc"
         lifecycleVersion = '2.3.1'
+        nav_version = "2.3.0"
         junitVersion = "4.12"
         junit5Version = '5.6.2'
         retroFit2Version = "2.9.0"
@@ -20,6 +21,7 @@ buildscript {
         roomVersion = '2.3.0'
         truthVersion = "1.0.1"
         workVersion = '2.6.0'
+        viewPagerVersion = "1.0.0"
     }
     repositories {
         google()
