@@ -35,10 +35,15 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarLibVersion"
 
@@ -49,15 +54,19 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.work:work-runtime-ktx:$workVersion"
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion")
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5Version"
     testImplementation "com.google.truth:truth:$truthVersion"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.test.ext:junit:$extJunitVersion"
+    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+//    androidTestImplementation "org.robolectric:robolectric:$roboeletricVersion"
 
-    androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }

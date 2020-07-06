@@ -1,67 +1,42 @@
 package no.javazone.scheduler.model
 
+import androidx.room.*
 import java.time.OffsetDateTime
 
 
-sealed class Talk(
-    open val sessionId: String,
-    open val title: String,
-    open val startTime: OffsetDateTime,
-    open val endTime: OffsetDateTime,
-    open val length: Int,
-    open val intendedAudience: String,
-    open val language: String,
-    open val video: String?,
-    open val abstract: String,
-    open val speakers: Set<Speaker>
-) {
-    abstract val format: String
-}
+@Entity(
+    tableName = "talks",
+    indices = [Index(value = ["session_id"], name = "idx_talks_session_id")],
+    foreignKeys = [
+        ForeignKey(entity = Speaker::class, parentColumns = ["id"], childColumns = ["talk_id"], onDelete = ForeignKey.CASCADE)
+    ]
+)
+data class Talk(
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: String,
+    @ColumnInfo(name = "title")
+    val title: String,
+    @ColumnInfo(name = "start_time")
+    val startTime: OffsetDateTime,
+    @ColumnInfo(name = "end_time")
+    val endTime: OffsetDateTime,
+    @ColumnInfo(name = "length")
+    val length: Int,
+    @ColumnInfo(name = "audience")
+    val intendedAudience: String,
+    @ColumnInfo(name = "language")
+    val language: String,
+    @ColumnInfo(name = "video")
+    val video: String?,
+    @ColumnInfo(name = "abstract")
+    val abstract: String,
+    @Relation(parentColumn = "id", entityColumn = "talk_id")
+    val speakers: Set<Speaker>,
+    @Embedded
+    @ColumnInfo(name = "format")
+    val format: ConferenceFormat) {
 
-data class Presentation(
-    override val sessionId: String,
-    override val title: String,
-    override val startTime: OffsetDateTime,
-    override val endTime: OffsetDateTime,
-    override val length: Int,
-    override val intendedAudience: String,
-    override val language: String,
-    override val video: String?,
-    override val abstract: String,
-    override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
-
-    override val format: String
-        get() = "presentation"
-}
-
-data class Lightning(
-    override val sessionId: String,
-    override val title: String,
-    override val startTime: OffsetDateTime,
-    override val endTime: OffsetDateTime,
-    override val length: Int,
-    override val intendedAudience: String,
-    override val language: String,
-    override val video: String?,
-    override val abstract: String,
-    override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
-
-    override val format: String
-        get() = "lightning-talk"
-}
-
-data class Workshop(
-    override val sessionId: String,
-    override val title: String,
-    override val startTime: OffsetDateTime,
-    override val endTime: OffsetDateTime,
-    override val length: Int,
-    override val intendedAudience: String,
-    override val language: String,
-    override val video: String?,
-    override val abstract: String,
-    override val speakers: Set<Speaker>) : Talk(sessionId, title, startTime, endTime, length, intendedAudience, language, video, abstract, speakers) {
-
-    override val format: String
-        get() = "workshop"
+    @ColumnInfo(name = "session_id")
+    var sessionId: Long = 0L
 }

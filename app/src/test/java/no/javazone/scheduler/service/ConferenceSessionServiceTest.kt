@@ -13,13 +13,13 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SessionServiceTest {
+class ConferenceSessionServiceTest {
     companion object {
         private val PATH = Paths.get("src/main/assets")
     }
 
-    private lateinit var conference: ConferenceDto
     private lateinit var service: SessionService
+    private lateinit var conference: ConferenceDto
 
     @BeforeAll
     internal fun initTest() {

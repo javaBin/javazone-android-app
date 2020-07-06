@@ -1,25 +1,48 @@
 package no.javazone.scheduler.model
 
 import android.util.Log
+import androidx.room.TypeConverter
 import no.javazone.scheduler.dto.SessionDto
 import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.dto.SpeakerDto
+import no.javazone.scheduler.utils.JAVAZONE_DATE_PATTERN
+import java.time.Instant
+import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 private const val TAG = "Converters"
 
-fun SessionsDto.toModel(): List<Session> = convertDtoSessions(sessions)
+class Converters {
+    @TypeConverter
+    fun localDateToString(date: LocalDate): Long =
+        date.format(DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)).toLong()
 
-private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<Session> {
-    val sessions = mutableListOf<Session>()
-    val lightning = mutableListOf<Session>()
+    @TypeConverter
+    fun stringToLocalDate(value: Long): LocalDate =
+        LocalDate.parse(value.toString(), DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
+
+    @TypeConverter
+    fun offsetDateTimeToTimestamp(date: OffsetDateTime): Long =
+        date.toEpochSecond()
+
+    @TypeConverter
+    fun timeStampToOffsetDateTime(value: Long): OffsetDateTime =
+        OffsetDateTime.from(Instant.ofEpochSecond(value))
+}
+
+fun SessionsDto.toModel(): List<ConferenceSession> = convertDtoSessions(sessions)
+
+private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<ConferenceSession> {
+    val sessions = mutableListOf<ConferenceSession>()
+    val lightning = mutableListOf<ConferenceSession>()
 
     for (dto in sessionsDto) {
         val talk: Talk? = dto.toModel()
-        if (talk is Lightning) {
-            lightning.add(Session(room = Room.create(dto.room), talks = listOf(talk)))
+        if (talk?.format == ConferenceFormat.LIGHTNING_TALK) {
+            lightning.add(ConferenceSession(room = ConferenceRoom.create(dto.room), talks = listOf(talk)))
         } else if (talk != null) {
-            sessions.add(Session(room = Room.create(dto.room), talks = listOf(talk)))
+            sessions.add(ConferenceSession(room = ConferenceRoom.create(dto.room), talks = listOf(talk)))
         }
     }
 
@@ -38,8 +61,8 @@ private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<Session> {
     return sessions
 }
 
-fun mergeLightningTalks(talks: MutableList<Session>): List<Session> {
-    val roomTalks: MutableMap<Room, MutableList<Talk>> = mutableMapOf()
+fun mergeLightningTalks(talks: MutableList<ConferenceSession>): List<ConferenceSession> {
+    val roomTalks: MutableMap<ConferenceRoom, MutableList<Talk>> = mutableMapOf()
 
     for (talk in talks) {
         val pair = talk.room to talk.talks.first()
@@ -52,7 +75,7 @@ fun mergeLightningTalks(talks: MutableList<Session>): List<Session> {
         it.value.sortWith(Comparator { o1, o2 -> o1.startTime.compareTo(o2.startTime) })
     }
 
-    val sessions = mutableListOf<Session>()
+    val sessions = mutableListOf<ConferenceSession>()
     var prev: Talk? = null
     lateinit var current: MutableList<Talk>
     for (roomTalk in roomTalks) {
@@ -66,12 +89,12 @@ fun mergeLightningTalks(talks: MutableList<Session>): List<Session> {
                 current.add(talk)
                 prev = talk
             } else {
-                sessions.add(Session(room = roomTalk.key, talks = current))
+                sessions.add(ConferenceSession(room = roomTalk.key, talks = current))
                 current = mutableListOf(talk)
                 prev = talk
             }
         }
-        sessions.add(Session(room = roomTalk.key, talks = current))
+        sessions.add(ConferenceSession(room = roomTalk.key, talks = current))
         current = mutableListOf()
         prev = null
     }
@@ -80,9 +103,9 @@ fun mergeLightningTalks(talks: MutableList<Session>): List<Session> {
 }
 
 private fun SessionDto.toModel(): Talk? {
-    return when (format) {
-        "presentation" -> Presentation(
-            sessionId = sessionId,
+    return try {
+        Talk(
+            id = sessionId,
             title = title,
             startTime = OffsetDateTime.parse(startTimeZulu),
             endTime = OffsetDateTime.parse(endTimeZulu),
@@ -91,36 +114,12 @@ private fun SessionDto.toModel(): Talk? {
             language = language,
             abstract = abstract,
             speakers = speakers.map { it.toModel() }.toSet(),
-            video = video
+            video = video,
+            format = format.toConferenceFormat()
         )
-        "lightning-talk" -> Lightning(
-            sessionId = sessionId,
-            title = title,
-            startTime = OffsetDateTime.parse(startTimeZulu),
-            endTime = OffsetDateTime.parse(endTimeZulu),
-            length = length,
-            intendedAudience = intendedAudience,
-            language = language,
-            abstract = abstract,
-            speakers = speakers.map { it.toModel() }.toSet(),
-            video = video
-        )
-        "workshop" -> Workshop(
-            sessionId = sessionId,
-            title = title,
-            startTime = OffsetDateTime.parse(startTimeZulu),
-            endTime = OffsetDateTime.parse(endTimeZulu),
-            length = length,
-            intendedAudience = intendedAudience,
-            language = language,
-            abstract = abstract,
-            speakers = speakers.map { it.toModel() }.toSet(),
-            video = video
-        )
-        else -> {
-            Log.e(TAG, "Unknown format: $format")
-            null
-        }
+    } catch (ex: Exception) {
+        Log.e(TAG, "Unknown format: $format")
+        null
     }
 }
 
