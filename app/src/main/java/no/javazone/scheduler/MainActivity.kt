@@ -1,19 +1,15 @@
 package no.javazone.scheduler
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import no.javazone.scheduler.ui.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import no.javazone.scheduler.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
-        }
+        DataBindingUtil.setContentView<MainActivityBinding>(this, R.layout.main_activity)
     }
 
 }

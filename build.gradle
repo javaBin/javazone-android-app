@@ -12,6 +12,7 @@ buildscript {
         kotlinVersion = "1.3.72"
         kotlinxSerializationVersion = "0.20.0"
         lifecycleVersion = "2.2.0"
+        nav_version = "2.3.0"
         junitVersion = "4.12"
         junit5Version = '5.6.2'
         retroFit2Version = "2.9.0"
@@ -19,6 +20,7 @@ buildscript {
         roboeletricVersion = "4.3.1"
         roomVersion = "2.2.5"
         truthVersion = "1.0.1"
+        viewPagerVersion = "1.0.0"
         workVersion = "2.3.4"
     }
     repositories {
