@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlinx-serialization'
 
+apply plugin: "de.mannodermaus.android-junit5"
+
 android {
     compileSdkVersion 30
     defaultConfig {
