@@ -6,14 +6,12 @@ apply plugin: "kotlin-android-extensions"
 
 apply plugin: 'kotlinx-serialization'
 
-apply plugin: "de.mannodermaus.android-junit5"
-
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "no.javazone.scheduler"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
