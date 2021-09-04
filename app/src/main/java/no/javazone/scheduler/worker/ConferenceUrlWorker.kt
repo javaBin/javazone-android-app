@@ -5,9 +5,9 @@ import android.content.Context.MODE_PRIVATE
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.json.decodeFromJsonElement
 import no.javazone.scheduler.dto.ConferenceDto
 import no.javazone.scheduler.model.toModel
 import no.javazone.scheduler.repository.AppDatabase
@@ -29,7 +29,6 @@ class ConferenceUrlWorker(
     }
     private lateinit var conference: ConferenceDto
 
-    @UnstableDefault
     override suspend fun doWork(): Result {
         try {
             if (!this::conference.isInitialized) {
@@ -49,15 +48,13 @@ class ConferenceUrlWorker(
         }
     }
 
-    @UnstableDefault
     private suspend fun initConference() {
         try {
             conference = conferenceService.getConference()
         } catch (ex: Exception) {
             applicationContext.assets.open(CONFERENCE_FILENAME).use { inputStream ->
                 val buffer = String(inputStream.readBytes())
-                val json = Json(JsonConfiguration.Stable)
-                conference = json.parse(ConferenceDto.serializer(), buffer)
+                conference = Json.decodeFromString(ConferenceDto.serializer(), buffer)
             }
         }
         context.getSharedPreferences(APP_PREFERENCE_FILE, MODE_PRIVATE)

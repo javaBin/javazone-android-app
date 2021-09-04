@@ -23,8 +23,8 @@ internal class ConferenceDtoTest {
 
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("conference.json")))
 
-        val json = Json(JsonConfiguration.Stable)
-        val result = json.parse(ConferenceDto.serializer(), jsonStringBuffer)
+
+        val result = Json.decodeFromString(ConferenceDto.serializer(), jsonStringBuffer)
 
         assertThat(result).isNotNull()
         assertThat(result).isEqualTo(expected)
