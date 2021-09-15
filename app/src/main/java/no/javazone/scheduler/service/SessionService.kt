@@ -1,7 +1,6 @@
 package no.javazone.scheduler.service
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.utils.APPLICATION_JSON
@@ -15,7 +14,7 @@ interface SessionService {
     suspend fun getSessions(@Path("conference") conference: String): SessionsDto
 
     companion object {
-        @UnstableDefault
+
         fun create(baseUrl: String = JAVAZONE_BASE_URL): SessionService {
             return Retrofit.Builder()
                 .addConverterFactory(Json.asConverterFactory(APPLICATION_JSON))

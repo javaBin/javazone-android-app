@@ -14,8 +14,7 @@ internal class SessionsDtoTest {
     fun `parsing json works`() {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("sessions.json")))
 
-        val json = Json(JsonConfiguration.Stable)
-        val result = json.parse(SessionsDto.serializer(), jsonStringBuffer)
+        val result = Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
 
         assertThat(result).isNotNull()
     }

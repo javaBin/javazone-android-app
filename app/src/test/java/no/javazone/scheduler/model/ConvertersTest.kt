@@ -17,8 +17,7 @@ internal class ConvertersTest {
     internal fun setUp() {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("sessions.json")))
 
-        val json = Json(JsonConfiguration.Stable)
-        dto = json.parse(SessionsDto.serializer(), jsonStringBuffer)
+        dto = Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
     }
 
     @Test

@@ -18,7 +18,7 @@ data class ConferenceSession(
     @Relation(parentColumn = "id", entityColumn = "session_id")
     val talks: List<Talk> = emptyList(),
     @ColumnInfo(name = "date", index = true)
-    val date: LocalDate = talks.map { it.startTime }.min()?.toLocalDate() ?: LocalDate.now()) {
+    val date: LocalDate = talks.map { it.startTime }.minOrNull()?.toLocalDate() ?: LocalDate.now()) {
     init {
         if (BuildConfig.DEBUG && talks.isEmpty()) {
             error("session must have at least one talk")
@@ -32,10 +32,10 @@ data class ConferenceSession(
     var id: Long = 0L
 
     val startTime: OffsetDateTime
-        get() = talks.map { it.startTime }.min() ?: OffsetDateTime.MIN
+        get() = talks.map { it.startTime }.minOrNull() ?: OffsetDateTime.MIN
 
     val endTime: OffsetDateTime
-        get() = talks.map { it.endTime }.max() ?: OffsetDateTime.MAX
+        get() = talks.map { it.endTime }.maxOrNull() ?: OffsetDateTime.MAX
 
     val length: Int
         get() = talks.map { it.length }.sum()

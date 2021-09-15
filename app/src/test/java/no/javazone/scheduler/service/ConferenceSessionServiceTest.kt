@@ -25,8 +25,7 @@ class ConferenceSessionServiceTest {
     internal fun initTest() {
         val jsonStringBuffer = String(Files.readAllBytes(PATH.resolve("conference.json")))
 
-        val json = Json(JsonConfiguration.Stable)
-        conference = json.parse(ConferenceDto.serializer(), jsonStringBuffer)
+        conference = Json.decodeFromString(ConferenceDto.serializer(), jsonStringBuffer)
     }
 
     @BeforeEach
