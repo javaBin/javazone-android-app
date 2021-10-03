@@ -2,13 +2,9 @@ apply plugin: "com.android.application"
 
 apply plugin: "kotlin-android"
 
-apply plugin: "kotlin-android-extensions"
-
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlinx-serialization'
-
-apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion 30
@@ -38,7 +34,7 @@ android {
     }
     // For Kotlin projects
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         dataBinding = true
