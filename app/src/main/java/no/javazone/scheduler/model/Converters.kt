@@ -1,7 +1,7 @@
 package no.javazone.scheduler.model
 
 import android.util.Log
-import androidx.room.TypeConverter
+//import androidx.room.TypeConverter
 import no.javazone.scheduler.dto.SessionDto
 import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.dto.SpeakerDto
@@ -14,19 +14,19 @@ import java.time.format.DateTimeFormatter
 private const val TAG = "Converters"
 
 class Converters {
-    @TypeConverter
+//    @TypeConverter
     fun localDateToString(date: LocalDate): Long =
         date.format(DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)).toLong()
 
-    @TypeConverter
+//    @TypeConverter
     fun stringToLocalDate(value: Long): LocalDate =
         LocalDate.parse(value.toString(), DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
 
-    @TypeConverter
+//    @TypeConverter
     fun offsetDateTimeToTimestamp(date: OffsetDateTime): Long =
         date.toEpochSecond()
 
-    @TypeConverter
+//    @TypeConverter
     fun timeStampToOffsetDateTime(value: Long): OffsetDateTime =
         OffsetDateTime.from(Instant.ofEpochSecond(value))
 }
