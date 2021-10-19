@@ -11,11 +11,11 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,7 +24,6 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import java.util.*
 
 private val TabHeight = 56.dp
 private const val InactiveTabOpacity = 0.60f
@@ -40,17 +39,22 @@ fun ConferenceTabRow(
     currentScreen: ConferenceScreen
 ) {
     Surface(
-        Modifier
+        modifier = Modifier
             .height(TabHeight)
             .fillMaxWidth()
     ) {
-        Row(Modifier.selectableGroup()) {
+        Row(
+            modifier = Modifier.selectableGroup(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             allScreens.forEach {
                 ConferenceTab(
                     text = if (it is TopConferenceScreen) it.text else it.javaClass.simpleName,
                     icon = if (it is BottomConferenceScreen) it.icon else null,
                     onSelected = {},
-                    selected = false)
+                    selected = it is SessionsScreen
+                )
 
 
             }
@@ -99,10 +103,10 @@ private fun ConferenceTab(
         icon?.let {
             Icon(imageVector = it, contentDescription = text, tint = tabTintColor)
         }
-        if (selected || icon == null) {
-            Spacer(Modifier.width(12.dp))
-            Text(text.uppercase(Locale.getDefault()), color = tabTintColor)
-        }
+//        if (selected || icon == null) {
+//            Spacer(Modifier.width(12.dp))
+//            Text(text.uppercase(Locale.getDefault()), color = tabTintColor)
+//        }
     }
 }
 

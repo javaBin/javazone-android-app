@@ -2,9 +2,9 @@ package no.javazone.scheduler.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Groups
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Groups
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class ConferenceScreen
@@ -22,15 +22,15 @@ object SessionsScreen : BottomConferenceScreen() {
 
 object MyScheduleScreen : BottomConferenceScreen() {
     override val icon: ImageVector
-        get() = Icons.Filled.Person
+        get() = Icons.Outlined.Person
 }
 
 object InfoScreen : BottomConferenceScreen() {
     override val icon: ImageVector
-        get() = Icons.Filled.Info
+        get() = Icons.Outlined.Info
 }
 
 object PartnerScreen : BottomConferenceScreen() {
     override val icon: ImageVector
-        get() = Icons.Filled.Groups
+        get() = Icons.Outlined.Groups
 }
