@@ -5,7 +5,10 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Icon
@@ -25,7 +28,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-private val TabHeight = 56.dp
+val TabHeight = 56.dp
 private const val InactiveTabOpacity = 0.60f
 
 private const val TabFadeInAnimationDuration = 150
@@ -35,35 +38,32 @@ private const val TabFadeOutAnimationDuration = 100
 @Composable
 fun ConferenceTabRow(
     allScreens: List<ConferenceScreen>,
+    modifier: Modifier,
     onTabSelected: (ConferenceScreen) -> Unit,
     currentScreen: ConferenceScreen
 ) {
     Surface(
-        modifier = Modifier
-            .height(TabHeight)
-            .fillMaxWidth()
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier.selectableGroup(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             allScreens.forEach {
                 ConferenceTab(
-                    text = if (it is TopConferenceScreen) it.text else it.javaClass.simpleName,
+                    text = "Hello",
                     icon = if (it is BottomConferenceScreen) it.icon else null,
                     onSelected = {},
                     selected = it is SessionsScreen
                 )
-
-
             }
         }
     }
 }
 
 @Composable
-private fun ConferenceTab(
+fun ConferenceTab(
     text: String,
     icon: ImageVector?,
     onSelected: () -> Unit,

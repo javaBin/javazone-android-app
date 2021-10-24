@@ -2,23 +2,13 @@ package no.javazone.scheduler.repository.impl
 
 import androidx.lifecycle.LiveData
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.Talk
 import no.javazone.scheduler.repository.ConferenceSessionRepository
-import java.time.LocalDate
 
 class ConferenceSessionRepositoryImpl private constructor(private val dao: ConferenceSessionDao)
     : ConferenceSessionRepository{
 
-    override fun getSessions(date: LocalDate): LiveData<List<ConferenceSession>> =
-        dao.getConferenceSessionsForDate(date)
-
-    override fun getSession(sessionId: Long): LiveData<ConferenceSession> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getTalk(talkId: String): LiveData<Talk> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getSessions(): LiveData<List<ConferenceSession>> =
+        dao.getConferenceSessionsForDate()
 
     companion object {
         @Volatile

@@ -1,190 +1,94 @@
 package no.javazone.scheduler.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import no.javazone.scheduler.model.*
-import no.javazone.scheduler.ui.components.*
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import no.javazone.scheduler.AppContainer
+import no.javazone.scheduler.ui.components.InfoScreen
+import no.javazone.scheduler.ui.components.MyScheduleScreen
+import no.javazone.scheduler.ui.components.PartnerScreen
+import no.javazone.scheduler.ui.components.SessionsScreen
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 
 @Composable
-fun ConferenceApp(sessions: List<ConferenceSession>) {
-    val navController = rememberNavController()
-    val dayToSessions = sessions.groupBy { it.date }
+fun ConferenceApp(
+    appContainer: AppContainer
+) {
+    JavaZoneTheme {
 
-    Scaffold(
-//        topBar = {
-//            ConferenceTabRow(
-//                allScreens = dayToSessions.map { it.key }.map {
-//                    TopConferenceScreen(
-//                        it.format(
-//                            DateTimeFormatter.ISO_LOCAL_DATE
-//                        )
-//                    )
-//                },
-//                onTabSelected = {},
-//                currentScreen = dayToSessions.map { it.key }.map {
-//                    TopConferenceScreen(
-//                        it.format(
-//                            DateTimeFormatter.ISO_LOCAL_DATE
-//                        )
-//                    )
-//                }.first()
-//            )
-//        },
-        bottomBar = {
-            ConferenceTabRow(
-                allScreens = listOf(SessionsScreen, MyScheduleScreen, InfoScreen, PartnerScreen),
-                onTabSelected = {},
-                currentScreen = SessionsScreen // need to change this to some default?
-            )
+        val systemUiController = rememberSystemUiController()
+        val darkIcons = MaterialTheme.colors.isLight
+        SideEffect {
+            systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
         }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = SessionsScreen.javaClass.simpleName,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(route = SessionsScreen.javaClass.simpleName) {
-                LazyColumn {
-                    items(sessions.flatMap { it.talks }) { talk ->
-                        Text(text = talk.startTime.toLocalTime().toString())
-                        Text(text = talk.title)
+
+        val navController = rememberNavController()
+        val navigationActions = remember(navController) {
+            JavaZoneNavigationActions(navController)
+        }
+
+        val scaffoldState = rememberScaffoldState()
+        val coroutineScope = rememberCoroutineScope()
+
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute =
+            navBackStackEntry?.destination?.route ?: JavaZoneDestinations.SESSIONS_ROUTE
+
+        Scaffold(
+            scaffoldState = scaffoldState,
+            bottomBar = {
+//                ConferenceTabRow(
+//                    allScreens = listOf(
+//                        SessionsScreen,
+//                        MyScheduleScreen,
+//                        InfoScreen,
+//                        PartnerScreen
+//                    ),
+//                    modifier = Modifier
+//                        .height(TabHeight)
+//                        .fillMaxWidth()
+//                        .navigationBarsPadding(),
+//                    onTabSelected = {},
+//                    currentScreen = SessionsScreen // need to change this to some default?
+//                )
+                BottomAppBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                ) {
+                    BottomNavigation() {
+                        listOf(
+                            SessionsScreen,
+                            MyScheduleScreen,
+                            InfoScreen,
+                            PartnerScreen
+                        ).forEach { navItem ->
+                            BottomNavigationItem(
+                                selected = navItem.javaClass.simpleName == currentRoute,
+                                onClick = { /*TODO*/ },
+                                icon = {
+                                    Icon(imageVector = navItem.icon, contentDescription = null)
+                                }
+                            )
+                        }
                     }
                 }
             }
-            composable(route = MyScheduleScreen.javaClass.simpleName) {
-                Text(text = "my schedule screen")
-            }
-            composable(route = MyScheduleScreen.javaClass.simpleName) {
-                Text(text = "info screen")
-            }
-            composable(route = MyScheduleScreen.javaClass.simpleName) {
-                Text(text = "partner screen")
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.padding(innerPadding)
+            ) {
+
             }
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun ConferenceAppPreview() {
-    ConferenceApp(
-        sessions = listOf(
-            ConferenceSession(
-                ConferenceRoom(
-                    name = "room1"
-                ),
-                talk = Talk(
-                    id = "1",
-                    title = "Hello World",
-                    startTime = OffsetDateTime.of(
-                        LocalDate.now().plusDays(1),
-                        LocalTime.of(9, 0, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    endTime = OffsetDateTime.of(
-                        LocalDate.now(),
-                        LocalTime.of(9, 45, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    length = 45,
-                    intendedAudience = "developers",
-                    language = "no",
-                    video = null,
-                    abstract = "blablabalab",
-                    speakers = setOf(
-                        Speaker(
-                            name = "Kari Nordmann",
-                            bio = "blalala",
-                            avatar = null,
-                            twitter = null
-                        )
-                    ),
-                    format = ConferenceFormat.PRESENTATION
-                )
-            ),
-            ConferenceSession(
-                ConferenceRoom(
-                    name = "room1"
-                ),
-                talk = Talk(
-                    id = "1",
-                    title = "Hello World",
-                    startTime = OffsetDateTime.of(
-                        LocalDate.now(),
-                        LocalTime.of(9, 0, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    endTime = OffsetDateTime.of(
-                        LocalDate.now(),
-                        LocalTime.of(9, 45, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    length = 45,
-                    intendedAudience = "developers",
-                    language = "no",
-                    video = null,
-                    abstract = "blablabalab",
-                    speakers = setOf(
-                        Speaker(
-                            name = "Kari Nordmann",
-                            bio = "blalala",
-                            avatar = null,
-                            twitter = null
-                        )
-                    ),
-                    format = ConferenceFormat.PRESENTATION
-                )
-            ),
-            ConferenceSession(
-                ConferenceRoom(
-                    name = "room1"
-                ),
-                talk = Talk(
-                    id = "1",
-                    title = "Hello World",
-                    startTime = OffsetDateTime.of(
-                        LocalDate.now().plusDays(2),
-                        LocalTime.of(9, 0, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    endTime = OffsetDateTime.of(
-                        LocalDate.now(),
-                        LocalTime.of(9, 45, 0),
-                        ZoneOffset.ofHours(1)
-                    ),
-                    length = 45,
-                    intendedAudience = "developers",
-                    language = "no",
-                    video = null,
-                    abstract = "blablabalab",
-                    speakers = setOf(
-                        Speaker(
-                            name = "Kari Nordmann",
-                            bio = "blalala",
-                            avatar = null,
-                            twitter = null
-                        )
-                    ),
-                    format = ConferenceFormat.PRESENTATION
-                )
-            )
-
-        )
-    )
-}

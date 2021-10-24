@@ -10,8 +10,8 @@ data class ConferenceRoom constructor(val name: String) : Comparable<ConferenceR
         private val CONFERENCE_ROOMS: MutableMap<String, ConferenceRoom> = mutableMapOf()
 
         fun create(name: String): ConferenceRoom {
-            return CONFERENCE_ROOMS.getOrPut(name.toLowerCase(Locale.ROOT)) {
-                ConferenceRoom(name.toLowerCase(Locale.ROOT))
+            return CONFERENCE_ROOMS.getOrPut(name.lowercase(Locale.ROOT)) {
+                ConferenceRoom(name.lowercase(Locale.ROOT))
             }
         }
     }
