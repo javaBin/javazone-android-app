@@ -1,19 +1,20 @@
 package no.javazone.scheduler.model
 
+//import org.junit.jupiter.api.BeforeEach
+//import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import no.javazone.scheduler.dto.SessionsDto
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.Before
+import org.junit.Test
 import java.nio.file.Files
 import java.nio.file.Paths
 
-internal class ConvertersTest {
+class ConvertersTest {
     private val path = Paths.get("src/test/res")
     private lateinit var dto: SessionsDto
 
-    @BeforeEach
+    @Before
     internal fun setUp() {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("sessions.json")))
 

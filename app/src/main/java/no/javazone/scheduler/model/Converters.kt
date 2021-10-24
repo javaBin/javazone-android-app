@@ -49,16 +49,16 @@ private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<ConferenceSe
     val mergedLighting = mergeLightningTalks(lightning)
 
     sessions.addAll(mergedLighting)
-    sessions.sortWith(Comparator { o1, o2 ->
+    val sorted = sessions.sortedWith { o1, o2 ->
         var ret = o1.startTime.compareTo(o2.startTime)
         if (ret == 0) {
             ret = o1.room.compareTo(o2.room)
         }
 
         ret
-    })
+    }
 
-    return sessions
+    return sorted
 }
 
 fun mergeLightningTalks(talks: MutableList<ConferenceSession>): List<ConferenceSession> {
