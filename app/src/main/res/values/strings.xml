@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JavaZone</string>
+    <string name="unschedule">unschedule</string>
+    <string name="schedule">schedule</string>
 </resources>

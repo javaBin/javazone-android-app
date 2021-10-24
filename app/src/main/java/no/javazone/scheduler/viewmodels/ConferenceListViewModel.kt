@@ -1,5 +1,6 @@
 package no.javazone.scheduler.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.repository.ConferenceSessionRepository
+import no.javazone.scheduler.utils.LOG_TAG
 import java.time.LocalDate
 
 class ConferenceListViewModel(
@@ -15,21 +17,30 @@ class ConferenceListViewModel(
 ) : ViewModel() {
 
     val sessions: MutableState<List<ConferenceSession>> = mutableStateOf(listOf())
+    val mySchedule: MutableState<List<String>> = mutableStateOf(listOf())
 
     init {
         viewModelScope.launch {
-            val result = repository.getSessions()
-            result.observeForever {
-                sessions.value = it
+            val dataSessions = repository.getSessions()
+            dataSessions.observeForever { conferenceSessions ->
+                Log.d(LOG_TAG, "Found ${conferenceSessions.size} sessions")
+                sessions.value = conferenceSessions
+            }
+
+            val dataSchedule = repository.getMySchedule()
+            dataSchedule.observeForever {
+                mySchedule.value = it
             }
         }
     }
 
-    fun sessionOfTheDay(day: LocalDate): List<ConferenceSession> {
-        return sessions.value
-            .filter {
-                it.date == day
-            }
+    fun firstConferenceDay(): LocalDate? =
+        sessions.value.groupBy { it.date }.keys.firstOrNull()
+
+    fun addSchedule(talkId: String) {
+        viewModelScope.launch {
+            repository.addSchedule(talkId)
+        }
     }
 
     /**

@@ -10,6 +10,14 @@ class ConferenceSessionRepositoryImpl private constructor(private val dao: Confe
     override suspend fun getSessions(): LiveData<List<ConferenceSession>> =
         dao.getConferenceSessionsForDate()
 
+    override suspend fun getMySchedule(): LiveData<List<String>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addSchedule(talkId: String) {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         @Volatile
         private lateinit var instance: ConferenceSessionRepositoryImpl
