@@ -45,22 +45,4 @@ fun ConferenceTabRow(
             }
         }
     }
-//    Surface(
-//        modifier = modifier,
-//    ) {
-//        Row(
-//            modifier = Modifier.selectableGroup(),
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.Center,
-//        ) {
-//            allScreens.forEach {
-//                ConferenceTab(
-//                    text = "Hello",
-//                    icon = it.icon,
-//                    onSelected = {},
-//                    selected = it is SessionsScreen
-//                )
-//            }
-//        }
-//    }
 }

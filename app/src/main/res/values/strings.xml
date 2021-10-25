@@ -2,4 +2,8 @@
     <string name="app_name">JavaZone</string>
     <string name="unschedule">unschedule</string>
     <string name="schedule">schedule</string>
+    <string name="sessions">Sessions</string>
+    <string name="my_schedule">My Schedule</string>
+    <string name="info">Info</string>
+    <string name="partners">Partners</string>
 </resources>

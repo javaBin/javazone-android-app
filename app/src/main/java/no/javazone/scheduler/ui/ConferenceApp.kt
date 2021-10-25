@@ -1,21 +1,21 @@
 package no.javazone.scheduler.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
+import no.javazone.scheduler.ui.theme.JavaZoneTypography
 
 @Composable
 fun ConferenceApp(
@@ -43,7 +43,14 @@ fun ConferenceApp(
 
         Scaffold(
             scaffoldState = scaffoldState,
-            topBar = { },
+            topBar = {
+                     TopAppBar {
+                         Text(
+                             text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
+                             style = JavaZoneTypography.subtitle2
+                         )
+                     }
+            },
             bottomBar = {
                 ConferenceTabRow(
                     allScreens = listOf(SessionsScreen, MyScheduleScreen, InfoScreen, PartnerScreen),
