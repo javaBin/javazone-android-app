@@ -37,9 +37,9 @@ class ConferenceListViewModel(
     fun firstConferenceDay(): LocalDate? =
         sessions.value.groupBy { it.date }.keys.firstOrNull()
 
-    fun addSchedule(talkId: String) {
+    fun addOrRemoveSchedule(talkId: String) {
         viewModelScope.launch {
-            repository.addSchedule(talkId)
+            repository.addOrRemoveSchedule(talkId)
         }
     }
 

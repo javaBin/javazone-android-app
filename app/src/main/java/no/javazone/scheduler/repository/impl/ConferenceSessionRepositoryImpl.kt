@@ -14,7 +14,7 @@ class ConferenceSessionRepositoryImpl private constructor(private val dao: Confe
         TODO("Not yet implemented")
     }
 
-    override suspend fun addSchedule(talkId: String) {
+    override suspend fun addOrRemoveSchedule(talkId: String) {
         TODO("Not yet implemented")
     }
 

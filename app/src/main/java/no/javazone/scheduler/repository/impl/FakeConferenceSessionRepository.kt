@@ -33,10 +33,16 @@ class FakeConferenceSessionRepository(assets: AssetManager) : ConferenceSessionR
             schedule
         }
 
-    override suspend fun addSchedule(talkId: String) {
-        Log.d(LOG_TAG, "Adding talk $talkId to mySchedule")
-        val tmp = schedule.value?.toMutableList() ?: mutableListOf()
-        tmp.add(talkId)
-        schedule.value = tmp.toList()
+    override suspend fun addOrRemoveSchedule(talkId: String) {
+        withContext(Dispatchers.IO) {
+            val tmp = schedule.value?.toMutableSet() ?: mutableSetOf()
+            if (!tmp.add(talkId)) {
+                Log.d(LOG_TAG, "Remove talk $talkId to mySchedule")
+                tmp.remove(talkId)
+            } else {
+                Log.d(LOG_TAG, "Adding talk $talkId to mySchedule")
+            }
+            schedule.value = tmp.toList()
+        }
     }
 }

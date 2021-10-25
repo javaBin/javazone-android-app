@@ -135,7 +135,7 @@ fun SessionsRoute(
                         MyScheduleButton(
                             isScheduled = myTalks.contains(talk.id),
                             onClick = {
-                                viewModel.addSchedule(talk.id)
+                                viewModel.addOrRemoveSchedule(talk.id)
                             }
                         )
                     }
