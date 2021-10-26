@@ -66,7 +66,7 @@ fun SessionsRoute(
         }
         .filter {
             if (myScheduleOnly) {
-                Log.d(LOG_TAG, "Filter $[it.second.id}")
+                Log.d(LOG_TAG, "Filter ${it.second.id}")
                 myTalks.contains(it.second.id)
             } else {
                 Log.d(LOG_TAG, "No filter")
