@@ -3,8 +3,10 @@ package no.javazone.scheduler.ui.sessions
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +18,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -109,12 +112,22 @@ fun SessionsRoute(
 
             LazyColumn {
                 items(talks) { (room, talk) ->
-                    Row {
+                    Row(
+                        modifier = Modifier
+                            .padding(1.dp)
+                            .border(width = 2.dp, color = Color.LightGray)
+                            .fillMaxWidth()
+
+                    ) {
                         Column(
                             modifier = Modifier.padding(end = 10.dp)
                         ) {
                             Text(
-                                text = "${talk.startTime.toOffsetTime()}-${talk.endTime.toOffsetTime()}",
+                                text = "${talk.startTime.toOffsetTime()}",
+                                fontSize = 10.sp
+                            )
+                            Text(
+                                text = "${talk.endTime.toOffsetTime()}",
                                 fontSize = 10.sp
                             )
                             Text(
@@ -131,13 +144,14 @@ fun SessionsRoute(
                                 text = talk.speakers.joinToString { it.name },
                                 fontSize = 10.sp
                             )
+                            MyScheduleButton(
+                                modifier = Modifier.scale(0.5f),
+                                isScheduled = myTalks.contains(talk.id),
+                                onClick = {
+                                    viewModel.addOrRemoveSchedule(talk.id)
+                                }
+                            )
                         }
-                        MyScheduleButton(
-                            isScheduled = myTalks.contains(talk.id),
-                            onClick = {
-                                viewModel.addOrRemoveSchedule(talk.id)
-                            }
-                        )
                     }
                 }
             }
