@@ -18,7 +18,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -135,22 +134,30 @@ fun SessionsRoute(
                                 fontSize = 10.sp
                             )
                         }
-                        Column {
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
                             Text(
+                                modifier = Modifier
+                                    .align(alignment = Alignment.CenterHorizontally)
+                                    .fillMaxWidth(),
                                 text = talk.title,
                                 style = JavaZoneTypography.body1
                             )
-                            Text(
-                                text = talk.speakers.joinToString { it.name },
-                                fontSize = 10.sp
-                            )
-                            MyScheduleButton(
-                                modifier = Modifier.scale(0.5f),
-                                isScheduled = myTalks.contains(talk.id),
-                                onClick = {
-                                    viewModel.addOrRemoveSchedule(talk.id)
-                                }
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Text(
+                                    text = talk.speakers.joinToString { it.name },
+                                    fontSize = 10.sp
+                                )
+                                MyScheduleButton(
+                                    isScheduled = myTalks.contains(talk.id),
+                                    onClick = {
+                                        viewModel.addOrRemoveSchedule(talk.id)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
