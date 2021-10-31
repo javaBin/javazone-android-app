@@ -118,7 +118,7 @@ fun SessionsRoute(
 
                     ) {
                         Column(
-                            modifier = Modifier.padding(end = 10.dp)
+                            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         ) {
                             Text(
                                 text = "${talk.startTime.toOffsetTime()}",
@@ -134,7 +134,9 @@ fun SessionsRoute(
                             )
                         }
                         Column(
-                            modifier = Modifier.fillMaxWidth()
+                            Modifier
+                                .weight(1f)
+                                .padding(top = 16.dp, bottom = 16.dp)
                         ) {
                             Text(
                                 modifier = Modifier
@@ -143,20 +145,18 @@ fun SessionsRoute(
                                 text = talk.title,
                                 style = JavaZoneTypography.body1
                             )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(
-                                    text = talk.speakers.joinToString { it.name },
-                                    fontSize = 10.sp
-                                )
-                                MyScheduleButton(
-                                    isScheduled = myTalks.contains(talk.id),
-                                    onClick = {
-                                        viewModel.addOrRemoveSchedule(talk.id)
-                                    }
-                                )
-                            }
+                            Text(
+                                text = talk.speakers.joinToString { it.name },
+                                fontSize = 10.sp
+                            )
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            MyScheduleButton(
+                                isScheduled = myTalks.contains(talk.id),
+                                onClick = {
+                                    viewModel.addOrRemoveSchedule(talk.id)
+                                }
+                            )
                         }
                     }
                 }
