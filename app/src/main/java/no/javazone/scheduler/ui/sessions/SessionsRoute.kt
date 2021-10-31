@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.MyScheduleButton
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzString
@@ -84,7 +82,7 @@ fun SessionsRoute(
         Column {
             Row(
                 modifier = Modifier
-                    .background(color = Color.White)
+                    .background(color = MaterialTheme.colors.background)
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
                 groupedSessions.keys.forEach {
@@ -103,7 +101,8 @@ fun SessionsRoute(
                         Text(
                             text = it.toString(),
                             style = JavaZoneTypography.button,
-                            color = if (it == day) Color.Black else Color.DarkGray
+                            color = if (it == day) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+
                         )
                     }
                 }
@@ -114,7 +113,7 @@ fun SessionsRoute(
                     Row(
                         modifier = Modifier
                             .padding(1.dp)
-                            .border(width = 2.dp, color = Color.LightGray)
+                            .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
                             .fillMaxWidth()
 
                     ) {
