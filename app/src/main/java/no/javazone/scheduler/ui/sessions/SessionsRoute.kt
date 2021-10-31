@@ -25,10 +25,13 @@ import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
+import no.javazone.scheduler.ui.theme.sessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -108,7 +111,25 @@ fun SessionsRoute(
                 }
             }
 
+
+            val talksGroupedOnStart = talks.groupBy { it.second.startTime }
+
             LazyColumn {
+                talksGroupedOnStart.forEach { (startTime, talks) ->
+                    stickyHeader {
+
+                        Row(modifier = Modifier.background(MaterialTheme.colors.surface)) {
+                            Column(
+                                modifier = Modifier.padding(end = 10.dp)
+                            ) {
+                                Text(
+                                    sessionTimeFormat.format(startTime),
+                                    fontSize = 27.sp
+                                )
+                            }
+                        }
+                    }
+
                 items(talks) { (room, talk) ->
                     Row(
                         modifier = Modifier
@@ -121,13 +142,11 @@ fun SessionsRoute(
                             modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         ) {
                             Text(
-                                text = "${talk.startTime.toOffsetTime()}",
-                                fontSize = 10.sp
-                            )
-                            Text(
-                                text = "${talk.endTime.toOffsetTime()}",
-                                fontSize = 10.sp
-                            )
+                                    text = sessionTimeFormat.format(talk.startTime) + " - " + sessionTimeFormat.format(
+                                        talk.endTime
+                                    ),
+                                    fontSize = 10.sp
+                                )
                             Text(
                                 text = room.name,
                                 fontSize = 10.sp
