@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.MyScheduleButton
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.sessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -84,7 +85,7 @@ fun SessionsRoute(
         Column {
             Row(
                 modifier = Modifier
-                    .background(color = Color.White)
+                    .background(color = MaterialTheme.colors.background)
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
                 groupedSessions.keys.forEach {
@@ -103,7 +104,8 @@ fun SessionsRoute(
                         Text(
                             text = it.toString(),
                             style = JavaZoneTypography.button,
-                            color = if (it == day) Color.Black else Color.DarkGray
+                            color = if (it == day) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+
                         )
                     }
                 }
@@ -128,52 +130,52 @@ fun SessionsRoute(
                         }
                     }
 
-                    items(talks) { (room, talk) ->
-                        Row(
-                            modifier = Modifier
-                                .padding(1.dp)
-                                .border(width = 2.dp, color = MaterialTheme.colors.background)
-                                .fillMaxWidth()
+                items(talks) { (room, talk) ->
+                    Row(
+                        modifier = Modifier
+                            .padding(1.dp)
+                            .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
+                            .fillMaxWidth()
+
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         ) {
-                            Column(
-                                modifier = Modifier.padding(end = 10.dp)
-                            ) {
-                                Text(
+                            Text(
                                     text = sessionTimeFormat.format(talk.startTime) + " - " + sessionTimeFormat.format(
                                         talk.endTime
                                     ),
                                     fontSize = 10.sp
                                 )
-                                Text(
-                                    text = room.name,
-                                    fontSize = 10.sp
-                                )
-                            }
-                            Column(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .align(alignment = Alignment.CenterHorizontally)
-                                        .fillMaxWidth(),
-                                    text = talk.title,
-                                    style = JavaZoneTypography.body1
-                                )
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    Text(
-                                        text = talk.speakers.joinToString { it.name },
-                                        fontSize = 10.sp
-                                    )
-                                    MyScheduleButton(
-                                        isScheduled = myTalks.contains(talk.id),
-                                        onClick = {
-                                            viewModel.addOrRemoveSchedule(talk.id)
-                                        }
-                                    )
+                            Text(
+                                text = room.name,
+                                fontSize = 10.sp
+                            )
+                        }
+                        Column(
+                            Modifier
+                                .weight(1f)
+                                .padding(top = 16.dp, bottom = 16.dp)
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .align(alignment = Alignment.CenterHorizontally)
+                                    .fillMaxWidth(),
+                                text = talk.title,
+                                style = JavaZoneTypography.body1
+                            )
+                            Text(
+                                text = talk.speakers.joinToString { it.name },
+                                fontSize = 10.sp
+                            )
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            MyScheduleButton(
+                                isScheduled = myTalks.contains(talk.id),
+                                onClick = {
+                                    viewModel.addOrRemoveSchedule(talk.id)
                                 }
-                            }
+                            )
                         }
                     }
                 }
