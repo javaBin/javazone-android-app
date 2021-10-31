@@ -130,52 +130,53 @@ fun SessionsRoute(
                         }
                     }
 
-                items(talks) { (room, talk) ->
-                    Row(
-                        modifier = Modifier
-                            .padding(1.dp)
-                            .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
-                            .fillMaxWidth()
+                    items(talks) { (room, talk) ->
+                        Row(
+                            modifier = Modifier
+                                .padding(1.dp)
+                                .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
+                                .fillMaxWidth()
 
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         ) {
-                            Text(
+                            Column(
+                                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                            ) {
+                                Text(
                                     text = sessionTimeFormat.format(talk.startTime) + " - " + sessionTimeFormat.format(
                                         talk.endTime
                                     ),
                                     fontSize = 10.sp
                                 )
-                            Text(
-                                text = room.name,
-                                fontSize = 10.sp
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .weight(1f)
-                                .padding(top = 16.dp, bottom = 16.dp)
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .align(alignment = Alignment.CenterHorizontally)
-                                    .fillMaxWidth(),
-                                text = talk.title,
-                                style = JavaZoneTypography.body1
-                            )
-                            Text(
-                                text = talk.speakers.joinToString { it.name },
-                                fontSize = 10.sp
-                            )
-                        }
-                        IconButton(onClick = { /*TODO*/ }) {
-                            MyScheduleButton(
-                                isScheduled = myTalks.contains(talk.id),
-                                onClick = {
-                                    viewModel.addOrRemoveSchedule(talk.id)
-                                }
-                            )
+                                Text(
+                                    text = room.name,
+                                    fontSize = 10.sp
+                                )
+                            }
+                            Column(
+                                Modifier
+                                    .weight(1f)
+                                    .padding(top = 16.dp, bottom = 16.dp)
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(alignment = Alignment.CenterHorizontally)
+                                        .fillMaxWidth(),
+                                    text = talk.title,
+                                    style = JavaZoneTypography.body1
+                                )
+                                Text(
+                                    text = talk.speakers.joinToString { it.name },
+                                    fontSize = 10.sp
+                                )
+                            }
+                            IconButton(onClick = { /*TODO*/ }) {
+                                MyScheduleButton(
+                                    isScheduled = myTalks.contains(talk.id),
+                                    onClick = {
+                                        viewModel.addOrRemoveSchedule(talk.id)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
