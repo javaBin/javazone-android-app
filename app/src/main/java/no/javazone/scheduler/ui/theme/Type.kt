@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import no.javazone.scheduler.R
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 private val Montserrat = FontFamily(
     Font(R.font.montserrat_regular),
@@ -35,7 +37,11 @@ private val Domine = FontFamily(
     Font(R.font.domine_bold, FontWeight.Bold)
 )
 
+val sessionTimeFormat = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)!!
+
 val JavaZoneTypography = Typography(
+
+
     defaultFontFamily = Montserrat,
     h4 = TextStyle(
         fontWeight = FontWeight.SemiBold,
