@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.MyScheduleButton
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzString
@@ -78,85 +76,89 @@ fun SessionsRoute(
 
     Log.d(LOG_TAG, "Number of talks: ${talks.size}")
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .background(color = Color.White)
-                    .align(alignment = Alignment.CenterHorizontally)
-            ) {
-                groupedSessions.keys.forEach {
-                    OutlinedButton(
-                        modifier = Modifier
-                            .selectable(
-                                selected = it == day,
-                                role = Role.Button,
-                                onClick = {}
-                            )
-                            .navigationBarsPadding(bottom = false),
-                        onClick = {
-                            navController.navigate(route = "$route?day=${it.toJzString()}")
-                        },
-                    ) {
-                        Text(
-                            text = it.toString(),
-                            style = JavaZoneTypography.button,
-                            color = if (it == day) Color.Black else Color.DarkGray
-                        )
-                    }
-                }
-            }
-
-            LazyColumn {
-                items(talks) { (room, talk) ->
-                    Row(
-                        modifier = Modifier
-                            .padding(1.dp)
-                            .border(width = 2.dp, color = Color.LightGray)
-                            .fillMaxWidth()
-
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(end = 10.dp)
+    JavaZoneTheme {
+        Scaffold(
+            scaffoldState = scaffoldState,
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colors.background)
+                        .align(alignment = Alignment.CenterHorizontally)
+                ) {
+                    groupedSessions.keys.forEach {
+                        OutlinedButton(
+                            modifier = Modifier
+                                .selectable(
+                                    selected = it == day,
+                                    role = Role.Button,
+                                    onClick = {}
+                                )
+                                .navigationBarsPadding(bottom = false)
+                            ,
+                            onClick = {
+                                navController.navigate(route = "$route?day=${it.toJzString()}")
+                            },
                         ) {
                             Text(
-                                text = "${talk.startTime.toOffsetTime()}",
-                                fontSize = 10.sp
-                            )
-                            Text(
-                                text = "${talk.endTime.toOffsetTime()}",
-                                fontSize = 10.sp
-                            )
-                            Text(
-                                text = room.name,
-                                fontSize = 10.sp
+                                text = it.toString(),
+                                style = JavaZoneTypography.button,
+                                color = if (it == day) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+
                             )
                         }
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
+                    }
+                }
+
+                LazyColumn {
+                    items(talks) { (room, talk) ->
+                        Row(
+                            modifier = Modifier
+                                .padding(1.dp)
+                                .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
+                                .fillMaxWidth()
+
                         ) {
-                            Text(
-                                modifier = Modifier
-                                    .align(alignment = Alignment.CenterHorizontally)
-                                    .fillMaxWidth(),
-                                text = talk.title,
-                                style = JavaZoneTypography.body1
-                            )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
+                            Column(
+                                modifier = Modifier.padding(end = 10.dp)
                             ) {
                                 Text(
-                                    text = talk.speakers.joinToString { it.name },
+                                    text = "${talk.startTime.toOffsetTime()}",
                                     fontSize = 10.sp
                                 )
-                                MyScheduleButton(
-                                    isScheduled = myTalks.contains(talk.id),
-                                    onClick = {
-                                        viewModel.addOrRemoveSchedule(talk.id)
-                                    }
+                                Text(
+                                    text = "${talk.endTime.toOffsetTime()}",
+                                    fontSize = 10.sp
                                 )
+                                Text(
+                                    text = room.name,
+                                    fontSize = 10.sp
+                                )
+                            }
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(alignment = Alignment.CenterHorizontally)
+                                        .fillMaxWidth(),
+                                    text = talk.title,
+                                    style = JavaZoneTypography.body1
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        text = talk.speakers.joinToString { it.name },
+                                        fontSize = 10.sp
+                                    )
+                                    MyScheduleButton(
+                                        isScheduled = myTalks.contains(talk.id),
+                                        onClick = {
+                                            viewModel.addOrRemoveSchedule(talk.id)
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
