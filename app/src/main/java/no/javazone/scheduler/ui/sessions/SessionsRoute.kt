@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,23 +16,20 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
-import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
-import no.javazone.scheduler.ui.theme.sessionTimeFormat
+import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -98,6 +96,7 @@ fun SessionsRoute(
                             )
                             .navigationBarsPadding(bottom = false),
                         onClick = {
+                            Log.d("NavController debug","$route")
                             navController.navigate(route = "$route?day=${it.toJzString()}")
                         },
                     ) {
@@ -123,7 +122,7 @@ fun SessionsRoute(
                                 modifier = Modifier.padding(end = 10.dp)
                             ) {
                                 Text(
-                                    sessionTimeFormat.format(startTime),
+                                    SessionTimeFormat.format(startTime),
                                     fontSize = 27.sp
                                 )
                             }
@@ -136,13 +135,19 @@ fun SessionsRoute(
                                 .padding(1.dp)
                                 .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
                                 .fillMaxWidth()
+                                .clickable( onClick = {
+                                    Log.w("SessionviewDebug","Session is ${talk.id}")
+                                    //navController.navigate(deepLink= "detail_session/${talk.id}"
+                                    //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
+                                    navController.navigate(route="${JavaZoneDestinations.SESSION_ROUTE}?id=${talk.id}")
+                                })
 
                         ) {
                             Column(
                                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                             ) {
                                 Text(
-                                    text = sessionTimeFormat.format(talk.startTime) + " - " + sessionTimeFormat.format(
+                                    text = SessionTimeFormat.format(talk.startTime) + " - " + SessionTimeFormat.format(
                                         talk.endTime
                                     ),
                                     fontSize = 10.sp
@@ -155,7 +160,7 @@ fun SessionsRoute(
                             Column(
                                 Modifier
                                     .weight(1f)
-                                    .padding(top = 16.dp, bottom = 16.dp)
+                                    .padding(top = 16.dp, bottom = 16.dp),
                             ) {
                                 Text(
                                     modifier = Modifier

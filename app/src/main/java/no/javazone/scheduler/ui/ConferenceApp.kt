@@ -37,9 +37,8 @@ fun ConferenceApp(
         val scaffoldState = rememberScaffoldState()
         val coroutineScope = rememberCoroutineScope()
 
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute =
-            navBackStackEntry?.destination?.route ?: SessionsScreen.route
+        //val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route
+        val currentRoute = SessionsScreen.route
 
         Scaffold(
             scaffoldState = scaffoldState,
