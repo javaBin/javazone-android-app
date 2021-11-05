@@ -75,24 +75,24 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation 'androidx.activity:activity-ktx:1.3.1'
+    implementation "androidx.activity:activity-ktx:$activityVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "androidx.activity:activity-compose:1.3.1"
+    implementation "androidx.activity:activity-compose:$activityVersion"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
 
     implementation "androidx.navigation:navigation-compose:$navVersion"
 
-    implementation "androidx.window:window:1.0.0-beta02"
+    implementation "androidx.window:window:$windowVersion"
 
     // Image compose component
     implementation "io.coil-kt:coil-compose:1.3.2"
 
-    // temporary disable room
-//    implementation "androidx.room:room-runtime:$roomVersion"
-//    implementation "androidx.room:room-ktx:$roomVersion"
+    // database
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
 //    implementation "androidx.viewpager2:viewpager2:$viewPagerVersion"
 //    // Java language implementation
@@ -105,7 +105,6 @@ dependencies {
 //
 //    // Dynamic Feature Module Support
 //    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 //
     implementation "androidx.work:work-runtime-ktx:$workVersion"
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
