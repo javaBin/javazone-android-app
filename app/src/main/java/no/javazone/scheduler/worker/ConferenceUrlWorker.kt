@@ -6,8 +6,6 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.json.decodeFromJsonElement
 import no.javazone.scheduler.dto.ConferenceDto
 import no.javazone.scheduler.model.toModel
 import no.javazone.scheduler.repository.AppDatabase
@@ -22,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 class ConferenceUrlWorker(
     private val context: Context,
-    private val workerParams: WorkerParameters
+    workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     private val conferenceService: ConferenceService by lazy {
         ConferenceService.create()
@@ -39,7 +37,7 @@ class ConferenceUrlWorker(
             val sessions = sessionsDto.toModel()
 
             val database = AppDatabase.getInstance(context)
-            database.sessionDao().insertAll(sessions)
+            database.sessionDao().insertAllSessions(sessions)
 
             return Result.success()
         } catch (ex: Exception) {

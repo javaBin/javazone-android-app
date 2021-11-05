@@ -1,39 +1,64 @@
 package no.javazone.scheduler.repository.impl
 
-import androidx.lifecycle.LiveData
+import android.util.Log
+import androidx.room.withTransaction
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import no.javazone.scheduler.api.ConferenceSessionApi
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.Schedule
+import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceSessionRepository
+import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.Resource
+import no.javazone.scheduler.utils.SuccessResource
+import no.javazone.scheduler.utils.networkBoundResource
 
-class ConferenceSessionRepositoryImpl private constructor(private val dao: ConferenceSessionDao)
-    : ConferenceSessionRepository{
+class ConferenceSessionRepositoryImpl private constructor(
+    private val db: AppDatabase,
+    private val api: ConferenceSessionApi
+) : ConferenceSessionRepository {
+    private val dao: ConferenceSessionDao = db.sessionDao()
 
-    override suspend fun getSessions(): LiveData<List<ConferenceSession>> =
-        dao.getConferenceSessionsForDate()
+    override fun getSessions(): Flow<Resource<List<ConferenceSession>>> = networkBoundResource(
+        query = {
+            Log.d(LOG_TAG, "getting saved sessions")
+            dao.getConferenceSessions()
+        },
+        fetch = {
+            Log.d(LOG_TAG, "parsing sessions")
+            api.fetch()
+        },
+        saveFetchResult = { newSessions ->
+            Log.d(LOG_TAG, "saving sessions")
+            db.withTransaction {
+                dao.deleteAllSessions()
+                dao.insertAllSessions(newSessions)
+            }
+        }
+    )
 
-    override suspend fun getMySchedule(): LiveData<List<String>> {
-        TODO("Not yet implemented")
-    }
+    override fun getMySchedule(): Flow<Resource<Set<Schedule>>> =
+        dao.getSchedules().map { SuccessResource(it) }
 
     override suspend fun addOrRemoveSchedule(talkId: String) {
-        TODO("Not yet implemented")
+        db.withTransaction {
+            val schedule = Schedule(talkId)
+            if (dao.deleteSchedule(schedule) == 0) {
+                dao.addSchedule(schedule)
+            }
+        }
     }
 
     companion object {
         @Volatile
-        private lateinit var instance: ConferenceSessionRepositoryImpl
+        private var instance: ConferenceSessionRepository? = null
 
-        fun getInstance(dao: ConferenceSessionDao): ConferenceSessionRepository =
-            if (this::instance.isInitialized) {
-                instance
-            } else {
-                synchronized(this) {
-                    if (this::instance.isInitialized) {
-                        instance
-                    } else {
-                        ConferenceSessionRepositoryImpl(dao)
-                            .also { instance = it }
-                    }
-                }
+        fun getInstance(db: AppDatabase, api: ConferenceSessionApi): ConferenceSessionRepository =
+            instance ?: synchronized(this) {
+                instance ?: ConferenceSessionRepositoryImpl(db, api)
+                    .also { instance = it }
             }
+
     }
 }
