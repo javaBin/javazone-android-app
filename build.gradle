@@ -21,7 +21,7 @@ buildscript {
         junit5Version = '5.6.2'
         retroFit2Version = "2.9.0"
         retroFitKotlinSerializationVersion = "0.5.0"
-        roboeletricVersion = "4.3.1"
+        roboeletricVersion = "4.5.1"
         roomVersion = '2.3.0'
         truthVersion = "1.0.1"
         uiToolingVersion = "1.0.4"
