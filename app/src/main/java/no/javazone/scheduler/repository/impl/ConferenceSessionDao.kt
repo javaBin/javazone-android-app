@@ -16,11 +16,8 @@ interface ConferenceSessionDao {
     @Query("DELETE FROM sessions")
     suspend fun deleteAllSessions()
 
-    @Query("SELECT * FROM schedules")
-    fun getSchedules(): Flow<Set<Schedule>>
-
-    @Query("SELECT * FROM schedules WHERE talk_id = :talkId")
-    fun findSchedule(talkId: String): Schedule?
+    @Query("SELECT talk_id FROM schedules")
+    fun getSchedules(): Flow<Set<String>>
 
     @Delete
     suspend fun deleteSchedule(schedule: Schedule): Int

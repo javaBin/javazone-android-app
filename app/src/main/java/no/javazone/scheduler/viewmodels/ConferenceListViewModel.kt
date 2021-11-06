@@ -1,41 +1,33 @@
 package no.javazone.scheduler.viewmodels
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.repository.ConferenceSessionRepository
-import no.javazone.scheduler.utils.LOG_TAG
-import java.time.LocalDate
+import no.javazone.scheduler.utils.LoadingResource
+import no.javazone.scheduler.utils.Resource
 
 class ConferenceListViewModel(
     private val repository: ConferenceSessionRepository
 ) : ViewModel() {
 
-    val sessions: MutableState<List<ConferenceSession>> = mutableStateOf(listOf())
-    val mySchedule: MutableState<List<String>> = mutableStateOf(listOf())
-
-    init {
-        viewModelScope.launch {
-            val dataSessions = repository.getSessions()
-            dataSessions.observeForever { conferenceSessions ->
-                Log.d(LOG_TAG, "Found ${conferenceSessions.size} sessions")
-                sessions.value = conferenceSessions
-            }
-
-            val dataSchedule = repository.getMySchedule()
-            dataSchedule.observeForever {
-                mySchedule.value = it
-            }
-        }
-    }
-
-    fun firstConferenceDay(): LocalDate? =
-        sessions.value.groupBy { it.date }.keys.firstOrNull()
+    val sessions: StateFlow<Resource<List<ConferenceSession>>> = repository.getSessions()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = LoadingResource(emptyList())
+        )
+    val mySchedule: StateFlow<Resource<Set<String>>> = repository.getMySchedule()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = LoadingResource(emptySet())
+        )
 
     fun addOrRemoveSchedule(talkId: String) {
         viewModelScope.launch {
@@ -50,8 +42,8 @@ class ConferenceListViewModel(
         fun provideFactory(
             repository: ConferenceSessionRepository,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
                 return ConferenceListViewModel(repository) as T
             }
         }

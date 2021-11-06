@@ -43,10 +43,11 @@ fun SessionsRoute(
     Log.d(LOG_TAG, "route: $route")
     val scaffoldState = rememberScaffoldState()
 
-    val sessions: List<ConferenceSession> = viewModel.sessions.value
-    if (sessions.isEmpty()) {
+    val result: Resource<List<ConferenceSession>>? = viewModel.sessions.value
+    if (result == null || result is LoadingResource) {
         return
     }
+    val sessions = if (result is SuccessResource) result.data else return
     val groupedSessions = sessions.groupBy { it.date }.toSortedMap()
     val selectedDay = day ?: groupedSessions.firstKey()
     val filtered = sessions.filter {
@@ -55,7 +56,7 @@ fun SessionsRoute(
     val groupedBySessionSlot = filtered.groupBy { it.startTime }
 
     Log.d(LOG_TAG, "Number of sessions ${filtered.size}")
-    val myTalks = viewModel.mySchedule.value
+    val myTalks: List<String> = emptyList()
 
     Log.d(LOG_TAG, "Number of interested talks: ${myTalks.size}")
 

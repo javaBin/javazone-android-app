@@ -38,7 +38,7 @@ class ConferenceSessionRepositoryImpl private constructor(
         }
     )
 
-    override fun getMySchedule(): Flow<Resource<Set<Schedule>>> =
+    override fun getMySchedule(): Flow<Resource<Set<String>>> =
         dao.getSchedules().map { SuccessResource(it) }
 
     override suspend fun addOrRemoveSchedule(talkId: String) {
