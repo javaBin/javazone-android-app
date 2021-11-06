@@ -94,7 +94,7 @@ dependencies {
     // database
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
-
+    kapt "androidx.room:room-compiler:$roomVersion"
 //    implementation "androidx.viewpager2:viewpager2:$viewPagerVersion"
 //    // Java language implementation
 //    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

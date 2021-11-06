@@ -30,10 +30,9 @@ data class Talk(
     @ColumnInfo(name = "video")
     val video: String?,
     @ColumnInfo(name = "abstract")
-    val abstract: String,
+    val description: String,
     @Relation(parentColumn = "id", entityColumn = "talk_id")
     val speakers: Set<Speaker>,
-    @Embedded
     @ColumnInfo(name = "format")
     val format: ConferenceFormat) {
 

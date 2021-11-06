@@ -8,17 +8,17 @@ import java.time.OffsetDateTime
 @Entity(
     tableName = "sessions",
     foreignKeys = [
-        ForeignKey(entity = Talk::class, parentColumns = ["id"], childColumns = ["session_id"])
+        ForeignKey(entity = Talk::class, parentColumns = ["id"], childColumns = ["session_id"], onDelete = ForeignKey.CASCADE)
     ]
 )
 data class ConferenceSession(
     @Embedded
-    @ColumnInfo(name = "room")
     val room: ConferenceRoom,
     @Relation(parentColumn = "id", entityColumn = "session_id")
     val talks: List<Talk> = emptyList(),
     @ColumnInfo(name = "date", index = true)
-    val date: LocalDate = talks.map { it.startTime }.minOrNull()?.toLocalDate() ?: LocalDate.now()) {
+    val date: LocalDate = talks.map { it.startTime }.minOrNull()?.toLocalDate() ?: LocalDate.now()
+) {
     init {
         if (BuildConfig.DEBUG && talks.isEmpty()) {
             error("session must have at least one talk")

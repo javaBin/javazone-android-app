@@ -2,7 +2,10 @@ package no.javazone.scheduler.model
 
 import java.util.*
 
-data class ConferenceRoom constructor(val key: String, val name: String) : Comparable<ConferenceRoom> {
+data class ConferenceRoom(
+    val key: String,
+    val name: String
+    ) : Comparable<ConferenceRoom> {
 
     override fun compareTo(other: ConferenceRoom): Int = key.compareTo(other.key)
 
