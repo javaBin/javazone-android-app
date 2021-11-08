@@ -1,9 +1,8 @@
 package no.javazone.scheduler.ui.sessions
 
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +18,13 @@ import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.OffsetDateTime
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import com.google.accompanist.insets.imePadding
+import no.javazone.scheduler.ui.components.ConferenceScreen
+import no.javazone.scheduler.ui.theme.JavaZoneTypography
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +43,7 @@ fun SessionDetailRoute(
         .find { it.id == sessionId }
 
     Scaffold(
-        scaffoldState = scaffoldState,
+        scaffoldState = scaffoldState
     ) {
         sessionDetailFragment(session)
     }
@@ -46,31 +52,92 @@ fun SessionDetailRoute(
 @Composable
 @Preview
 private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) session: Talk?) {
-    Column {
-        Column(
+
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .background(color = MaterialTheme.colors.background)
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+        Row(
             modifier = Modifier
-                .background(color = MaterialTheme.colors.background)
                 .align(alignment = Alignment.CenterHorizontally)
         ) {
-
-            Text(text = "${session?.title}")
-            Divider()
-            Text(
-                text = "${session?.startTime?.let { SessionTimeFormat.format(it)} ?: "..." } - ${session?.endTime?.let { SessionTimeFormat.format(it)}  ?: "..." }"
-
-            )
-
-            Text(text = "${session?.format}")
-            Text(text = "${session?.intendedAudience}")
-
-            for (speaker in session?.speakers ?: setOf()) {
-                Text(text = "${speaker.name}")
+            Column {
+                Text(
+                    text = sessionRoomAndTimeslot(session),
+                    style = JavaZoneTypography.subtitle1
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "${session?.title}",
+                    style = JavaZoneTypography.subtitle1
+                )
             }
-            Divider()
+        }
 
-            Text(text = "${session?.abstract}")
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text(text = "Abstract", style = JavaZoneTypography.subtitle1)
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "${session?.abstract}", style = JavaZoneTypography.body1)
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(text = "Intended Audience", style = JavaZoneTypography.subtitle1)
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "${session?.intendedAudience}", style = JavaZoneTypography.body1)
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(text = "Speakers", style = JavaZoneTypography.subtitle1)
+            Spacer(modifier = Modifier.height(10.dp))
+            for (speaker in session?.speakers ?: setOf()) {
+                Row {
+
+                    Column {
+                        Image(
+                            painter = rememberImagePainter("${speaker.avatarUrl}"),
+                            contentDescription = "${speaker.avatar}",
+                            modifier = Modifier.size(74.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+
+                        Text(text = "${speaker.name}", style = JavaZoneTypography.subtitle2)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "Twitter: ${speaker.twitter}",
+                            style = JavaZoneTypography.button
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = "${speaker?.bio}", style = JavaZoneTypography.body1)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+
         }
     }
+}
+
+@Composable
+private fun sessionRoomAndTimeslot(session: Talk?): String {
+    // TODO add room
+    return "${session?.startTime?.let { SessionTimeFormat.format(it) } ?: "..."} - ${
+        session?.endTime?.let {
+            SessionTimeFormat.format(
+                it
+            )
+        } ?: "..."
+    } "
 }
 
 class SampleTalkProvider : PreviewParameterProvider<Talk> {
