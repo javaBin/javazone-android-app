@@ -1,7 +1,7 @@
 package no.javazone.scheduler.api
 
 import androidx.test.core.app.ApplicationProvider
-import org.junit.Assert
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
@@ -16,6 +16,6 @@ class AssetConferenceSessionTest {
     @Test
     fun test() {
         val result = api.fetch()
-        Assert.assertNotNull(result)
+        assertThat(result).isNotEmpty()
     }
 }

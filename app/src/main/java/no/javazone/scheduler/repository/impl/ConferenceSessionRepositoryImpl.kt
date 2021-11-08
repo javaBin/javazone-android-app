@@ -41,9 +41,8 @@ class ConferenceSessionRepositoryImpl private constructor(
     override fun getMySchedule(): Flow<Resource<Set<String>>> =
         dao.getSchedules().map { SuccessResource(it) }
 
-    override suspend fun addOrRemoveSchedule(talkId: String) {
+    override suspend fun addOrRemoveSchedule(schedule: Schedule) {
         db.withTransaction {
-            val schedule = Schedule(talkId)
             if (dao.deleteSchedule(schedule) == 0) {
                 dao.addSchedule(schedule)
             }

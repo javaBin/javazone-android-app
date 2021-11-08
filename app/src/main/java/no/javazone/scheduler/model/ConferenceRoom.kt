@@ -1,9 +1,16 @@
 package no.javazone.scheduler.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
+@Entity(tableName = "rooms")
 data class ConferenceRoom(
+    @PrimaryKey
+    @ColumnInfo(name = "key")
     val key: String,
+    @ColumnInfo(name = "name")
     val name: String
     ) : Comparable<ConferenceRoom> {
 

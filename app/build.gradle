@@ -124,6 +124,7 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:$truthVersion"
     androidTestImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
+    androidTestImplementation "com.google.truth:truth:$truthVersion"
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$navVersion"

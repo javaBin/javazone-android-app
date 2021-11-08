@@ -5,14 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.Converters
-import no.javazone.scheduler.model.Speaker
-import no.javazone.scheduler.model.Talk
+import no.javazone.scheduler.model.*
 import no.javazone.scheduler.repository.impl.ConferenceSessionDao
 
 @Database(
-    entities = [ConferenceSession::class, Speaker::class, Talk::class],
+    entities = [
+        ConferenceRoom::class,
+        ConferenceSlot::class,
+        Schedule::class,
+        Speaker::class,
+        Talk::class,
+        TalkSpeakerCrossRef::class
+    ],
     version = 1,
     exportSchema = false
 )
