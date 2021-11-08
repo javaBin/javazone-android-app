@@ -117,7 +117,10 @@ fun SessionsRoute(
                 talksGroupedOnStart.forEach { (startTime, talks) ->
                     stickyHeader {
 
-                        Row(modifier = Modifier.background(MaterialTheme.colors.surface)) {
+                        Row(modifier = Modifier
+                            .background(MaterialTheme.colors.surface)
+                            .fillMaxWidth()
+                        ) {
                             Column(
                                 modifier = Modifier.padding(end = 10.dp)
                             ) {
