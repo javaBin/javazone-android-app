@@ -117,9 +117,11 @@ dependencies {
     testImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "junit:junit:$junitVersion"
     testImplementation "androidx.test.ext:junit:$extJunitVersion"
-    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+//    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
     // instrumented test
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "androidx.test:rules:1.4.0"
     androidTestImplementation "org.robolectric:robolectric:$roboeletricVersion"
     androidTestImplementation "com.google.truth:truth:$truthVersion"
     androidTestImplementation "junit:junit:$junitVersion"
