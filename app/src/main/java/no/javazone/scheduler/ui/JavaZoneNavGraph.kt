@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
@@ -72,6 +73,20 @@ fun JavaZoneNavGraph(
         }
         composable(route = PartnerScreen.route) {
             Text(text = "partner screen")
+        }
+        composable(
+            route = SessionScreen.route,
+            arguments = listOf(navArgument(name = "id") {
+                type = NavType.StringType
+                nullable = true
+            })
+        ) { entry ->
+            SessionDetailRoute(
+                navController = navController,
+                route = JavaZoneDestinations.SESSION_ROUTE,
+                viewModel = viewModel,
+                sessionId = entry.arguments?.getString("id") ?: "NULLNULLNULL"
+            )
         }
     }
 }
