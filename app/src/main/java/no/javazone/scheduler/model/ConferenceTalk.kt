@@ -14,7 +14,8 @@ data class ConferenceTalk(
     val room: ConferenceRoom,
     val startTime: OffsetDateTime,
     val endTime: OffsetDateTime,
-    val speakers: Set<ConferenceSpeaker>
+    val speakers: Set<ConferenceSpeaker>,
+    val scheduled: Boolean = false
 ) : Comparable<ConferenceTalk> {
     var slotTime: OffsetDateTime = startTime
 
