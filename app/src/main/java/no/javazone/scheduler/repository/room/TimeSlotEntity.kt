@@ -13,9 +13,10 @@ import java.time.OffsetDateTime
 @Entity(
     tableName = "time_slots",
 )
-data class ConferenceSlot(
+data class TimeSlotEntity(
     @PrimaryKey
-    var id: Long,
+    @ColumnInfo(name = "time_slot_id")
+    var timeSlotId: Long,
     @ColumnInfo(name = "month_day", index = true)
     val monthDay: Int,
     @ColumnInfo(name = "hour_minute", index = true)
@@ -24,4 +25,15 @@ data class ConferenceSlot(
     val startTime: OffsetDateTime,
     @ColumnInfo(name = "end_time")
     val endTime: OffsetDateTime,
-)
+) {
+    constructor(
+        startTime: OffsetDateTime,
+        endTime: OffsetDateTime
+    ) : this(
+        timeSlotId = "${startTime.monthValue}${startTime.dayOfMonth}${startTime.hour}${startTime.minute}".toLong(),
+        monthDay = "${startTime.monthValue}${startTime.dayOfMonth}".toInt(),
+        hourMinute = "${startTime.hour}${startTime.minute}".toInt(),
+        startTime = startTime,
+        endTime = endTime
+    )
+}

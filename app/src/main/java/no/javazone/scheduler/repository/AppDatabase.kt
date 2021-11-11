@@ -5,16 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import no.javazone.scheduler.model.*
-import no.javazone.scheduler.repository.impl.ConferenceSessionDao
+import no.javazone.scheduler.repository.room.*
+import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 
 @Database(
     entities = [
-        ConferenceRoom::class,
-        ConferenceSlot::class,
-        Schedule::class,
-        Speaker::class,
-        Talk::class,
+        RoomEntity::class,
+        TimeSlotEntity::class,
+        ScheduleEntity::class,
+        SpeakerEntity::class,
+        TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
     version = 1,
@@ -38,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
             context: Context,
             callback: Callback = object : RoomDatabase.Callback() {}
         ): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, "test")
+            return Room.databaseBuilder(context, AppDatabase::class.java, APP_PREFERENCE_FILE)
                 .addCallback(callback)
                 .build()
         }

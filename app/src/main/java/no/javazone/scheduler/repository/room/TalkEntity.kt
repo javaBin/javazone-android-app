@@ -1,10 +1,11 @@
-package no.javazone.scheduler.model
+package no.javazone.scheduler.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
+import no.javazone.scheduler.model.ConferenceFormat
 import java.time.OffsetDateTime
 
 
@@ -12,14 +13,14 @@ import java.time.OffsetDateTime
     tableName = "talks",
     foreignKeys = [
         ForeignKey(
-            entity = ConferenceRoom::class,
-            parentColumns = ["key"],
+            entity = RoomEntity::class,
+            parentColumns = ["room_id"],
             childColumns = ["fk_room"],
             deferred = true
         ),
         ForeignKey(
-            entity = ConferenceSlot::class,
-            parentColumns = ["id"],
+            entity = TimeSlotEntity::class,
+            parentColumns = ["time_slot_id"],
             childColumns = ["fk_session_slot"],
             deferred = true,
             onUpdate = CASCADE,
@@ -27,10 +28,10 @@ import java.time.OffsetDateTime
         )
     ]
 )
-data class Talk(
+data class TalkEntity(
     @PrimaryKey
-    @ColumnInfo(name = "id")
-    val id: String,
+    @ColumnInfo(name = "talk_id")
+    val talkId: String,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "length")
@@ -42,13 +43,13 @@ data class Talk(
     @ColumnInfo(name = "video")
     val video: String?,
     @ColumnInfo(name = "abstract")
-    val abstract: String,
+    val summary: String,
     @ColumnInfo(name = "format")
     val format: ConferenceFormat,
     @ColumnInfo(name = "fk_room", index = true)
-    val room: String,
+    val room: Int,
     @ColumnInfo(name = "fk_session_slot", index = true)
-    val sessionSlot: Int,
+    val sessionSlot: Long,
     @ColumnInfo(name = "start_time")
     val startTime: OffsetDateTime,
     @ColumnInfo(name = "end_time")
