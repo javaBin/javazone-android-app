@@ -1,15 +1,20 @@
 package no.javazone.scheduler.model
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import java.time.OffsetDateTime
 
 data class ConferenceSession(
-    @Embedded
-    val sessionSlot: ConferenceSlot,
-    @Relation(
-        entity = Talk::class,
-        parentColumn = "id",
-        entityColumn = "fk_session_slot"
-    )
-    val talks: List<SessionTalk>
-)
+    val time: OffsetDateTime,
+    val talks: List<ConferenceTalk>
+) {
+    init {
+        if (talks.isEmpty()) throw IllegalStateException("A session should have at least one talk")
+        talks.forEach {
+            it.slotTime = time
+        }
+    }
+
+    constructor(talk: ConferenceTalk) : this(talk.startTime, listOf(talk))
+
+    val room: ConferenceRoom
+        get() = talks.firstOrNull()?.room ?: ConferenceRoom.DEFAULT
+}

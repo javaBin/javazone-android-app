@@ -1,4 +1,4 @@
-package no.javazone.scheduler.model
+package no.javazone.scheduler.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

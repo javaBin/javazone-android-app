@@ -1,7 +1,5 @@
 package no.javazone.scheduler.model
 
-//import org.junit.jupiter.api.BeforeEach
-//import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.Json
 import no.javazone.scheduler.dto.SessionsDto
@@ -32,9 +30,15 @@ class ConvertersTest {
         assertThat(result).isNotEmpty()
         assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.WORKSHOP }).hasSize(workshops)
         assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.PRESENTATION }).hasSize(presentations)
-        assertThat(result.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }.flatMap { it.talks }).hasSize(44)
+        assertThat(result.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }.flatMap { it.talks }).hasSize(lightnings)
 
-        val test = result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }
-        assertThat(test).isNotEmpty()
+        val result2 = result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }
+        assertThat(result2).isNotEmpty()
+    }
+
+    @Test
+    fun test() {
+        val room = ConferenceRoom.create("Hello")
+        assertThat(room.hashCode()).isEqualTo(room.name.hashCode())
     }
 }

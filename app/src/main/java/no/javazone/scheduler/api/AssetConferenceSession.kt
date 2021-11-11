@@ -1,20 +1,28 @@
 package no.javazone.scheduler.api
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import no.javazone.scheduler.dto.SessionsDto
+import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.toModel
 import java.io.InputStream
 import java.io.InputStreamReader
 
 class AssetConferenceSession(
     private val inputStream: InputStream
 ) : ConferenceSessionApi {
-    private val sessions: SessionsDto by lazy {
+    private val sessions: List<ConferenceSession> by lazy {
         val jsonStringBuffer = InputStreamReader(inputStream).readText()
-        Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
+        val dto = Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
+        dto.toModel()
     }
 
-    override fun fetch(): SessionsDto = sessions
+    override suspend fun fetch(): List<ConferenceSession> =
+        withContext(Dispatchers.IO) {
+            sessions
+        }
 
     companion object {
         private const val ASSET_NAME = "sessions.json"

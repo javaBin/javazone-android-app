@@ -1,31 +1,31 @@
 package no.javazone.scheduler.model
 
-import androidx.room.Embedded
-import androidx.room.Junction
-import androidx.room.Relation
+import java.time.OffsetDateTime
 
 data class ConferenceTalk(
-    @Embedded
-    val talk: Talk,
-    @Relation(
-        parentColumn = "fk_room",
-        entityColumn = "key"
-    )
+    val talkId: String,
+    val title: String,
+    val length: Int,
+    val intendedAudience: String,
+    val language: String,
+    val video: String?,
+    val summary: String,
+    val format: ConferenceFormat,
     val room: ConferenceRoom,
-    @Relation(
-        parentColumn = "fk_session_start_time",
-        entityColumn = "id"
-    )
-    val sessionSlot: ConferenceSlot,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "talk_id"
-    )
-    val mySchedule: Schedule?,
-    @Relation(
-        parentColumn = "talk_id",
-        entityColumn = "speaker_id",
-        associateBy = Junction(TalkSpeakerCrossRef::class)
-    )
-    val speakers: List<Speaker>
-)
+    val startTime: OffsetDateTime,
+    val endTime: OffsetDateTime,
+    val speakers: Set<ConferenceSpeaker>
+) : Comparable<ConferenceTalk> {
+    var slotTime: OffsetDateTime = startTime
+
+    override fun compareTo(other: ConferenceTalk): Int {
+        var result = slotTime.compareTo(other.slotTime)
+        if (result != 0) return result
+
+        result = room.compareTo(other.room)
+        if (result != 0) return result
+
+        return startTime.compareTo(other.startTime)
+    }
+
+}
