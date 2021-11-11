@@ -8,7 +8,7 @@ import org.junit.Test
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class ConvertersTest {
+class DtoToConferenceTest {
     private val path = Paths.get("src/test/res")
     private lateinit var dto: SessionsDto
 
