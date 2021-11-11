@@ -26,7 +26,7 @@ class ConferenceSessionTest {
     fun `session slot is based on talks start and endtime`() {
         val startTime = OffsetDateTime.of(LocalDate.now(), LocalTime.NOON, ZoneOffset.UTC)
         val talk1 = ConferenceTalk(
-            talkId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             title = "test1",
             startTime = startTime,
             endTime = startTime.plusMinutes(20L),
@@ -40,7 +40,7 @@ class ConferenceSessionTest {
             room = ConferenceRoom.DEFAULT
         )
         val talk2 = ConferenceTalk(
-            talkId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             title = "test1",
             startTime = talk1.endTime,
             endTime = talk1.endTime.plusMinutes(20L),
