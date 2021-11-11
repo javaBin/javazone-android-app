@@ -82,7 +82,7 @@ fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSess
 private fun SessionDto.toModel(): ConferenceTalk? {
     return try {
         ConferenceTalk(
-            talkId = sessionId,
+            id = sessionId,
             title = title,
             startTime = OffsetDateTime.parse(startTimeZulu),
             endTime = OffsetDateTime.parse(endTimeZulu),

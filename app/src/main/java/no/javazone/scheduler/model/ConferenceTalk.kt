@@ -3,7 +3,7 @@ package no.javazone.scheduler.model
 import java.time.OffsetDateTime
 
 data class ConferenceTalk(
-    val talkId: String,
+    val id: String,
     val title: String,
     val length: Int,
     val intendedAudience: String,
