@@ -18,7 +18,6 @@ buildscript {
         materialVersion = '1.4.0'
         navVersion = "2.4.0-beta02"
         junitVersion = "4.12"
-        junit5Version = '5.6.2'
         retroFit2Version = "2.9.0"
         retroFitKotlinSerializationVersion = "0.5.0"
         roboeletricVersion = "4.5.1"
