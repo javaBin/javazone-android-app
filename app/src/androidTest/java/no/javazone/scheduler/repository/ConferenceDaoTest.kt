@@ -18,8 +18,8 @@ import org.junit.runner.RunWith
 import java.time.OffsetDateTime
 
 @RunWith(AndroidJUnit4::class)
-class ConferenceSessionDaoTest {
-    private lateinit var dao: ConferenceSessionDao
+class ConferenceDaoTest {
+    private lateinit var dao: ConferenceDao
     private lateinit var db: AppDatabase
 
     private val room = TestUtil.createRoom("room 1")

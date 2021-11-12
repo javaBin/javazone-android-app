@@ -25,7 +25,7 @@ fun JavaZoneNavGraph(
     startDestination: String = SessionsScreen.route
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
-        factory = ConferenceListViewModel.provideFactory(appContainer.sessionRepository)
+        factory = ConferenceListViewModel.provideFactory(appContainer.repository)
     )
     NavHost(
         navController = navController,

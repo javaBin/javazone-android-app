@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import no.javazone.scheduler.repository.room.*
 
 @Dao
-interface ConferenceSessionDao {
+interface ConferenceDao {
     @Transaction
     @Query("SELECT * FROM time_slots")
     fun getConferenceSessions(): Flow<List<Session>>
@@ -17,8 +17,13 @@ interface ConferenceSessionDao {
     @Query("SELECT * from schedules")
     fun getSchedules(): List<Schedule>
 
+    @Transaction
     @Query("DELETE FROM time_slots")
     suspend fun deleteAllSessions()
+
+    @Transaction
+    @Query("DELETE FROM rooms")
+    suspend fun deleteAllRooms()
 
     @Delete(entity = TalkEntity::class)
     suspend fun deleteSchedule(talkId: Schedule): Int

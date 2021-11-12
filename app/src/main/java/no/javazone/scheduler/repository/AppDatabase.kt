@@ -23,7 +23,7 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun sessionDao(): ConferenceSessionDao
+    abstract fun sessionDao(): ConferenceDao
 
     companion object {
         @Volatile

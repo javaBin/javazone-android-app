@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.repository.ConferenceSessionRepository
+import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
 
 class ConferenceListViewModel(
-    private val repository: ConferenceSessionRepository
+    private val repository: ConferenceRepository
 ) : ViewModel() {
 
     val sessions: StateFlow<Resource<List<ConferenceSession>>> = repository.getSessions()
@@ -40,7 +40,7 @@ class ConferenceListViewModel(
      */
     companion object {
         fun provideFactory(
-            repository: ConferenceSessionRepository,
+            repository: ConferenceRepository,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
