@@ -8,7 +8,7 @@ import no.javazone.scheduler.repository.room.*
 interface ConferenceSessionDao {
     @Transaction
     @Query("SELECT * FROM time_slots")
-    fun getConferenceSessions(): Flow<List<TimeSlotEntity>>
+    fun getConferenceSessions(): Flow<List<Session>>
 
     @Transaction
     @Query("SELECT * FROM talks")
@@ -17,9 +17,6 @@ interface ConferenceSessionDao {
     @Query("SELECT * from schedules")
     fun getSchedules(): List<Schedule>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllSessions(sessions: List<TimeSlotEntity>)
-
     @Query("DELETE FROM time_slots")
     suspend fun deleteAllSessions()
 
@@ -27,16 +24,19 @@ interface ConferenceSessionDao {
     suspend fun deleteSchedule(talkId: Schedule): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addTimeSlot(timeSlot: TimeSlotEntity)
+    suspend fun addTimeSlots(timeSlots: List<TimeSlotEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addRoom(room: RoomEntity)
+    suspend fun addRooms(rooms: List<RoomEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTalk(talk: TalkEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addSpeaker(speaker: SpeakerEntity)
+    suspend fun addSpeaker(speaker: SpeakerEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTalkSpeaker(relation: TalkSpeakerCrossRef)
 
     @Insert(entity = ScheduleEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSchedule(schedule: ScheduleEntity): Long

@@ -5,10 +5,12 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import no.javazone.scheduler.repository.room.Schedule
 import no.javazone.scheduler.repository.room.ScheduleEntity
 import no.javazone.scheduler.repository.room.TalkEntity
+import no.javazone.scheduler.repository.room.TalkSpeakerCrossRef
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -25,6 +27,8 @@ class ConferenceSessionDaoTest {
     private val timeSlot2 = TestUtil.createTimeSlot(timeSlot1.endTime, timeSlot1.endTime.plusHours(1L))
     private val talk1: TalkEntity = TestUtil.createTalk("talk1", room, timeSlot1)
     private val talk2: TalkEntity = TestUtil.createTalk("talk2", room, timeSlot2)
+    private val speaker1 = TestUtil.createSpeaker("Test Testersen")
+    private val speaker2 = TestUtil.createSpeaker("Gunn Gunnersdottir")
 
     @Before
     fun setUp() {
@@ -39,7 +43,7 @@ class ConferenceSessionDaoTest {
     }
 
     @Test
-    fun adding_and_deleting_schedule_works() = runBlocking {
+    fun adding_and_deleting_schedule_works(): Unit = runBlocking {
         initDb()
 
         val schedule = ScheduleEntity(talkId = talk1.talkId)
@@ -56,11 +60,49 @@ class ConferenceSessionDaoTest {
         assertThat(result).hasSize(1)
     }
 
+    /**
+     * rowid and id is the same in sqlite
+     * https://www.sqlitetutorial.net/sqlite-autoincrement/
+     */
+    @Test
+    fun confirm_rowid_and_gen_id_is_same(): Unit = runBlocking {
+        initDb()
+
+        val rowId = dao.addSchedule(ScheduleEntity(talkId = talk2.talkId))
+        val id = dao.getIdFromRowId(rowId)
+
+        assertThat(id).isEqualTo(rowId)
+    }
+
+    @Test
+    fun retrieve_talk_retrieves_spakers(): Unit = runBlocking {
+        initDb()
+
+        val sessionResult = dao.getConferenceSessions().first()
+        assertThat(sessionResult).hasSize(2)
+
+        val timeSlotResult = sessionResult
+            .map {
+                it.timeSlot
+            }
+
+        assertThat(timeSlotResult).containsExactly(timeSlot1, timeSlot2)
+
+        val talkResult = sessionResult.flatMap {
+            it.talks
+        }
+        assertThat(talkResult).hasSize(2)
+    }
+
     private suspend fun initDb() {
-        dao.addRoom(room)
-        dao.addTimeSlot(timeSlot1)
-        dao.addTimeSlot(timeSlot2)
-        dao.addTalk(talk1)
-        dao.addTalk(talk2)
+        dao.addRooms(listOf(room))
+        dao.addTimeSlots(listOf(timeSlot1, timeSlot2))
+        listOf(talk1, talk2).forEach {
+            dao.addTalk(it)
+            var id = dao.addSpeaker(speaker1)
+            dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = it.talkId, speakerId = id))
+            id = dao.addSpeaker(speaker2)
+            dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = it.talkId, speakerId = id))
+        }
     }
 }

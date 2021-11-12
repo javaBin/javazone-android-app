@@ -2,7 +2,6 @@ package no.javazone.scheduler.repository.room
 
 import androidx.room.TypeConverter
 import no.javazone.scheduler.utils.JAVAZONE_DATE_PATTERN
-import java.time.Instant
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -10,6 +9,8 @@ import java.time.format.DateTimeFormatter
 private const val TAG = "Converters"
 
 class Converters {
+    private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
     @TypeConverter
     fun localDateToString(date: LocalDate): Long =
         date.format(DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)).toLong()
@@ -19,10 +20,10 @@ class Converters {
         LocalDate.parse(value.toString(), DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
 
     @TypeConverter
-    fun offsetDateTimeToTimestamp(date: OffsetDateTime): Long =
-        date.toEpochSecond()
+    fun offsetDateTimeToTimestamp(date: OffsetDateTime): String =
+        date.format(formatter)
 
     @TypeConverter
-    fun timeStampToOffsetDateTime(value: Long): OffsetDateTime =
-        OffsetDateTime.from(Instant.ofEpochSecond(value))
+    fun timeStampToOffsetDateTime(value: String): OffsetDateTime =
+        OffsetDateTime.parse(value, formatter)
 }

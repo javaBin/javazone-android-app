@@ -2,6 +2,7 @@ package no.javazone.scheduler.repository
 
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.repository.room.RoomEntity
+import no.javazone.scheduler.repository.room.SpeakerEntity
 import no.javazone.scheduler.repository.room.TalkEntity
 import no.javazone.scheduler.repository.room.TimeSlotEntity
 import java.time.Duration
@@ -10,7 +11,7 @@ import java.util.*
 
 object TestUtil {
     fun createRoom(name: String) =
-        RoomEntity(roomId = kotlin.math.abs(name.hashCode()), name = name)
+        RoomEntity(name = name)
 
     fun createTimeSlot(startTime: OffsetDateTime, endTime: OffsetDateTime) =
         TimeSlotEntity(
@@ -32,5 +33,12 @@ object TestUtil {
             sessionSlot = timeSlot.timeSlotId,
             startTime = timeSlot.startTime,
             endTime = timeSlot.endTime
+        )
+
+    fun createSpeaker(name: String): SpeakerEntity =
+        SpeakerEntity(
+            name = name,
+            bio = "Very important speaker",
+            twitter = "@$name"
         )
 }
