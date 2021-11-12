@@ -75,8 +75,9 @@ class ConferenceDaoTest {
     }
 
     @Test
-    fun retrieve_talk_retrieves_spakers(): Unit = runBlocking {
+    fun retrieve_sessions(): Unit = runBlocking {
         initDb()
+        dao.addSchedule(ScheduleEntity(talkId = talk2.talkId))
 
         val sessionResult = dao.getConferenceSessions().first()
         assertThat(sessionResult).hasSize(2)
@@ -88,10 +89,16 @@ class ConferenceDaoTest {
 
         assertThat(timeSlotResult).containsExactly(timeSlot1, timeSlot2)
 
-        val talkResult = sessionResult.flatMap {
+        val talkResults = sessionResult.flatMap {
             it.talks
         }
-        assertThat(talkResult).hasSize(2)
+        assertThat(talkResults).hasSize(2)
+
+        val talkResult2 = talkResults.firstOrNull { it.talk.talk.talkId == talk2.talkId }
+        assertThat(talkResult2?.scheduled).isNotNull()
+
+        val talkResult1 = talkResults.firstOrNull { it.talk.talk.talkId == talk1.talkId }
+        assertThat(talkResult1?.scheduled).isNull()
     }
 
     private suspend fun initDb() {

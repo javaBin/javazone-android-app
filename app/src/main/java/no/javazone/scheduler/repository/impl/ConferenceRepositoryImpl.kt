@@ -3,8 +3,11 @@ package no.javazone.scheduler.repository.impl
 import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import no.javazone.scheduler.api.ConferenceSessionApi
+import no.javazone.scheduler.model.ConferenceRoom
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceDao
 import no.javazone.scheduler.repository.ConferenceRepository
@@ -23,8 +26,31 @@ class ConferenceRepositoryImpl private constructor(
     override fun getSessions(): Flow<Resource<List<ConferenceSession>>> = networkBoundResource(
         query = {
             Log.d(LOG_TAG, "getting saved sessions")
-            //dao.getConferenceSessions()
-            TODO()
+            dao.getConferenceSessions()
+                .map { sessions ->
+                    sessions.map { session ->
+                        ConferenceSession(
+                            time = session.timeSlot.startTime,
+                            talks = session.talks.map {
+                                ConferenceTalk(
+                                    id = it.talk.talk.talkId,
+                                    title = it.talk.talk.title,
+                                    length = it.talk.talk.length,
+                                    intendedAudience = it.talk.talk.intendedAudience,
+                                    language = it.talk.talk.language,
+                                    video = it.talk.talk.video,
+                                    summary = it.talk.talk.summary,
+                                    format = it.talk.talk.format,
+                                    room = ConferenceRoom.create(it.room.name),
+                                    startTime = it.talk.talk.startTime,
+                                    endTime = it.talk.talk.endTime,
+                                    speakers = emptySet(),
+                                    scheduled = it.scheduled != null
+                                )
+                            }
+                        )
+                    }
+                }
         },
         fetch = {
             Log.d(LOG_TAG, "parsing sessions")

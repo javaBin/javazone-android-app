@@ -10,5 +10,10 @@ data class RoomWithTalk(
         parentColumn = "fk_room",
         entityColumn = "room_id"
     )
-    val room: RoomEntity
+    val room: RoomEntity,
+    @Relation(
+        parentColumn = "talk_id",
+        entityColumn = "talk_id"
+    )
+    val scheduled: ScheduleEntity?
 )
