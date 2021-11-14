@@ -43,7 +43,8 @@ fun SessionDetailRoute(
 
     val session = viewModel.sessions.collectAsState().value.data
         .flatMap { it.talks }
-        .first { it.id == sessionId }
+        .find { it.id == sessionId }
+        ?: return
 
     Scaffold(
         scaffoldState = scaffoldState

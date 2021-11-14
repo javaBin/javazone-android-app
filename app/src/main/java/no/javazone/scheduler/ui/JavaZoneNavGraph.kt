@@ -69,6 +69,7 @@ fun JavaZoneNavGraph(
             route = SessionScreen.route,
             arguments = listOf(navArgument(name = "id") {
                 type = NavType.StringType
+                defaultValue = "NULLNULLNULL"
             })
         ) { entry ->
             SessionDetailRoute(

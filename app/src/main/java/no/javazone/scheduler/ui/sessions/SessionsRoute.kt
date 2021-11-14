@@ -15,7 +15,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -47,7 +46,6 @@ fun SessionsRoute(
     val conferenceDays = viewModel.conferenceDays.collectAsState().value
     val mySchedule = viewModel.mySchedule.collectAsState().value
     val selectedDay = day ?: viewModel.getDefaultDate(conferenceDays)
-    val coroutineScope = rememberCoroutineScope()
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             route = route,
@@ -55,7 +53,9 @@ fun SessionsRoute(
             navigateToDetail = { talkId ->
                 //navController.navigate(deepLink= "detail_session/${talk.id}"
                 //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-                navController.navigate(route = "${JavaZoneDestinations.SESSION_ROUTE}?id=${talkId}")
+                val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}?id=$talkId"
+                Log.d(LOG_TAG, "Navigating to $newRoute")
+                navController.navigate(route = newRoute)
             },
             navigateToDay = { selectDay ->
                 navController.navigate(route = "$route?day=${selectDay.toJzString()}")
