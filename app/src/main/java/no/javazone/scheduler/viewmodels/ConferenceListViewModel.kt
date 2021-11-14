@@ -8,10 +8,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
     private val repository: ConferenceRepository
@@ -43,6 +45,50 @@ class ConferenceListViewModel(
         val first = days.minOrNull()!!
         return if (today.isBefore(first) || today.isAfter(first)) first else today
     }
+
+    fun updateSessionsWithMySchedule(
+        sessions: List<ConferenceSession>,
+        selectedDay: LocalDate,
+        mySchedule: List<String>
+    ): List<ConferenceSession> =
+        sessions
+            .filter {
+                it.time.toLocalDate() == selectedDay
+            }
+            .map { session ->
+                session.copy(
+                    talks = session.talks.map { talk ->
+                        if (mySchedule.contains(talk.id)) {
+                            talk.copy(scheduled = true)
+                        } else {
+                            talk
+                        }
+                    }
+                )
+            }
+
+    fun selectMySchedule(
+        sessions: List<ConferenceSession>,
+        mySchedule: List<String>
+    ): Map<OffsetDateTime, List<ConferenceTalk>> =
+        sessions
+            .map { session ->
+                session.copy(
+                    talks = session.talks.mapNotNull { talk ->
+                        if (mySchedule.contains(talk.id)) {
+                            talk.copy(scheduled = true)
+                        } else {
+                            null
+                        }
+                    }
+                )
+            }
+            .flatMap {
+                it.talks
+            }
+            .groupBy {
+                it.slotTime
+            }
 
     fun addOrRemoveSchedule(talkId: String) {
         viewModelScope.launch {

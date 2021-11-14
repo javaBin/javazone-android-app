@@ -41,6 +41,8 @@ val SessionTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(For
 
 val SessionDateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
+val SessionDateTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+
 val JavaZoneTypography = Typography(
 
 

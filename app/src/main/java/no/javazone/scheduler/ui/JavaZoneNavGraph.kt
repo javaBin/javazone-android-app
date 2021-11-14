@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.toJzLocalDate
@@ -46,26 +47,16 @@ fun JavaZoneNavGraph(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
                 viewModel = viewModel,
-                day = day,
-                myScheduleOnly = false
+                day = day
             )
         }
         composable(
-            route = MyScheduleScreen.route,
-            arguments = listOf(navArgument(name = "day") {
-                type = NavType.StringType
-                nullable = true
-            })
-        ) { entry ->
-            val day = entry.arguments
-                ?.getString("day")
-                ?.toJzLocalDate()
-            SessionsRoute(
+            route = MyScheduleScreen.route
+        ) {
+            MyScheduleRoute(
                 navController = navController,
                 route = JavaZoneDestinations.MY_SCHEDULE_ROUTE,
-                viewModel = viewModel,
-                day = day,
-                myScheduleOnly = true
+                viewModel = viewModel
             )
         }
         composable(route = InfoScreen.route) {
@@ -78,14 +69,13 @@ fun JavaZoneNavGraph(
             route = SessionScreen.route,
             arguments = listOf(navArgument(name = "id") {
                 type = NavType.StringType
-                nullable = true
             })
         ) { entry ->
             SessionDetailRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
-                sessionId = entry.arguments?.getString("id") ?: "NULLNULLNULL"
+                sessionId = entry.arguments?.getString("id")!!
             )
         }
     }

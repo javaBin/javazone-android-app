@@ -46,6 +46,8 @@ sealed interface ConferenceScreen {
                     startsWith(JavaZoneDestinations.INFO_ROUTE) -> InfoScreen
                     startsWith(JavaZoneDestinations.PARTNERS_ROUTE) -> PartnerScreen
                     else -> SessionsScreen
+                }.also {
+                    Log.d(LOG_TAG, "Setting ${it.route}:${it.label}")
                 }
             }
     }
@@ -90,11 +92,11 @@ object SessionsScreen : ConferenceScreen {
 
 object MyScheduleScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Outlined.Person
-    override val route: String = "${JavaZoneDestinations.MY_SCHEDULE_ROUTE}?day={day}"
+    override val route: String = JavaZoneDestinations.MY_SCHEDULE_ROUTE
     override val label: Int = R.string.my_schedule
 
     override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
-        val argRoute = "${JavaZoneDestinations.MY_SCHEDULE_ROUTE}?day=$arg"
+        val argRoute = JavaZoneDestinations.MY_SCHEDULE_ROUTE
         Log.d(LOG_TAG, "Changing screen to $argRoute")
         navController.navigate(argRoute) {
             // Pop up to the start destination of the graph to

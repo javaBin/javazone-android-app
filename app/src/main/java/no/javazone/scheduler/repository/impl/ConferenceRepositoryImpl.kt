@@ -76,6 +76,8 @@ class ConferenceRepositoryImpl private constructor(
                 val timeSlots = saveTimeSlots(conferenceSessions)
                 val rooms = saveRooms(conferenceSessions)
                 saveTalkAndSpeakers(conferenceSessions, timeSlots, rooms)
+
+                lastUpdated = OffsetDateTime.now()
             }
         }
     }
