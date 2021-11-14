@@ -4,12 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import no.javazone.scheduler.AppContainer
@@ -35,24 +33,28 @@ fun ConferenceApp(
 //        }
 
         val scaffoldState = rememberScaffoldState()
-        val coroutineScope = rememberCoroutineScope()
 
-        //val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route
-        val currentRoute = SessionsScreen.route
+        val navBackStackEntry = navController.currentBackStackEntryFlow.collectAsState(null).value
+        val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route
 
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                     TopAppBar {
-                         Text(
-                             text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
-                             style = JavaZoneTypography.subtitle2
-                         )
-                     }
+                TopAppBar {
+                    Text(
+                        text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
+                        style = JavaZoneTypography.subtitle2
+                    )
+                }
             },
             bottomBar = {
                 ConferenceTabRow(
-                    allScreens = listOf(SessionsScreen, MyScheduleScreen, InfoScreen, PartnerScreen),
+                    allScreens = listOf(
+                        SessionsScreen,
+                        MyScheduleScreen,
+                        InfoScreen,
+                        PartnerScreen
+                    ),
                     navController = navController,
                     currentRoute = currentRoute
                 )
