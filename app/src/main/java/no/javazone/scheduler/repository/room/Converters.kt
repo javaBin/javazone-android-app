@@ -12,12 +12,12 @@ class Converters {
     private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
 
     @TypeConverter
-    fun localDateToString(date: LocalDate): Long =
-        date.format(DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)).toLong()
+    fun localDateToString(date: LocalDate): String =
+        date.format(DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
 
     @TypeConverter
-    fun stringToLocalDate(value: Long): LocalDate =
-        LocalDate.parse(value.toString(), DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
+    fun stringToLocalDate(value: String): LocalDate =
+        LocalDate.parse(value, DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
 
     @TypeConverter
     fun offsetDateTimeToTimestamp(date: OffsetDateTime): String =

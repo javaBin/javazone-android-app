@@ -5,15 +5,10 @@ import androidx.room.Relation
 
 data class RoomWithTalk(
     @Embedded
-    val talk: TalkSpeakers,
+    val talkWithSpeakers: TalkWithSpeakers,
     @Relation(
         parentColumn = "fk_room",
         entityColumn = "room_id"
     )
-    val room: RoomEntity,
-    @Relation(
-        parentColumn = "talk_id",
-        entityColumn = "talk_id"
-    )
-    val scheduled: ScheduleEntity?
+    val room: RoomEntity
 )

@@ -3,6 +3,7 @@ package no.javazone.scheduler.repository
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import no.javazone.scheduler.repository.room.*
+import java.time.LocalDate
 
 @Dao
 interface ConferenceDao {
@@ -11,11 +12,18 @@ interface ConferenceDao {
     fun getConferenceSessions(): Flow<List<Session>>
 
     @Transaction
+    @Query("SELECT * FROM time_slots WHERE date = :date")
+    fun getConferenceSessions(date: LocalDate): Flow<List<Session>>
+
+    @Transaction
     @Query("SELECT * FROM talks")
     fun getConferenceTalks(): Flow<List<TalkEntity>>
 
-    @Query("SELECT * from schedules")
-    fun getSchedules(): List<Schedule>
+    @Query("SELECT DISTINCT date FROM time_slots")
+    fun getTimeSlots(): Flow<List<LocalDate>>
+
+    @Query("SELECT talk_id from schedules")
+    fun getSchedules(): Flow<List<Schedule>>
 
     @Transaction
     @Query("DELETE FROM time_slots")
@@ -25,7 +33,7 @@ interface ConferenceDao {
     @Query("DELETE FROM rooms")
     suspend fun deleteAllRooms()
 
-    @Delete(entity = TalkEntity::class)
+    @Delete(entity = ScheduleEntity::class)
     suspend fun deleteSchedule(talkId: Schedule): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

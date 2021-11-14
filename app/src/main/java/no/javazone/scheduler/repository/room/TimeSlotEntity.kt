@@ -3,6 +3,7 @@ package no.javazone.scheduler.repository.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
 /**
@@ -17,8 +18,8 @@ data class TimeSlotEntity(
     @PrimaryKey
     @ColumnInfo(name = "time_slot_id")
     var timeSlotId: Long,
-    @ColumnInfo(name = "month_day", index = true)
-    val monthDay: String,
+    @ColumnInfo(name = "date", index = true)
+    val date: LocalDate,
     @ColumnInfo(name = "hour_minute", index = true)
     val hourMinute: String,
     @ColumnInfo(name = "start_time")
@@ -31,7 +32,7 @@ data class TimeSlotEntity(
         endTime: OffsetDateTime
     ) : this(
         timeSlotId = "${startTime.monthValue}${startTime.dayOfMonth}${startTime.hour}${startTime.minute}".toLong(),
-        monthDay = "${startTime.monthValue}-${startTime.dayOfMonth}",
+        date = startTime.toLocalDate(),
         hourMinute = "${startTime.hour}-${startTime.minute}",
         startTime = startTime,
         endTime = endTime

@@ -94,10 +94,10 @@ class ConferenceDaoTest {
         }
         assertThat(talkResults).hasSize(2)
 
-        val talkResult2 = talkResults.firstOrNull { it.talk.talk.talkId == talk2.talkId }
+        val talkResult2 = talkResults.firstOrNull { it.talkWithSpeakers.talk.talkId == talk2.talkId }
         assertThat(talkResult2?.scheduled).isNotNull()
 
-        val talkResult1 = talkResults.firstOrNull { it.talk.talk.talkId == talk1.talkId }
+        val talkResult1 = talkResults.firstOrNull { it.talkWithSpeakers.talk.talkId == talk1.talkId }
         assertThat(talkResult1?.scheduled).isNull()
     }
 

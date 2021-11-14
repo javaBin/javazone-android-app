@@ -15,19 +15,19 @@ fun toConferenceSession(): (Session) -> ConferenceSession = {
 
 fun toConferenceTalk(): (RoomWithTalk) -> ConferenceTalk = {
     ConferenceTalk(
-        id = it.talk.talk.talkId,
-        title = it.talk.talk.title,
-        length = it.talk.talk.length,
-        intendedAudience = it.talk.talk.intendedAudience,
-        language = it.talk.talk.language,
-        video = it.talk.talk.video,
-        summary = it.talk.talk.summary,
-        format = it.talk.talk.format,
+        id = it.talkWithSpeakers.talk.talkId,
+        title = it.talkWithSpeakers.talk.title,
+        length = it.talkWithSpeakers.talk.length,
+        intendedAudience = it.talkWithSpeakers.talk.intendedAudience,
+        language = it.talkWithSpeakers.talk.language,
+        video = it.talkWithSpeakers.talk.video,
+        summary = it.talkWithSpeakers.talk.summary,
+        format = it.talkWithSpeakers.talk.format,
         room = ConferenceRoom.create(it.room.name),
-        startTime = it.talk.talk.startTime,
-        endTime = it.talk.talk.endTime,
-        speakers = it.talk.speakers.map(toConferenceSpeaker()).toSet(),
-        scheduled = it.scheduled != null
+        startTime = it.talkWithSpeakers.talk.startTime,
+        endTime = it.talkWithSpeakers.talk.endTime,
+        speakers = it.talkWithSpeakers.speakers.map(toConferenceSpeaker()).toSet(),
+        scheduled = false
     )
 }
 

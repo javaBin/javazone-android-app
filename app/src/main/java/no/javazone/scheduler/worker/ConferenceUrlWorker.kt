@@ -7,10 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.serialization.json.Json
 import no.javazone.scheduler.dto.ConferenceDto
-import no.javazone.scheduler.model.toModel
-import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.service.ConferenceService
-import no.javazone.scheduler.service.SessionService
 import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 import no.javazone.scheduler.utils.CONFERENCE_FILENAME
 import no.javazone.scheduler.utils.JAVAZONE_DATE_PATTERN
@@ -32,14 +29,15 @@ class ConferenceUrlWorker(
             if (!this::conference.isInitialized) {
                 initConference()
             }
-            val sessionService = SessionService.create()
-            val sessionsDto = sessionService.getSessions(conference.conferenceUrlPath)
-            val sessions = sessionsDto.toModel()
+            TODO()
+//            val sessionService = SessionService.create()
+//            val sessionsDto = sessionService.getSessions(conference.conferenceUrlPath)
+//            val sessions = sessionsDto.toModel()
+//
+//            val database = AppDatabase.getInstance(context)
+//            database.sessionDao().insertAllSessions(sessions)
 
-            val database = AppDatabase.getInstance(context)
-            database.sessionDao().insertAllSessions(sessions)
-
-            return Result.success()
+//            return Result.success()
         } catch (ex: Exception) {
             Log.e(TAG, "Error retrieving conference URL", ex)
             return Result.failure()

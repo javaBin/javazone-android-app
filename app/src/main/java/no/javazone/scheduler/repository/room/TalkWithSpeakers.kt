@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 
-data class TalkSpeakers(
+data class TalkWithSpeakers(
     @Embedded
     val talk: TalkEntity,
     @Relation(

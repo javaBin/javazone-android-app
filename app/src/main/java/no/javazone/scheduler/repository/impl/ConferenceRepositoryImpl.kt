@@ -2,6 +2,8 @@ package no.javazone.scheduler.repository.impl
 
 import android.util.Log
 import androidx.room.withTransaction
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import no.javazone.scheduler.api.ConferenceSessionApi
@@ -13,12 +15,16 @@ import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.Resource
 import no.javazone.scheduler.utils.networkBoundResource
+import java.time.LocalDate
+import java.time.OffsetDateTime
 
 class ConferenceRepositoryImpl private constructor(
     private val db: AppDatabase,
-    private val api: ConferenceSessionApi
+    private val api: ConferenceSessionApi,
+    private val dispatcher: CoroutineDispatcher
 ) : ConferenceRepository {
     private val dao: ConferenceDao = db.sessionDao()
+    private var lastUpdated: OffsetDateTime = OffsetDateTime.MIN
 
     override fun getSessions(): Flow<Resource<List<ConferenceSession>>> = networkBoundResource(
         query = {
@@ -32,29 +38,45 @@ class ConferenceRepositoryImpl private constructor(
             Log.d(LOG_TAG, "fetching sessions")
             api.fetch()
         },
-        saveFetchResult = saveToDb
+        saveFetchResult = saveToDb,
+        shouldFetch = {
+            it.isEmpty() || OffsetDateTime.now().isAfter(lastUpdated.plusMinutes(CACHE_EXPIRE_MIN))
+        }
     )
 
-    override fun getMySchedule(): Flow<Resource<Set<String>>> = TODO()
-//        dao.getSchedules().map { SuccessResource(it) }
+    override fun getConferenceDays(): Flow<List<LocalDate>> {
+        Log.d(LOG_TAG, "retrieving saved dates")
+        return dao.getTimeSlots()
+    }
+
+    override fun getSchedules(): Flow<List<String>> =
+        dao.getSchedules()
+            .map { schedules ->
+                schedules.map { it.talkId }
+            }
 
     override suspend fun addOrRemoveSchedule(talkId: String) {
         db.withTransaction {
             if (dao.deleteSchedule(Schedule(talkId)) == 0) {
+                Log.d(LOG_TAG, "Adding $talkId to my schedule")
                 dao.addSchedule(ScheduleEntity(talkId = talkId))
+            } else {
+                Log.d(LOG_TAG, "Deleting $talkId to my schedule")
             }
         }
     }
 
     private val saveToDb: suspend (List<ConferenceSession>) -> Unit = { conferenceSessions ->
-        Log.d(LOG_TAG, "saving sessions to db")
-        db.withTransaction {
-            dao.deleteAllSessions()
-            dao.deleteAllRooms()
+        if (conferenceSessions.isNotEmpty()) {
+            Log.d(LOG_TAG, "saving sessions to db")
+            db.withTransaction {
+                dao.deleteAllSessions()
+                dao.deleteAllRooms()
 
-            val timeSlots = saveTimeSlots(conferenceSessions)
-            val rooms = saveRooms(conferenceSessions)
-            saveTalkAndSpeakers(conferenceSessions, timeSlots, rooms)
+                val timeSlots = saveTimeSlots(conferenceSessions)
+                val rooms = saveRooms(conferenceSessions)
+                saveTalkAndSpeakers(conferenceSessions, timeSlots, rooms)
+            }
         }
     }
 
@@ -102,12 +124,18 @@ class ConferenceRepositoryImpl private constructor(
     }
 
     companion object {
+        private const val CACHE_EXPIRE_MIN = 10L
+
         @Volatile
         private var instance: ConferenceRepository? = null
 
-        fun getInstance(db: AppDatabase, api: ConferenceSessionApi): ConferenceRepository =
+        fun getInstance(
+            db: AppDatabase,
+            api: ConferenceSessionApi,
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
+        ): ConferenceRepository =
             instance ?: synchronized(this) {
-                instance ?: ConferenceRepositoryImpl(db, api)
+                instance ?: ConferenceRepositoryImpl(db, api, dispatcher)
                     .also { instance = it }
             }
 

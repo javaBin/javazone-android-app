@@ -1,6 +1,7 @@
 package no.javazone.scheduler
 
 import android.content.Context
+import android.net.ConnectivityManager
 import no.javazone.scheduler.api.AssetConferenceSession
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceRepository
@@ -11,6 +12,7 @@ import no.javazone.scheduler.repository.impl.ConferenceRepositoryImpl
  */
 interface AppContainer {
     val repository: ConferenceRepository
+    val hasNetwork: Boolean
 }
 
 /**
@@ -26,4 +28,16 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
             api = AssetConferenceSession.getInstance(applicationContext)
         )
     }
+
+    override val hasNetwork: Boolean
+        get() {
+            val cm =
+                applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+            return cm
+                ?.activeNetwork
+                ?.let {
+                    cm.getNetworkCapabilities(it) != null
+                }
+                ?: false
+        }
 }

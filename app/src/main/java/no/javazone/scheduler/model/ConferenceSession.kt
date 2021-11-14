@@ -7,7 +7,6 @@ data class ConferenceSession(
     val talks: List<ConferenceTalk>
 ) {
     init {
-        if (talks.isEmpty()) throw IllegalStateException("A session should have at least one talk")
         talks.forEach {
             it.slotTime = time
         }
