@@ -2,8 +2,7 @@ package no.javazone.scheduler.dto
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import java.nio.file.Files
 import java.nio.file.Paths
 

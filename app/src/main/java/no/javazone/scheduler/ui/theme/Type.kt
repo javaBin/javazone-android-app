@@ -37,7 +37,11 @@ private val Domine = FontFamily(
     Font(R.font.domine_bold, FontWeight.Bold)
 )
 
-val SessionTimeFormat = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)!!
+val SessionTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+
+val SessionDateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+
+val SessionDateTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
 val JavaZoneTypography = Typography(
 

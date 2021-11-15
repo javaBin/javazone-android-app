@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -22,60 +23,85 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
+import no.javazone.scheduler.ui.theme.SessionDateFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
-import no.javazone.scheduler.utils.LOG_TAG
-import no.javazone.scheduler.utils.toJzString
+import no.javazone.scheduler.utils.*
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.LocalDate
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SessionsRoute(
     navController: NavHostController,
     route: String,
     viewModel: ConferenceListViewModel,
-    day: LocalDate?,
-    myScheduleOnly: Boolean = false
+    day: LocalDate?
 ) {
     Log.d(LOG_TAG, "route: $route")
-    val scaffoldState = rememberScaffoldState()
 
-    val sessions: List<ConferenceSession> = viewModel.sessions.value
-    if (sessions.isEmpty()) {
-        return
+    val resource = viewModel.sessions.collectAsState().value
+    val conferenceDays = viewModel.conferenceDays.collectAsState().value
+    val mySchedule = viewModel.mySchedule.collectAsState().value
+    val selectedDay = day ?: viewModel.getDefaultDate(conferenceDays)
+    val toAllSessionScreen = @Composable {
+        AllSessionsScreen(
+            route = route,
+            onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
+            navigateToDetail = { talkId ->
+                //navController.navigate(deepLink= "detail_session/${talk.id}"
+                //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
+                val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}?id=$talkId"
+                Log.d(LOG_TAG, "Navigating to $newRoute")
+                navController.navigate(route = newRoute)
+            },
+            navigateToDay = { selectDay ->
+                navController.navigate(route = "$route?day=${selectDay.toJzString()}")
+            },
+            conferenceSessions = viewModel.updateSessionsWithMySchedule(
+                resource.data,
+                selectedDay,
+                mySchedule
+            ),
+            conferenceDays = conferenceDays,
+            selectedDay = selectedDay
+        )
     }
-    val groupedSessions = sessions.groupBy { it.date }.toSortedMap()
-    val selectedDay = day ?: groupedSessions.firstKey()
-    val filtered = sessions.filter {
-        it.date == selectedDay
-    }
-    val groupedBySessionSlot = filtered.groupBy { it.startTime }
 
-    Log.d(LOG_TAG, "Number of sessions ${filtered.size}")
-    val myTalks = viewModel.mySchedule.value
-
-    Log.d(LOG_TAG, "Number of interested talks: ${myTalks.size}")
-
-    val talks = filtered
-        .flatMap { session ->
-            session.talks.map {
-                session.room to it
-            }
-        }
-        .filter {
-            if (myScheduleOnly) {
-                Log.d(LOG_TAG, "Filter ${it.second.id}")
-                myTalks.contains(it.second.id)
+    when (resource) {
+        is SuccessResource -> toAllSessionScreen()
+        is LoadingResource -> {
+            if (resource.data.isEmpty()) {
+                FullScreenLoading()
             } else {
-                Log.d(LOG_TAG, "No filter")
-                true
+                toAllSessionScreen()
             }
         }
+        is ErrorResource -> {
 
-    Log.d(LOG_TAG, "Number of talks: ${talks.size}")
+            if (resource.data.isNotEmpty()) {
+                toAllSessionScreen()
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun AllSessionsScreen(
+    route: String,
+    onToggleSchedule: (String) -> Unit,
+    navigateToDetail: (String) -> Unit,
+    navigateToDay: (LocalDate) -> Unit,
+    conferenceSessions: List<ConferenceSession>,
+    conferenceDays: List<LocalDate>,
+    selectedDay: LocalDate
+) {
+    Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
+    val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -86,63 +112,59 @@ fun SessionsRoute(
                     .background(color = MaterialTheme.colors.background)
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
-                groupedSessions.keys.forEach {
+                conferenceDays.forEach {
                     OutlinedButton(
                         modifier = Modifier
                             .selectable(
-                                selected = it == day,
+                                selected = it == selectedDay,
                                 role = Role.Button,
                                 onClick = {}
                             )
                             .navigationBarsPadding(bottom = false),
                         onClick = {
-                            Log.d("NavController debug","$route")
-                            navController.navigate(route = "$route?day=${it.toJzString()}")
+                            Log.d("NavController debug", route)
+                            navigateToDay(it)
                         },
                     ) {
                         Text(
-                            text = it.toString(),
+                            text = SessionDateFormat.format(it).split(",")[0],
                             style = JavaZoneTypography.button,
-                            color = if (it == day) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+                            color = if (it == selectedDay) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
 
                         )
                     }
                 }
             }
 
-
-            val talksGroupedOnStart = talks.groupBy { it.second.startTime }
-
             LazyColumn {
-                talksGroupedOnStart.forEach { (startTime, talks) ->
+                conferenceSessions.forEach { session ->
                     stickyHeader {
 
-                        Row(modifier = Modifier
-                            .background(MaterialTheme.colors.surface)
-                            .fillMaxWidth()
+                        Row(
+                            modifier = Modifier
+                                .background(MaterialTheme.colors.surface)
+                                .fillMaxWidth()
                         ) {
                             Column(
                                 modifier = Modifier.padding(end = 10.dp)
                             ) {
                                 Text(
-                                    SessionTimeFormat.format(startTime),
+                                    SessionTimeFormat.format(session.time),
                                     fontSize = 27.sp
                                 )
                             }
                         }
                     }
 
-                    items(talks) { (room, talk) ->
+                    items(session.talks) { talk ->
                         Row(
                             modifier = Modifier
                                 .padding(1.dp)
                                 .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
                                 .fillMaxWidth()
-                                .clickable( onClick = {
-                                    Log.w("SessionviewDebug","Session is ${talk.id}")
-                                    //navController.navigate(deepLink= "detail_session/${talk.id}"
-                                    //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-                                    navController.navigate(route="${JavaZoneDestinations.SESSION_ROUTE}?id=${talk.id}")
+                                .clickable(onClick = {
+                                    Log.w("SessionviewDebug", "Session is ${talk.id}")
+                                    navigateToDetail(talk.id)
                                 })
 
                         ) {
@@ -156,7 +178,7 @@ fun SessionsRoute(
                                     fontSize = 10.sp
                                 )
                                 Text(
-                                    text = room.name,
+                                    text = talk.room.name,
                                     fontSize = 10.sp
                                 )
                             }
@@ -177,12 +199,10 @@ fun SessionsRoute(
                                     fontSize = 10.sp
                                 )
                             }
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { }) {
                                 MyScheduleButton(
-                                    isScheduled = myTalks.contains(talk.id),
-                                    onClick = {
-                                        viewModel.addOrRemoveSchedule(talk.id)
-                                    }
+                                    isScheduled = talk.scheduled,
+                                    onClick = { onToggleSchedule(talk.id) }
                                 )
                             }
                         }
