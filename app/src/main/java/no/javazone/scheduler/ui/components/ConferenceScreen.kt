@@ -128,7 +128,7 @@ object PartnerScreen : ConferenceScreen {
 
 object SessionScreen : ConferenceScreen {
     override val icon: ImageVector =  Icons.Outlined.Info
-    override val route: String = "${JavaZoneDestinations.SESSION_ROUTE}?id={id}"
+    override val route: String = "${JavaZoneDestinations.SESSION_ROUTE}/{id}"
     override val label: Int = R.string.session
 
 }

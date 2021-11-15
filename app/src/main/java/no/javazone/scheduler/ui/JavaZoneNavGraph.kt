@@ -1,5 +1,6 @@
 package no.javazone.scheduler.ui
 
+import android.util.Log
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,7 @@ import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
+import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
@@ -72,11 +74,18 @@ fun JavaZoneNavGraph(
                 defaultValue = "NULLNULLNULL"
             })
         ) { entry ->
+            val entryArg = entry.arguments?.getString("id")
+            val sessionId = if (entryArg != null && entryArg != "NULLNULLNULL") {
+                entryArg
+            } else {
+                Log.d(LOG_TAG, "Bug workaround: arguments null, retrieve from viewModel")
+                viewModel.getDetailsArg()
+            }
             SessionDetailRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
-                sessionId = entry.arguments?.getString("id")!!
+                sessionId = sessionId
             )
         }
     }

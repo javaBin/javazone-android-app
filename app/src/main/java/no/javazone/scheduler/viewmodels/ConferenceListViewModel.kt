@@ -27,11 +27,11 @@ class ConferenceListViewModel(
         )
 
     val conferenceDays: StateFlow<List<LocalDate>> = repository.getConferenceDays()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-                initialValue = DEFAULT_CONFERENCE_DAYS
-            )
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = DEFAULT_CONFERENCE_DAYS
+        )
 
     val mySchedule: StateFlow<List<String>> = repository.getSchedules()
         .stateIn(
@@ -39,6 +39,8 @@ class ConferenceListViewModel(
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
             initialValue = emptyList()
         )
+
+    private var _detailsArg: String = ""
 
     fun getDefaultDate(days: List<LocalDate>): LocalDate {
         val today = LocalDate.now()
@@ -101,6 +103,12 @@ class ConferenceListViewModel(
             repository.addOrRemoveSchedule(talkId)
         }
     }
+
+    fun updateDetailsArg(arg: String) {
+        _detailsArg = arg
+    }
+
+    fun getDetailsArg(): String = _detailsArg
 
     /**
      * Factory for HomeViewModel that takes PostsRepository as a dependency

@@ -43,6 +43,13 @@ fun MyScheduleRoute(
     MyScheduleScreen(
         navController = navController,
         onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
+        navigateToDetail = { talkId ->
+            Log.w("SessionviewDebug", "Session is $talkId")
+            //navController.navigate(deepLink= "detail_session/${talk.id}"
+            //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
+            viewModel.updateDetailsArg(talkId)
+            navController.navigate(route = "${JavaZoneDestinations.SESSION_ROUTE}/${talkId}")
+        },
         conferenceTalks = viewModel.selectMySchedule(
             resource.data,
             mySchedule
@@ -55,6 +62,7 @@ fun MyScheduleRoute(
 private fun MyScheduleScreen(
     navController: NavHostController,
     onToggleSchedule: (String) -> Unit,
+    navigateToDetail: (String) -> Unit,
     conferenceTalks: Map<OffsetDateTime, List<ConferenceTalk>>
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -88,10 +96,7 @@ private fun MyScheduleScreen(
                             .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
                             .fillMaxWidth()
                             .clickable(onClick = {
-                                Log.w("SessionviewDebug", "Session is ${talk}")
-                                //navController.navigate(deepLink= "detail_session/${talk.id}"
-                                //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-                                navController.navigate(route = "${JavaZoneDestinations.SESSION_ROUTE}?id=${talk.id}")
+                                navigateToDetail(talk.id)
                             })
 
                     ) {

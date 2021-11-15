@@ -53,8 +53,9 @@ fun SessionsRoute(
             navigateToDetail = { talkId ->
                 //navController.navigate(deepLink= "detail_session/${talk.id}"
                 //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-                val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}?id=$talkId"
+                val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}/$talkId"
                 Log.d(LOG_TAG, "Navigating to $newRoute")
+                viewModel.updateDetailsArg(talkId)
                 navController.navigate(route = newRoute)
             },
             navigateToDay = { selectDay ->
