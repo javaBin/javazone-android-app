@@ -5,7 +5,22 @@
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../layout/compose-model-1635974068844.xml" value="0.5" />
+        <entry key="../../../../../layout/compose-model-1635974307623.xml" value="1.0" />
+        <entry key="../../../../../layout/compose-model-1635976201530.xml" value="0.23859797297297297" />
+        <entry key="../../../../../layout/compose-model-1635977134756.xml" value="0.4787037037037037" />
+        <entry key="../../../../../layout/compose-model-1635977526903.xml" value="0.4787037037037037" />
+        <entry key="../../../../../layout/compose-model-1636929310162.xml" value="0.23464270789803593" />
+        <entry key="../../../../../layout/compose-model-1636933683949.xml" value="0.36711241119933136" />
+        <entry key="../../../../../layout/compose-model-1636998701332.xml" value="0.28478896782281654" />
+        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.59375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -2,19 +2,19 @@ package no.javazone.scheduler.service
 
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 class ConferenceServiceTest {
     private lateinit var service: ConferenceService
 
-    @BeforeEach
+    @Before
     internal fun setUp() {
         service = ConferenceService.create()
     }
 
-    @AfterEach
+    @After
     internal fun tearDown() {
     }
 
