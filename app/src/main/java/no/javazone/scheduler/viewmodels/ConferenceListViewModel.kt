@@ -66,6 +66,9 @@ class ConferenceListViewModel(
                     }
                 )
             }
+            .sortedBy {
+                it.time
+            }
 
     fun selectMySchedule(
         sessions: List<ConferenceSession>,
@@ -85,6 +88,9 @@ class ConferenceListViewModel(
             }
             .flatMap {
                 it.talks
+            }
+            .sortedBy {
+                it.slotTime
             }
             .groupBy {
                 it.slotTime
