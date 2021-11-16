@@ -21,7 +21,7 @@ class AssetConferenceSession(
         dto.toModel()
     }
 
-    override suspend fun fetch(): List<ConferenceSession> =
+    override suspend fun fetchConferenceSessions(): List<ConferenceSession> =
         withContext(dispatchers) {
             sessions
         }

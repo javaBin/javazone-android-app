@@ -16,7 +16,7 @@ class AssetConferenceSessionTest {
 
     @Test
     fun test() = runBlocking {
-        val result = api.fetch()
+        val result = api.fetchConferenceSessions()
         assertThat(result).isNotEmpty()
     }
 }
