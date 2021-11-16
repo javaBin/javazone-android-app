@@ -36,7 +36,7 @@ class ConferenceRepositoryImpl private constructor(
         },
         fetch = {
             Log.d(LOG_TAG, "fetching sessions")
-            api.fetch()
+            api.fetchConferenceSessions()
         },
         saveFetchResult = saveToDb,
         shouldFetch = {
