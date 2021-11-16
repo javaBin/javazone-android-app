@@ -18,7 +18,7 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkSpeakerCrossRef::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

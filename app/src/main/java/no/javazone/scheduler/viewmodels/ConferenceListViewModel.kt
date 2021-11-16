@@ -43,8 +43,8 @@ class ConferenceListViewModel(
     private var _detailsArg: String = ""
 
     fun getDefaultDate(days: List<LocalDate>): LocalDate {
-        val today = LocalDate.now()
-        val first = days.minOrNull()!!
+        val today: LocalDate = LocalDate.now()
+        val first: LocalDate = days.minOrNull() ?: DEFAULT_CONFERENCE_DAYS.first()
         return if (today.isBefore(first) || today.isAfter(first)) first else today
     }
 
