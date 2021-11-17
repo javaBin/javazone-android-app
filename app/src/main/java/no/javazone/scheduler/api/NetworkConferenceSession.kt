@@ -11,9 +11,9 @@ class NetworkConferenceSession(
         private val client: NetworkClient,
         private val dispatchers: CoroutineDispatcher
 ) : ConferenceSessionApi {
-    override suspend fun fetchConferenceSessions(): List<ConferenceSession> =
+    override suspend fun fetchSessions(url: String): List<ConferenceSession> =
             withContext(dispatchers) {
-                client.getSessions("https://localhost/javazone_2019").toModel()
+                client.getSessions(url).toModel()
             }
 
     override suspend fun fetchConference(): Conference =

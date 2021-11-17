@@ -2,11 +2,11 @@ package no.javazone.scheduler.repository.impl
 
 import android.util.Log
 import androidx.room.withTransaction
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import no.javazone.scheduler.api.ConferenceSessionApi
+import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceDao
@@ -14,17 +14,34 @@ import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.Resource
+import no.javazone.scheduler.utils.SuccessResource
 import no.javazone.scheduler.utils.networkBoundResource
-import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class ConferenceRepositoryImpl private constructor(
     private val db: AppDatabase,
     private val api: ConferenceSessionApi,
-    private val dispatcher: CoroutineDispatcher
+    private val assetApi: ConferenceSessionApi
 ) : ConferenceRepository {
     private val dao: ConferenceDao = db.sessionDao()
     private var lastUpdated: OffsetDateTime = OffsetDateTime.MIN
+
+    override fun getConference(): Flow<Resource<Conference>> = networkBoundResource(
+        query = { retrieveConference() },
+        fetch = {
+            assetApi.fetchConference()
+        },
+        saveFetchResult = {
+            db.withTransaction {
+                dao.deleteAllConference()
+                val id = dao.insertConference(it.toEntity())
+                dao.insertConferenceDates(it.days.map(toConferenceDateEntity(id)))
+            }
+        },
+        shouldFetch = {
+            true
+        }
+    )
 
     override fun getSessions(): Flow<Resource<List<ConferenceSession>>> = networkBoundResource(
         query = {
@@ -35,19 +52,18 @@ class ConferenceRepositoryImpl private constructor(
                 }
         },
         fetch = {
-            Log.d(LOG_TAG, "fetching sessions")
-            api.fetchConferenceSessions()
+            val conference = (getConference().first {
+                it is SuccessResource<Conference>
+            } as SuccessResource<Conference>).data
+
+            Log.d(LOG_TAG, "fetching sessions from ${conference.conferenceUrl}")
+            api.fetchSessions(conference.conferenceUrl)
         },
         saveFetchResult = saveToDb,
         shouldFetch = {
             it.isEmpty() || OffsetDateTime.now().isAfter(lastUpdated.plusMinutes(CACHE_EXPIRE_MIN))
         }
     )
-
-    override fun getConferenceDays(): Flow<List<LocalDate>> {
-        Log.d(LOG_TAG, "retrieving saved dates")
-        return dao.getTimeSlots()
-    }
 
     override fun getSchedules(): Flow<List<String>> =
         dao.getSchedules()
@@ -81,6 +97,13 @@ class ConferenceRepositoryImpl private constructor(
             }
         }
     }
+
+    private fun retrieveConference(): Flow<Conference> =
+        dao.getConferences()
+            .map { conferences ->
+                conferences.map(toConference()).firstOrNull() ?: Conference.NULL_INSTANCE
+            }
+
 
     private suspend fun saveTimeSlots(conferenceSessions: List<ConferenceSession>): List<TimeSlotEntity> {
         val timeSlots = conferenceSessions
@@ -117,9 +140,9 @@ class ConferenceRepositoryImpl private constructor(
             val room = rooms.first { it.name == talk.room.name }
             val timeSlot = timeSlots.first { it.startTime == talk.slotTime }
 
-            dao.addTalk(talk.toEntity(room, timeSlot))
+            dao.addTalk(talk.toConferenceEntity(room, timeSlot))
             talk.speakers.forEach { speaker ->
-                val id = dao.addSpeaker(speaker.toEntity())
+                val id = dao.addSpeaker(speaker.toConferenceEntity())
                 dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = talk.id, speakerId = id))
             }
         }
@@ -134,10 +157,10 @@ class ConferenceRepositoryImpl private constructor(
         fun getInstance(
             db: AppDatabase,
             api: ConferenceSessionApi,
-            dispatcher: CoroutineDispatcher = Dispatchers.IO
+            assetApi: ConferenceSessionApi
         ): ConferenceRepository =
             instance ?: synchronized(this) {
-                instance ?: ConferenceRepositoryImpl(db, api, dispatcher)
+                instance ?: ConferenceRepositoryImpl(db, api, assetApi)
                     .also { instance = it }
             }
 

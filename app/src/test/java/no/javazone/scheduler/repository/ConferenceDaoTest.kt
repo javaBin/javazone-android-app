@@ -6,15 +6,13 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import no.javazone.scheduler.repository.room.Schedule
-import no.javazone.scheduler.repository.room.ScheduleEntity
-import no.javazone.scheduler.repository.room.TalkEntity
-import no.javazone.scheduler.repository.room.TalkSpeakerCrossRef
+import no.javazone.scheduler.repository.room.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
@@ -40,6 +38,23 @@ class ConferenceDaoTest {
     @After
     fun tearDown() {
         db.close()
+    }
+
+    @Test
+    fun insert_conference_works(): Unit = runBlocking {
+        val id = dao.insertConference(ConferenceEntity(name = "JavaZone 2021", url = "http://localhost"))
+        dao.insertConferenceDates(
+            listOf(
+                ConferenceDateEntity(LocalDate.now(), "workshop", id),
+                ConferenceDateEntity(LocalDate.now().plusDays(1), "day1", id),
+                ConferenceDateEntity(LocalDate.now().plusDays(2), "day2", id)
+            )
+        )
+
+        val result = dao.getConferences().first()
+        assertThat(result).hasSize(1)
+        assertThat(result.first().days).hasSize(3)
+
     }
 
     @Test

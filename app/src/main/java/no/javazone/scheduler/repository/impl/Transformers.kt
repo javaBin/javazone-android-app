@@ -1,10 +1,20 @@
 package no.javazone.scheduler.repository.impl
 
-import no.javazone.scheduler.model.ConferenceRoom
-import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.ConferenceSpeaker
-import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.model.*
 import no.javazone.scheduler.repository.room.*
+
+fun toConference(): (ConferenceWithDates) -> Conference = { conference ->
+    Conference(
+        name = conference.conference.name,
+        days = conference.days.map { date ->
+            ConferenceDate(
+                date = date.date,
+                label = date.label
+            )
+        },
+        conferenceUrl = conference.conference.url
+    )
+}
 
 fun toConferenceSession(): (Session) -> ConferenceSession = {
     ConferenceSession(
@@ -40,7 +50,7 @@ fun toConferenceSpeaker(): (SpeakerEntity) -> ConferenceSpeaker = {
     )
 }
 
-fun ConferenceTalk.toEntity(room: RoomEntity, sessionSlot: TimeSlotEntity): TalkEntity =
+fun ConferenceTalk.toConferenceEntity(room: RoomEntity, sessionSlot: TimeSlotEntity): TalkEntity =
     TalkEntity(
         talkId = this.id,
         title = this.title,
@@ -56,7 +66,7 @@ fun ConferenceTalk.toEntity(room: RoomEntity, sessionSlot: TimeSlotEntity): Talk
         endTime = this.endTime
     )
 
-fun ConferenceSpeaker.toEntity(): SpeakerEntity =
+fun ConferenceSpeaker.toConferenceEntity(): SpeakerEntity =
     SpeakerEntity(
         name = this.name,
         bio = this.bio,
@@ -64,3 +74,16 @@ fun ConferenceSpeaker.toEntity(): SpeakerEntity =
         avatarUrl = this.avatarUrl
     )
 
+fun Conference.toEntity(): ConferenceEntity =
+    ConferenceEntity(
+        name = this.name,
+        url = this.conferenceUrl
+    )
+
+fun toConferenceDateEntity(conferenceId: Long): (ConferenceDate) -> ConferenceDateEntity = {
+    ConferenceDateEntity(
+        date = it.date,
+        label = it.label,
+        conferenceId = conferenceId
+    )
+}

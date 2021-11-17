@@ -3,9 +3,12 @@ package no.javazone.scheduler
 import android.content.Context
 import android.net.ConnectivityManager
 import no.javazone.scheduler.api.AssetConferenceSession
+import no.javazone.scheduler.api.NetworkClient
+import no.javazone.scheduler.api.NetworkConferenceSession
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.repository.impl.ConferenceRepositoryImpl
+import no.javazone.scheduler.utils.JAVAZONE_BASE_URL
 
 /**
  * Dependency Injection container at the application level.
@@ -25,7 +28,10 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     override val repository: ConferenceRepository by lazy {
         ConferenceRepositoryImpl.getInstance(
             db = AppDatabase.getInstance(applicationContext),
-            api = AssetConferenceSession.getInstance(applicationContext)
+            api = NetworkConferenceSession.getInstance(
+                client = NetworkClient.create(JAVAZONE_BASE_URL)
+            ),
+            assetApi = AssetConferenceSession.getInstance(applicationContext)
         )
     }
 

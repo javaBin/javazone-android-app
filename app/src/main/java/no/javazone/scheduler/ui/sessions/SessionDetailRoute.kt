@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.model.ConferenceFormat
@@ -32,7 +31,6 @@ import java.time.OffsetDateTime
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SessionDetailRoute(
-    navController: NavHostController,
     route: String,
     viewModel: ConferenceListViewModel,
     sessionId: String,
@@ -101,7 +99,7 @@ private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) s
 
             Text(text = "Speakers", style = JavaZoneTypography.subtitle1)
             Spacer(modifier = Modifier.height(10.dp))
-            for (speaker in session?.speakers ?: setOf()) {
+            for (speaker in session.speakers) {
                 Row {
 
                     Column {

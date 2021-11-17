@@ -7,6 +7,11 @@ import java.time.LocalDate
 
 @Dao
 interface ConferenceDao {
+
+    @Transaction
+    @Query("SELECT * FROM conferences ORDER BY name DESC")
+    fun getConferences(): Flow<List<ConferenceWithDates>>
+
     @Transaction
     @Query("SELECT * FROM time_slots")
     fun getConferenceSessions(): Flow<List<Session>>
@@ -22,6 +27,9 @@ interface ConferenceDao {
     @Query("SELECT DISTINCT date FROM time_slots")
     fun getTimeSlots(): Flow<List<LocalDate>>
 
+    @Query("SELECT * FROM conference_dates")
+    fun getConferenceDates(): Flow<List<ConferenceDateEntity>>
+
     @Query("SELECT talk_id from schedules")
     fun getSchedules(): Flow<List<Schedule>>
 
@@ -35,6 +43,16 @@ interface ConferenceDao {
 
     @Delete(entity = ScheduleEntity::class)
     suspend fun deleteSchedule(talkId: Schedule): Int
+
+    @Transaction
+    @Query("DELETE FROM conferences")
+    suspend fun deleteAllConference()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertConference(conference: ConferenceEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertConferenceDates(dates: List<ConferenceDateEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTimeSlots(timeSlots: List<TimeSlotEntity>)

@@ -2,6 +2,7 @@ package no.javazone.scheduler.utils
 
 import okhttp3.MediaType
 
+const val SESSIONS_FILENAME = "sessions.json"
 const val CONFERENCE_FILENAME = "conference.json"
 const val LOG_TAG = "JavaZone"
 const val APP_PREFERENCE_FILE = "javazone"

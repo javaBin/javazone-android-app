@@ -14,15 +14,19 @@ import java.time.format.DateTimeFormatter
 fun ConferenceDto.toModel(): Conference =
     Conference(
         name = this.conferenceName,
-        workshop = LocalDate.parse(
-            this.workshopDate,
-            DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)),
-        days = this.conferenceDates.map {
-            LocalDate.parse(it, DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)) },
+        days = this.conferenceDates.map { it.toModel(false) } + this.workshopDate.toModel(true),
         conferenceUrl = this.conferenceUrl
     )
 
 fun SessionsDto.toModel(): List<ConferenceSession> = convertDtoSessions(sessions)
+
+private fun String.toModel(isWorkshop: Boolean): ConferenceDate {
+    val date = LocalDate.parse(this, DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))
+    return ConferenceDate(
+        date = date,
+        label = if (isWorkshop) "workshop" else date.format(DateTimeFormatter.ISO_LOCAL_DATE)
+    )
+}
 
 private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<ConferenceSession> {
     val sessions = mutableListOf<ConferenceSession>()

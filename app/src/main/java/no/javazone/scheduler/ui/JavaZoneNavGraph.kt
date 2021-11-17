@@ -3,6 +3,7 @@ package no.javazone.scheduler.ui
 import android.util.Log
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -11,12 +12,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
+import no.javazone.scheduler.utils.ErrorResource
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
@@ -25,11 +30,15 @@ fun JavaZoneNavGraph(
     appContainer: AppContainer,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = SessionsScreen.route
+    startDestination: String = SessionsScreen.route,
+    dispatchers: CoroutineDispatcher = Dispatchers.IO
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
-        factory = ConferenceListViewModel.provideFactory(appContainer.repository)
+        factory = ConferenceListViewModel.provideFactory(appContainer.repository, dispatchers)
     )
+    val conferenceFlow = viewModel.conference.collectAsState().value
+
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -42,9 +51,16 @@ fun JavaZoneNavGraph(
                 nullable = true
             })
         ) { entry ->
-            val day = entry.arguments
+            var day = entry.arguments
                 ?.getString("day")
                 ?.toJzLocalDate()
+            when (conferenceFlow) {
+                is LoadingResource -> FullScreenLoading()
+                is ErrorResource -> TODO()
+                else -> {}
+            }
+            day = day ?: viewModel.getDefaultDate()
+
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
@@ -82,7 +98,6 @@ fun JavaZoneNavGraph(
                 viewModel.getDetailsArg()
             }
             SessionDetailRoute(
-                navController = navController,
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
                 sessionId = sessionId

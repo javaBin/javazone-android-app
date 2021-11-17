@@ -79,7 +79,7 @@ class NetworkConferenceSessionTest {
     @ExperimentalCoroutinesApi
     @Test
     fun `fetching conferencesessions should work`() = runBlockingTest {
-        val result = api.fetchConferenceSessions()
+        val result = api.fetchSessions("")
         Truth.assertThat(result).isNotEmpty()
     }
 

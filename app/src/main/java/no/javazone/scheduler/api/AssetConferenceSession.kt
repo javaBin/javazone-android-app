@@ -11,6 +11,8 @@ import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.model.toModel
+import no.javazone.scheduler.utils.CONFERENCE_FILENAME
+import no.javazone.scheduler.utils.SESSIONS_FILENAME
 import java.io.InputStreamReader
 
 class AssetConferenceSession(
@@ -18,18 +20,18 @@ class AssetConferenceSession(
         private val dispatchers: CoroutineDispatcher
 ) : ConferenceSessionApi {
     private val sessions: List<ConferenceSession> by lazy {
-        val jsonStringBuffer = InputStreamReader(assetManager.open(SESSIONS_FILE)).readText()
+        val jsonStringBuffer = InputStreamReader(assetManager.open(SESSIONS_FILENAME)).readText()
         val dto = Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
         dto.toModel()
     }
 
     private val conference: Conference by lazy {
-        val json = InputStreamReader(assetManager.open(CONFERENCE_FILE)).readText()
+        val json = InputStreamReader(assetManager.open(CONFERENCE_FILENAME)).readText()
         val dto = Json.decodeFromString(ConferenceDto.serializer(), json)
         dto.toModel()
     }
 
-    override suspend fun fetchConferenceSessions(): List<ConferenceSession> =
+    override suspend fun fetchSessions(url: String): List<ConferenceSession> =
             withContext(dispatchers) {
                 sessions
             }
@@ -41,9 +43,6 @@ class AssetConferenceSession(
 
 
     companion object {
-        private const val SESSIONS_FILE = "sessions.json"
-        private const val CONFERENCE_FILE = "conference.json"
-
         @Volatile
         private var instance: ConferenceSessionApi? = null
 

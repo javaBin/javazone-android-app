@@ -28,9 +28,6 @@ fun ConferenceApp(
         }
 
         val navController = rememberNavController()
-//        val navigationActions = remember(navController) {
-//            JavaZoneNavigationActions(navController)
-//        }
 
         val scaffoldState = rememberScaffoldState()
 

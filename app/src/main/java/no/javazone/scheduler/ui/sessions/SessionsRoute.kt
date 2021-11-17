@@ -38,14 +38,14 @@ fun SessionsRoute(
     navController: NavHostController,
     route: String,
     viewModel: ConferenceListViewModel,
-    day: LocalDate?
+    day: LocalDate
 ) {
     Log.d(LOG_TAG, "route: $route")
 
     val resource = viewModel.sessions.collectAsState().value
-    val conferenceDays = viewModel.conferenceDays.collectAsState().value
+    val conferenceDays = viewModel.conferenceDays.map { it.date }
     val mySchedule = viewModel.mySchedule.collectAsState().value
-    val selectedDay = day ?: viewModel.getDefaultDate(conferenceDays)
+    val selectedDay = day
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             route = route,
