@@ -19,7 +19,7 @@ fun ConferenceDto.toModel(): Conference =
             DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)),
         days = this.conferenceDates.map {
             LocalDate.parse(it, DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN)) },
-        conferenceUrlPath = this.conferenceUrlPath
+        conferenceUrl = this.conferenceUrl
     )
 
 fun SessionsDto.toModel(): List<ConferenceSession> = convertDtoSessions(sessions)

@@ -6,5 +6,5 @@ data class Conference(
     val name: String,
     val workshop: LocalDate,
     val days: List<LocalDate>,
-    val conferenceUrlPath: String
+    val conferenceUrl: String
 )
