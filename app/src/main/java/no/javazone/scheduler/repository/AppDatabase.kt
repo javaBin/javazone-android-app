@@ -1,10 +1,7 @@
 package no.javazone.scheduler.repository
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 
@@ -20,7 +17,10 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkSpeakerCrossRef::class
     ],
     version = 2,
-    exportSchema = true
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

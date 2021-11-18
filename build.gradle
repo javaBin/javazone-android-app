@@ -21,7 +21,7 @@ buildscript {
         retroFit2Version = "2.9.0"
         retroFitKotlinSerializationVersion = "0.8.0"
         roboeletricVersion = "4.7"
-        roomVersion = '2.3.0'
+        roomVersion = '2.4.0-alpha01'
         truthVersion = "1.0.1"
         uiToolingVersion = "1.0.4"
         windowVersion = '1.0.0-beta03'
