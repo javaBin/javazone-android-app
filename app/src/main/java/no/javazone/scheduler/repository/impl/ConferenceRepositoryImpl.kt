@@ -27,12 +27,17 @@ class ConferenceRepositoryImpl private constructor(
     private var lastUpdated: OffsetDateTime = OffsetDateTime.MIN
 
     override fun getConference(): Flow<Resource<Conference>> = networkBoundResource(
-        query = { retrieveConference() },
+        query = {
+            Log.d(LOG_TAG, "retrieving saved conference")
+            retrieveConference()
+                },
         fetch = {
+            Log.d(LOG_TAG, "fetch conference")
             assetApi.fetchConference()
         },
         saveFetchResult = {
             db.withTransaction {
+                Log.d(LOG_TAG, "save conference")
                 dao.deleteAllConference()
                 val id = dao.insertConference(it.toEntity())
                 dao.insertConferenceDates(it.days.map(toConferenceDateEntity(id)))
@@ -61,7 +66,8 @@ class ConferenceRepositoryImpl private constructor(
         },
         saveFetchResult = saveToDb,
         shouldFetch = {
-            it.isEmpty() || OffsetDateTime.now().isAfter(lastUpdated.plusMinutes(CACHE_EXPIRE_MIN))
+            Log.d(LOG_TAG, "retrieved saved ${it.size} sessions")
+            it.isEmpty()
         }
     )
 

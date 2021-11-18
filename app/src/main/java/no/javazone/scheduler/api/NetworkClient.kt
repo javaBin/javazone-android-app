@@ -18,11 +18,13 @@ interface NetworkClient {
     suspend fun getSessions(@Url conferenceUrl: String): SessionsDto
 
     companion object {
+        private val jsonFormatter = Json { ignoreUnknownKeys = true }
+
         @ExperimentalSerializationApi
         fun create(baseUrl: String): NetworkClient =
                 Retrofit.Builder()
                         .baseUrl(baseUrl)
-                        .addConverterFactory(Json.asConverterFactory(APPLICATION_JSON))
+                        .addConverterFactory(jsonFormatter.asConverterFactory(APPLICATION_JSON))
                         .build()
                         .create(NetworkClient::class.java)
     }

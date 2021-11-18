@@ -45,7 +45,7 @@ sealed interface ConferenceScreen {
                     startsWith(JavaZoneDestinations.MY_SCHEDULE_ROUTE) -> MyScheduleScreen
                     startsWith(JavaZoneDestinations.INFO_ROUTE) -> InfoScreen
                     startsWith(JavaZoneDestinations.PARTNERS_ROUTE) -> PartnerScreen
-                    else -> SessionsScreen
+                    else -> LandingScreen
                 }.also {
                     Log.d(LOG_TAG, "Setting ${it.route}:${it.label}")
                 }
@@ -62,6 +62,7 @@ object JavaZoneDestinations {
     const val INFO_ROUTE = "info"
     const val PARTNERS_ROUTE = "partners"
     const val SESSION_ROUTE = "detail_session"
+    const val LANDING_ROUTE = "landing"
 }
 
 
@@ -133,3 +134,8 @@ object SessionScreen : ConferenceScreen {
 
 }
 
+object LandingScreen : ConferenceScreen {
+    override val icon: ImageVector =  Icons.Outlined.Info
+    override val route: String = JavaZoneDestinations.LANDING_ROUTE
+    override val label: Int = R.string.landing
+}

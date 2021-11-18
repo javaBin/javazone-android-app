@@ -1,5 +1,6 @@
 package no.javazone.scheduler.utils
 
+import android.util.Log
 import kotlinx.coroutines.flow.*
 
 inline fun <RESULT_TYPE, REQUEST_TYPE> networkBoundResource(
@@ -17,6 +18,7 @@ inline fun <RESULT_TYPE, REQUEST_TYPE> networkBoundResource(
             saveFetchResult(fetch())
             query().map { SuccessResource(it) }
         } catch (ex: Exception) {
+            Log.d(LOG_TAG, "Exception caught", ex)
             query().map { ErrorResource(ex, it) }
         }
     } else {

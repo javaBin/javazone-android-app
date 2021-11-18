@@ -32,7 +32,7 @@ fun ConferenceApp(
         val scaffoldState = rememberScaffoldState()
 
         val navBackStackEntry = navController.currentBackStackEntryFlow.collectAsState(null).value
-        val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route
+        val currentRoute = navBackStackEntry?.destination?.route ?: LandingScreen.route
 
         Scaffold(
             scaffoldState = scaffoldState,

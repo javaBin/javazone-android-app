@@ -48,6 +48,7 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
     }
     packagingOptions {
         pickFirst 'META-INF/AL2.0'

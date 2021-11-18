@@ -3,7 +3,6 @@ package no.javazone.scheduler.ui
 import android.util.Log
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -16,12 +15,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.landing.LandingRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
-import no.javazone.scheduler.utils.ErrorResource
 import no.javazone.scheduler.utils.LOG_TAG
-import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
@@ -36,8 +34,6 @@ fun JavaZoneNavGraph(
     val viewModel: ConferenceListViewModel = viewModel(
         factory = ConferenceListViewModel.provideFactory(appContainer.repository, dispatchers)
     )
-    val conferenceFlow = viewModel.conference.collectAsState().value
-
 
     NavHost(
         navController = navController,
@@ -54,11 +50,6 @@ fun JavaZoneNavGraph(
             var day = entry.arguments
                 ?.getString("day")
                 ?.toJzLocalDate()
-            when (conferenceFlow) {
-                is LoadingResource -> FullScreenLoading()
-                is ErrorResource -> TODO()
-                else -> {}
-            }
             day = day ?: viewModel.getDefaultDate()
 
             SessionsRoute(
@@ -101,6 +92,14 @@ fun JavaZoneNavGraph(
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
                 sessionId = sessionId
+            )
+        }
+        composable(
+            route = LandingScreen.route
+        ) { entry ->
+            LandingRoute(
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }
