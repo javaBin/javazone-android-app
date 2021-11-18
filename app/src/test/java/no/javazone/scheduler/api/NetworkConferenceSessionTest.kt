@@ -2,13 +2,13 @@ package no.javazone.scheduler.api
 
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import no.javazone.scheduler.dto.ConferenceDto
 import no.javazone.scheduler.dto.SessionDto
 import no.javazone.scheduler.dto.SessionsDto
 import no.javazone.scheduler.dto.SpeakerDto
 import no.javazone.scheduler.model.ConferenceFormat
+import no.javazone.scheduler.utility.TestDispatchersProvider
 import no.javazone.scheduler.utils.toJzString
 import org.junit.Before
 import org.junit.Test
@@ -71,7 +71,7 @@ class NetworkConferenceSessionTest {
                         )
                     )
             },
-            dispatchers = TestCoroutineDispatcher()
+            dispatchers = TestDispatchersProvider
         )
 
     }

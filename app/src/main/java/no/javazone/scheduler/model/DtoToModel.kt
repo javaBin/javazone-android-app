@@ -1,10 +1,7 @@
 package no.javazone.scheduler.model
 
 import android.util.Log
-import no.javazone.scheduler.dto.ConferenceDto
-import no.javazone.scheduler.dto.SessionDto
-import no.javazone.scheduler.dto.SessionsDto
-import no.javazone.scheduler.dto.SpeakerDto
+import no.javazone.scheduler.dto.*
 import no.javazone.scheduler.utils.JAVAZONE_DATE_PATTERN
 import no.javazone.scheduler.utils.LOG_TAG
 import java.time.LocalDate
@@ -19,6 +16,14 @@ fun ConferenceDto.toModel(): Conference =
     )
 
 fun SessionsDto.toModel(): List<ConferenceSession> = convertDtoSessions(sessions)
+
+fun dtoToPartner(): (PartnerDto) -> Partner = {
+    Partner(
+        name = it.name,
+        homepageUrl = it.homepageUrl,
+        logoUrl = it.logoUrl
+    )
+}
 
 private fun String.toModel(isWorkshop: Boolean): ConferenceDate {
     val date = LocalDate.parse(this, DateTimeFormatter.ofPattern(JAVAZONE_DATE_PATTERN))

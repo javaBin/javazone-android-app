@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.javazone.scheduler.model.Conference
-import no.javazone.scheduler.model.ConferenceDate
-import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.model.*
 import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
@@ -41,6 +38,13 @@ class ConferenceListViewModel(
         private set
 
     val mySchedule: StateFlow<List<String>> = repository.getSchedules()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = emptyList()
+        )
+
+    val partners: StateFlow<List<Partner>> = repository.getPartners()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),

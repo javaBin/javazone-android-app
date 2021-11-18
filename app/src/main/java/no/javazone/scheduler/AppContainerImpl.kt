@@ -2,6 +2,8 @@ package no.javazone.scheduler
 
 import android.content.Context
 import android.net.ConnectivityManager
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import no.javazone.scheduler.api.AssetConferenceSession
 import no.javazone.scheduler.api.NetworkClient
 import no.javazone.scheduler.api.NetworkConferenceSession
@@ -16,6 +18,7 @@ import no.javazone.scheduler.utils.JAVAZONE_BASE_URL
 interface AppContainer {
     val repository: ConferenceRepository
     val hasNetwork: Boolean
+    val imageLoader: ImageLoader
 }
 
 /**
@@ -46,4 +49,12 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
                 }
                 ?: false
         }
+
+    override val imageLoader: ImageLoader by lazy {
+        ImageLoader.Builder(applicationContext)
+            .componentRegistry {
+                add(SvgDecoder(applicationContext))
+            }
+            .build()
+    }
 }

@@ -1,5 +1,6 @@
 package no.javazone.scheduler.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 
+@ExperimentalFoundationApi
 @Composable
 fun ConferenceApp(
     appContainer: AppContainer
