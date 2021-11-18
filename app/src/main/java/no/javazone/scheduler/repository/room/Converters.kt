@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class Converters {
     @TypeConverter
@@ -12,7 +13,11 @@ class Converters {
 
     @TypeConverter
     fun stringToLocalDate(value: String): LocalDate =
-        LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE)
+        try {
+            LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE)
+        } catch (ex: DateTimeParseException) {
+            LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyyMMdd"))
+        }
 
     @TypeConverter
     fun offsetDateTimeToTimestamp(date: OffsetDateTime): String =

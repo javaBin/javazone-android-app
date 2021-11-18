@@ -3,7 +3,6 @@ package no.javazone.scheduler.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -21,8 +20,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
-    private val repository: ConferenceRepository,
-    private val dispatchers: CoroutineDispatcher
+    private val repository: ConferenceRepository
 ) : ViewModel() {
 
     val conference: StateFlow<Resource<Conference>> = repository.getConference()
@@ -135,11 +133,10 @@ class ConferenceListViewModel(
     companion object {
         fun provideFactory(
             repository: ConferenceRepository,
-            dispatchers: CoroutineDispatcher
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ConferenceListViewModel(repository, dispatchers) as T
+                return ConferenceListViewModel(repository) as T
             }
         }
 
