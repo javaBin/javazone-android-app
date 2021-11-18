@@ -21,7 +21,7 @@ import java.time.OffsetDateTime
 class ConferenceRepositoryImpl private constructor(
     private val db: AppDatabase,
     private val api: ConferenceSessionApi,
-    private val assetApi: ConferenceSessionApi
+    private val assetApi: ConferenceSessionApi?
 ) : ConferenceRepository {
     private val dao: ConferenceDao = db.sessionDao()
     private var lastUpdated: OffsetDateTime = OffsetDateTime.MIN
@@ -30,20 +30,21 @@ class ConferenceRepositoryImpl private constructor(
         query = {
             Log.d(LOG_TAG, "retrieving saved conference")
             retrieveConference()
-                },
+        },
         fetch = {
             Log.d(LOG_TAG, "fetch conference")
-            assetApi.fetchConference()
+            assetApi?.fetchConference() ?: api.fetchConference()
         },
         saveFetchResult = {
             db.withTransaction {
-                Log.d(LOG_TAG, "save conference")
+                Log.d(LOG_TAG, "save conference ${it.name}")
                 dao.deleteAllConference()
                 val id = dao.insertConference(it.toEntity())
                 dao.insertConferenceDates(it.days.map(toConferenceDateEntity(id)))
             }
         },
         shouldFetch = {
+            Log.d(LOG_TAG, "retrieved ${it.name} from db")
             true
         }
     )
@@ -66,8 +67,8 @@ class ConferenceRepositoryImpl private constructor(
         },
         saveFetchResult = saveToDb,
         shouldFetch = {
-            Log.d(LOG_TAG, "retrieved saved ${it.size} sessions")
-            it.isEmpty()
+            Log.d(LOG_TAG, "retrieved ${it.size} saved sessions")
+            true
         }
     )
 
@@ -163,7 +164,7 @@ class ConferenceRepositoryImpl private constructor(
         fun getInstance(
             db: AppDatabase,
             api: ConferenceSessionApi,
-            assetApi: ConferenceSessionApi
+            assetApi: ConferenceSessionApi? = null
         ): ConferenceRepository =
             instance ?: synchronized(this) {
                 instance ?: ConferenceRepositoryImpl(db, api, assetApi)

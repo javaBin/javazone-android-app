@@ -17,7 +17,7 @@ internal class ConferenceDtoTest {
             conferenceDates = listOf("11.09.2019", "12.09.2019"),
             conferenceUrl = "https://sleepingpill.javazone.no/public/allSessions/javazone_2019")
 
-        val jsonStringBuffer = String(Files.readAllBytes(path.resolve("conference.json")))
+        val jsonStringBuffer = String(Files.readAllBytes(path.resolve("conference2019.json")))
 
         val result = Json.decodeFromString(ConferenceDto.serializer(), jsonStringBuffer)
 
