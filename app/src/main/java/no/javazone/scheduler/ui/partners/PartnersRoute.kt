@@ -1,7 +1,11 @@
 package no.javazone.scheduler.ui.partners
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
@@ -10,7 +14,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
@@ -29,28 +35,39 @@ fun PartnersRoute(
     viewModel: ConferenceListViewModel
 ) {
     val partners = viewModel.partners.collectAsState().value
+    val context = LocalContext.current
 
-    PartnersContent(partners) { appContainer.imageLoader }
+    PartnersContent(
+        context = context,
+        imageLoader = appContainer.imageLoader,
+        partners = partners
+    )
 }
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
 fun PartnersContent(
+    context: Context,
     partners: List<Partner>,
-    imageLoader: () -> ImageLoader
+    imageLoader: ImageLoader
 ) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(minSize = 128.dp),
     ) {
         items(partners) { partner ->
+            val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(partner.homepageUrl)) }
             Card(
                 modifier = Modifier.padding(5.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(partner.logoUrl, imageLoader = imageLoader()),
+                    painter = rememberImagePainter(partner.logoUrl, imageLoader = imageLoader),
                     contentDescription = partner.name,
-                    modifier = Modifier.size(74.dp)
+                    modifier = Modifier
+                        .size(74.dp)
+                        .clickable(enabled = partner.homepageUrl.isNotEmpty()) {
+                            context.startActivity(intent)
+                        },
                 )
             }
         }
@@ -105,7 +122,5 @@ fun PartnersContentPreview() {
         ),
     )
 
-    val imageLoader = LocalImageLoader.current
-
-    PartnersContent(partners = partners) { imageLoader }
+    PartnersContent(partners = partners, imageLoader = LocalImageLoader.current, context = LocalContext.current)
 }
