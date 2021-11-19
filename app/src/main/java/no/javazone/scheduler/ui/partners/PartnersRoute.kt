@@ -1,6 +1,5 @@
 package no.javazone.scheduler.ui.partners
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +36,10 @@ fun PartnersRoute(
     val context = LocalContext.current
 
     PartnersContent(
-        context = context,
+        forwardToWeb = { url ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        },
         imageLoader = appContainer.imageLoader,
         partners = partners
     )
@@ -48,7 +49,7 @@ fun PartnersRoute(
 @ExperimentalFoundationApi
 @Composable
 fun PartnersContent(
-    context: Context,
+    forwardToWeb: (String) -> Unit,
     partners: List<Partner>,
     imageLoader: ImageLoader
 ) {
@@ -56,7 +57,6 @@ fun PartnersContent(
         cells = GridCells.Adaptive(minSize = 128.dp),
     ) {
         items(partners) { partner ->
-            val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(partner.homepageUrl)) }
             Card(
                 modifier = Modifier.padding(5.dp)
             ) {
@@ -66,7 +66,7 @@ fun PartnersContent(
                     modifier = Modifier
                         .size(74.dp)
                         .clickable(enabled = partner.homepageUrl.isNotEmpty()) {
-                            context.startActivity(intent)
+                            forwardToWeb(partner.homepageUrl)
                         },
                 )
             }
@@ -122,5 +122,5 @@ fun PartnersContentPreview() {
         ),
     )
 
-    PartnersContent(partners = partners, imageLoader = LocalImageLoader.current, context = LocalContext.current)
+    PartnersContent(partners = partners, imageLoader = LocalImageLoader.current, forwardToWeb = { })
 }
