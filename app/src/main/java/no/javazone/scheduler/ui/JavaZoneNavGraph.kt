@@ -2,7 +2,6 @@ package no.javazone.scheduler.ui
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,6 +14,7 @@ import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.info.InfoRoute
 import no.javazone.scheduler.ui.landing.LandingRoute
 import no.javazone.scheduler.ui.partners.PartnersRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
@@ -71,7 +71,7 @@ fun JavaZoneNavGraph(
             )
         }
         composable(route = InfoScreen.route) {
-            Text(text = "info screen")
+            InfoRoute()
         }
         composable(route = PartnerScreen.route) {
             PartnersRoute(
