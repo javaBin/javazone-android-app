@@ -41,7 +41,6 @@ fun MyScheduleRoute(
     val mySchedule = viewModel.mySchedule.collectAsState().value
 
     MyScheduleScreen(
-        navController = navController,
         onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
         navigateToDetail = { talkId ->
             Log.w("SessionviewDebug", "Session is $talkId")
@@ -60,7 +59,6 @@ fun MyScheduleRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MyScheduleScreen(
-    navController: NavHostController,
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
     conferenceTalks: Map<OffsetDateTime, List<ConferenceTalk>>

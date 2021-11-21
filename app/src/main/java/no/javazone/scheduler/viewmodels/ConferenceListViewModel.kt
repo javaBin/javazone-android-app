@@ -3,21 +3,34 @@ package no.javazone.scheduler.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import no.javazone.scheduler.model.Conference
+import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
+import no.javazone.scheduler.utils.SuccessResource
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
-    private val repository: ConferenceRepository
+    private val repository: ConferenceRepository,
+    private val dispatchers: CoroutineDispatcher
 ) : ViewModel() {
+
+    val conference: StateFlow<Resource<Conference>> = repository.getConference()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = LoadingResource(Conference.NULL_INSTANCE)
+        )
 
     val sessions: StateFlow<Resource<List<ConferenceSession>>> = repository.getSessions()
         .stateIn(
@@ -26,12 +39,8 @@ class ConferenceListViewModel(
             initialValue = LoadingResource(emptyList())
         )
 
-    val conferenceDays: StateFlow<List<LocalDate>> = repository.getConferenceDays()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-            initialValue = DEFAULT_CONFERENCE_DAYS
-        )
+    var conferenceDays: List<ConferenceDate> = emptyList()
+        private set
 
     val mySchedule: StateFlow<List<String>> = repository.getSchedules()
         .stateIn(
@@ -42,9 +51,19 @@ class ConferenceListViewModel(
 
     private var _detailsArg: String = ""
 
-    fun getDefaultDate(days: List<LocalDate>): LocalDate {
+    init {
+        viewModelScope.launch {
+            val conf = conference.first {
+                it is SuccessResource<Conference>
+            } as SuccessResource<Conference>
+            conferenceDays = conf.data.days
+        }
+    }
+
+    fun getDefaultDate(): LocalDate {
         val today: LocalDate = LocalDate.now()
-        val first: LocalDate = days.minOrNull() ?: DEFAULT_CONFERENCE_DAYS.first()
+        val first: LocalDate =
+            conferenceDays.map { it.date }.minOrNull() ?: DEFAULT_CONFERENCE_DAYS.first()
         return if (today.isBefore(first) || today.isAfter(first)) first else today
     }
 
@@ -116,10 +135,11 @@ class ConferenceListViewModel(
     companion object {
         fun provideFactory(
             repository: ConferenceRepository,
+            dispatchers: CoroutineDispatcher
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ConferenceListViewModel(repository) as T
+                return ConferenceListViewModel(repository, dispatchers) as T
             }
         }
 

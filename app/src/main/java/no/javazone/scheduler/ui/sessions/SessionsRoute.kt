@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
+import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
-import no.javazone.scheduler.ui.theme.SessionDateFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.*
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
@@ -38,14 +38,14 @@ fun SessionsRoute(
     navController: NavHostController,
     route: String,
     viewModel: ConferenceListViewModel,
-    day: LocalDate?
+    day: LocalDate
 ) {
     Log.d(LOG_TAG, "route: $route")
 
     val resource = viewModel.sessions.collectAsState().value
-    val conferenceDays = viewModel.conferenceDays.collectAsState().value
+    val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
-    val selectedDay = day ?: viewModel.getDefaultDate(conferenceDays)
+    val selectedDay = day
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             route = route,
@@ -98,7 +98,7 @@ private fun AllSessionsScreen(
     navigateToDetail: (String) -> Unit,
     navigateToDay: (LocalDate) -> Unit,
     conferenceSessions: List<ConferenceSession>,
-    conferenceDays: List<LocalDate>,
+    conferenceDays: List<ConferenceDate>,
     selectedDay: LocalDate
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
@@ -117,20 +117,20 @@ private fun AllSessionsScreen(
                     OutlinedButton(
                         modifier = Modifier
                             .selectable(
-                                selected = it == selectedDay,
+                                selected = it.date == selectedDay,
                                 role = Role.Button,
                                 onClick = {}
                             )
                             .navigationBarsPadding(bottom = false),
                         onClick = {
                             Log.d("NavController debug", route)
-                            navigateToDay(it)
+                            navigateToDay(it.date)
                         },
                     ) {
                         Text(
-                            text = SessionDateFormat.format(it).split(",")[0],
+                            text = it.label,
                             style = JavaZoneTypography.button,
-                            color = if (it == selectedDay) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+                            color = if (it.date == selectedDay) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
 
                         )
                     }

@@ -48,6 +48,11 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+    }
+    packagingOptions {
+        pickFirst 'META-INF/AL2.0'
+        pickFirst 'META-INF/LGPL2.1'
     }
     testOptions {
         unitTests.includeAndroidResources = true
@@ -63,7 +68,7 @@ dependencies {
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion"
 
     // android compose
     implementation "androidx.compose.runtime:runtime:$composeVersion"
@@ -102,36 +107,28 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-//    implementation "androidx.viewpager2:viewpager2:$viewPagerVersion"
-//    // Java language implementation
-//    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-//    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-//
-//    // Kotlin
-//    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-//    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-//
-//    // Dynamic Feature Module Support
-//    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-//
-    implementation "androidx.work:work-runtime-ktx:$workVersion"
+
+    // http-client
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion"
 
+    // unittesting
     testImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "junit:junit:$junitVersion"
     testImplementation "androidx.test.ext:junit:$extJunitVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
-//    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    testImplementation "org.robolectric:robolectric:$roboeletricVersion"
 
     // instrumented test
     androidTestImplementation "androidx.test:runner:1.4.0"
     androidTestImplementation "androidx.test:rules:1.4.0"
     androidTestImplementation "org.robolectric:robolectric:$roboeletricVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "com.google.truth:truth:$truthVersion"
     androidTestImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
     androidTestImplementation "com.google.truth:truth:$truthVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$navVersion"

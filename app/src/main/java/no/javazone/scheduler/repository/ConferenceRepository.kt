@@ -1,14 +1,14 @@
 package no.javazone.scheduler.repository
 
 import kotlinx.coroutines.flow.Flow
+import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.utils.Resource
-import java.time.LocalDate
 
 interface ConferenceRepository {
-    fun getSessions(): Flow<Resource<List<ConferenceSession>>>
+    fun getConference(): Flow<Resource<Conference>>
 
-    fun getConferenceDays(): Flow<List<LocalDate>>
+    fun getSessions(): Flow<Resource<List<ConferenceSession>>>
 
     fun getSchedules(): Flow<List<String>>
 

@@ -1,15 +1,14 @@
 package no.javazone.scheduler.repository
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 
 @Database(
     entities = [
+        ConferenceEntity::class,
+        ConferenceDateEntity::class,
         RoomEntity::class,
         TimeSlotEntity::class,
         ScheduleEntity::class,
@@ -17,8 +16,11 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
-    version = 1,
-    exportSchema = true
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -39,6 +41,7 @@ abstract class AppDatabase : RoomDatabase() {
             callback: Callback = object : RoomDatabase.Callback() {}
         ): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, APP_PREFERENCE_FILE)
+                .fallbackToDestructiveMigration()
                 .addCallback(callback)
                 .build()
         }

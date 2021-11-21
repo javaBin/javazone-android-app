@@ -3,21 +3,19 @@ package no.javazone.scheduler.repository
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import no.javazone.scheduler.repository.room.Schedule
-import no.javazone.scheduler.repository.room.ScheduleEntity
-import no.javazone.scheduler.repository.room.TalkEntity
-import no.javazone.scheduler.repository.room.TalkSpeakerCrossRef
+import no.javazone.scheduler.repository.room.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import java.time.LocalDate
 import java.time.OffsetDateTime
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 class ConferenceDaoTest {
     private lateinit var dao: ConferenceDao
     private lateinit var db: AppDatabase
@@ -43,6 +41,23 @@ class ConferenceDaoTest {
     }
 
     @Test
+    fun insert_conference_works(): Unit = runBlocking {
+        val id = dao.insertConference(ConferenceEntity(name = "JavaZone 2021", url = "http://localhost"))
+        dao.insertConferenceDates(
+            listOf(
+                ConferenceDateEntity(LocalDate.now(), "workshop", id),
+                ConferenceDateEntity(LocalDate.now().plusDays(1), "day1", id),
+                ConferenceDateEntity(LocalDate.now().plusDays(2), "day2", id)
+            )
+        )
+
+        val result = dao.getConferences().first()
+        assertThat(result).hasSize(1)
+        assertThat(result.first().days).hasSize(3)
+
+    }
+
+    @Test
     fun adding_and_deleting_schedule_works(): Unit = runBlocking {
         initDb()
 
@@ -52,12 +67,12 @@ class ConferenceDaoTest {
         dao.addSchedule(ScheduleEntity(talkId = talk2.talkId))
 
         var result = dao.getSchedules()
-        assertThat(result).hasSize(2)
+        assertThat(result.first()).hasSize(2)
 
         dao.deleteSchedule(Schedule(talkId = talk1.talkId))
 
         result = dao.getSchedules()
-        assertThat(result).hasSize(1)
+        assertThat(result.first()).hasSize(1)
     }
 
     /**
@@ -94,11 +109,12 @@ class ConferenceDaoTest {
         }
         assertThat(talkResults).hasSize(2)
 
-        val talkResult2 = talkResults.firstOrNull { it.talkWithSpeakers.talk.talkId == talk2.talkId }
-        assertThat(talkResult2?.scheduled).isNotNull()
+        val scheduleResults = dao.getSchedules().first()
+        val scheduleResult2 = scheduleResults.firstOrNull { it.talkId == talk2.talkId }
+        assertThat(scheduleResult2).isNotNull()
 
-        val talkResult1 = talkResults.firstOrNull { it.talkWithSpeakers.talk.talkId == talk1.talkId }
-        assertThat(talkResult1?.scheduled).isNull()
+        val scheduleResult1 = scheduleResults.firstOrNull { it.talkId == talk1.talkId }
+        assertThat(scheduleResult1).isNull()
     }
 
     private suspend fun initDb() {

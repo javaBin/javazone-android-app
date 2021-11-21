@@ -11,8 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.landing.LandingRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
@@ -25,11 +28,13 @@ fun JavaZoneNavGraph(
     appContainer: AppContainer,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = SessionsScreen.route
+    startDestination: String = SessionsScreen.route,
+    dispatchers: CoroutineDispatcher = Dispatchers.IO
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
-        factory = ConferenceListViewModel.provideFactory(appContainer.repository)
+        factory = ConferenceListViewModel.provideFactory(appContainer.repository, dispatchers)
     )
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -42,9 +47,11 @@ fun JavaZoneNavGraph(
                 nullable = true
             })
         ) { entry ->
-            val day = entry.arguments
+            var day = entry.arguments
                 ?.getString("day")
                 ?.toJzLocalDate()
+            day = day ?: viewModel.getDefaultDate()
+
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
@@ -82,10 +89,17 @@ fun JavaZoneNavGraph(
                 viewModel.getDetailsArg()
             }
             SessionDetailRoute(
-                navController = navController,
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
                 sessionId = sessionId
+            )
+        }
+        composable(
+            route = LandingScreen.route
+        ) { entry ->
+            LandingRoute(
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }
