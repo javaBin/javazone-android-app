@@ -1,0 +1,475 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "670c66496f9dc1e9120c83a0053628dc",
+    "entities": [
+      {
+        "tableName": "conferences",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `url` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_conferences_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_conferences_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "conference_dates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `label` TEXT NOT NULL, `fk_conference_id` INTEGER NOT NULL, PRIMARY KEY(`date`), FOREIGN KEY(`fk_conference_id`) REFERENCES `conferences`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "conferenceId",
+            "columnName": "fk_conference_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_conference_dates_fk_conference_id",
+            "unique": false,
+            "columnNames": [
+              "fk_conference_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_conference_dates_fk_conference_id` ON `${TABLE_NAME}` (`fk_conference_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "conferences",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "fk_conference_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "rooms",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`room_id`))",
+        "fields": [
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "room_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "time_slots",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`time_slot_id` INTEGER NOT NULL, `date` TEXT NOT NULL, `hour_minute` TEXT NOT NULL, `start_time` TEXT NOT NULL, `end_time` TEXT NOT NULL, PRIMARY KEY(`time_slot_id`))",
+        "fields": [
+          {
+            "fieldPath": "timeSlotId",
+            "columnName": "time_slot_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hourMinute",
+            "columnName": "hour_minute",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "start_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "end_time",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "time_slot_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_time_slots_date",
+            "unique": false,
+            "columnNames": [
+              "date"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_time_slots_date` ON `${TABLE_NAME}` (`date`)"
+          },
+          {
+            "name": "index_time_slots_hour_minute",
+            "unique": false,
+            "columnNames": [
+              "hour_minute"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_time_slots_hour_minute` ON `${TABLE_NAME}` (`hour_minute`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "schedules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`schedule_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `talk_id` TEXT NOT NULL, FOREIGN KEY(`talk_id`) REFERENCES `talks`(`talk_id`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "scheduleId",
+            "columnName": "schedule_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "talkId",
+            "columnName": "talk_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "schedule_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "idx_schedule_talk_id",
+            "unique": true,
+            "columnNames": [
+              "talk_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `idx_schedule_talk_id` ON `${TABLE_NAME}` (`talk_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "talks",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "talk_id"
+            ],
+            "referencedColumns": [
+              "talk_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "speakers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`speaker_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `bio` TEXT NOT NULL, `twitter` TEXT, `avatar_url` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "speakerId",
+            "columnName": "speaker_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bio",
+            "columnName": "bio",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "twitter",
+            "columnName": "twitter",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "avatarUrl",
+            "columnName": "avatar_url",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "speaker_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_speakers_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_speakers_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "talks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`talk_id` TEXT NOT NULL, `title` TEXT NOT NULL, `length` INTEGER NOT NULL, `audience` TEXT NOT NULL, `language` TEXT NOT NULL, `video` TEXT, `abstract` TEXT NOT NULL, `format` TEXT NOT NULL, `fk_room` INTEGER NOT NULL, `fk_session_slot` INTEGER NOT NULL, `start_time` TEXT NOT NULL, `end_time` TEXT NOT NULL, PRIMARY KEY(`talk_id`), FOREIGN KEY(`fk_room`) REFERENCES `rooms`(`room_id`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`fk_session_slot`) REFERENCES `time_slots`(`time_slot_id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "talkId",
+            "columnName": "talk_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "length",
+            "columnName": "length",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "intendedAudience",
+            "columnName": "audience",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video",
+            "columnName": "video",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "abstract",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "room",
+            "columnName": "fk_room",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionSlot",
+            "columnName": "fk_session_slot",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startTime",
+            "columnName": "start_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "end_time",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "talk_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_talks_fk_room",
+            "unique": false,
+            "columnNames": [
+              "fk_room"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_talks_fk_room` ON `${TABLE_NAME}` (`fk_room`)"
+          },
+          {
+            "name": "index_talks_fk_session_slot",
+            "unique": false,
+            "columnNames": [
+              "fk_session_slot"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_talks_fk_session_slot` ON `${TABLE_NAME}` (`fk_session_slot`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "rooms",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fk_room"
+            ],
+            "referencedColumns": [
+              "room_id"
+            ]
+          },
+          {
+            "table": "time_slots",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "fk_session_slot"
+            ],
+            "referencedColumns": [
+              "time_slot_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "talk_speaker_crossref",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`talk_id` TEXT NOT NULL, `speaker_id` INTEGER NOT NULL, PRIMARY KEY(`talk_id`, `speaker_id`))",
+        "fields": [
+          {
+            "fieldPath": "talkId",
+            "columnName": "talk_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speakerId",
+            "columnName": "speaker_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "talk_id",
+            "speaker_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_talk_speaker_crossref_talk_id",
+            "unique": false,
+            "columnNames": [
+              "talk_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_talk_speaker_crossref_talk_id` ON `${TABLE_NAME}` (`talk_id`)"
+          },
+          {
+            "name": "index_talk_speaker_crossref_speaker_id",
+            "unique": false,
+            "columnNames": [
+              "speaker_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_talk_speaker_crossref_speaker_id` ON `${TABLE_NAME}` (`speaker_id`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '670c66496f9dc1e9120c83a0053628dc')"
+    ]
+  }
+}

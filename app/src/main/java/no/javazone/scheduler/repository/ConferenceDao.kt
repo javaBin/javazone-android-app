@@ -30,8 +30,11 @@ interface ConferenceDao {
     @Query("SELECT * FROM conference_dates")
     fun getConferenceDates(): Flow<List<ConferenceDateEntity>>
 
-    @Query("SELECT talk_id from schedules")
+    @Query("SELECT talk_id FROM schedules")
     fun getSchedules(): Flow<List<Schedule>>
+
+    @Query("SELECT * FROM speakers WHERE name = :name")
+    suspend fun findSpeaker(name: String): SpeakerEntity?
 
     @Transaction
     @Query("DELETE FROM time_slots")
@@ -47,6 +50,10 @@ interface ConferenceDao {
     @Transaction
     @Query("DELETE FROM conferences")
     suspend fun deleteAllConference()
+
+    @Transaction
+    @Query("DELETE FROM speakers")
+    suspend fun deleteAllSpeakers()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConference(conference: ConferenceEntity): Long

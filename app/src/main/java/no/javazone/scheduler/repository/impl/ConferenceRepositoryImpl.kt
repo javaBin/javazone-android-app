@@ -150,14 +150,18 @@ class ConferenceRepositoryImpl private constructor(
         timeSlots: List<TimeSlotEntity>,
         rooms: List<RoomEntity>
     ) {
+        dao.deleteAllSpeakers()
+
         val talks = conferenceSessions.flatMap { it.talks }
         talks.forEach { talk ->
             val room = rooms.first { it.name == talk.room.name }
             val timeSlot = timeSlots.first { it.startTime == talk.slotTime }
 
             dao.addTalk(talk.toConferenceEntity(room, timeSlot))
-            talk.speakers.forEach { speaker ->
-                val id = dao.addSpeaker(speaker.toConferenceEntity())
+            talk.speakers.forEach { conferenceSpeaker ->
+                val storedSpeaker = dao.findSpeaker(conferenceSpeaker.name)
+
+                val id = storedSpeaker?.speakerId ?: dao.addSpeaker(conferenceSpeaker.toConferenceEntity())
                 dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = talk.id, speakerId = id))
             }
         }

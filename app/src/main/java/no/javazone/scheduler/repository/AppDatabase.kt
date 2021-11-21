@@ -16,10 +16,10 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
-    version = 2,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
     ]
 )
 @TypeConverters(Converters::class)
@@ -41,9 +41,10 @@ abstract class AppDatabase : RoomDatabase() {
             callback: Callback = object : RoomDatabase.Callback() {}
         ): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, APP_PREFERENCE_FILE)
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigrationFrom(2, 3)
                 .addCallback(callback)
                 .build()
         }
+
     }
 }

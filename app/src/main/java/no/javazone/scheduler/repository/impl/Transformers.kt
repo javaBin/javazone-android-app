@@ -70,7 +70,7 @@ fun ConferenceSpeaker.toConferenceEntity(): SpeakerEntity =
     SpeakerEntity(
         name = this.name,
         bio = this.bio,
-        twitter = this.twitter,
+        twitter = if (this.twitter.isNullOrEmpty()) null else this.twitter,
         avatarUrl = this.avatarUrl
     )
 

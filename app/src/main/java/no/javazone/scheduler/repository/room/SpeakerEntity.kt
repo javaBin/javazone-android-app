@@ -2,18 +2,16 @@ package no.javazone.scheduler.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "speakers",
-    indices = [Index(name = "idx_speaker_name", value = ["name"])]
+    tableName = "speakers"
 )
 data class SpeakerEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "speaker_id")
     var speakerId: Long = 0L,
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "name", index = true)
     val name: String,
     @ColumnInfo(name = "bio")
     val bio: String,
