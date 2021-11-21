@@ -9,7 +9,9 @@ import no.javazone.scheduler.api.NetworkClient
 import no.javazone.scheduler.api.NetworkConferenceSession
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceRepository
+import no.javazone.scheduler.repository.PartnersRepository
 import no.javazone.scheduler.repository.impl.ConferenceRepositoryImpl
+import no.javazone.scheduler.repository.impl.PartnersRepositoryImpl
 import no.javazone.scheduler.utils.JAVAZONE_BASE_URL
 
 /**
@@ -17,6 +19,7 @@ import no.javazone.scheduler.utils.JAVAZONE_BASE_URL
  */
 interface AppContainer {
     val repository: ConferenceRepository
+    val partnersRepository: PartnersRepository
     val hasNetwork: Boolean
     val imageLoader: ImageLoader
 }
@@ -34,6 +37,12 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
             api = NetworkConferenceSession.getInstance(
                 client = NetworkClient.create(JAVAZONE_BASE_URL)
             ),
+            assetApi = null
+        )
+    }
+
+    override val partnersRepository: PartnersRepository by lazy {
+        PartnersRepositoryImpl.getInstance(
             assetApi = AssetConferenceSession.getInstance(applicationContext)
         )
     }

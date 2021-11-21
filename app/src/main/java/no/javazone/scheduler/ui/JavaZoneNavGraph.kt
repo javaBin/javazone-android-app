@@ -74,10 +74,7 @@ fun JavaZoneNavGraph(
             InfoRoute()
         }
         composable(route = PartnerScreen.route) {
-            PartnersRoute(
-                appContainer,
-                viewModel
-            )
+            PartnersRoute(appContainer)
         }
         composable(
             route = SessionScreen.route,
