@@ -1,6 +1,7 @@
 package no.javazone.scheduler.ui
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,11 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.landing.LandingRoute
+import no.javazone.scheduler.ui.partners.PartnersRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
@@ -23,16 +24,17 @@ import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
+@ExperimentalCoilApi
+@ExperimentalFoundationApi
 @Composable
 fun JavaZoneNavGraph(
     appContainer: AppContainer,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = SessionsScreen.route,
-    dispatchers: CoroutineDispatcher = Dispatchers.IO
+    startDestination: String = SessionsScreen.route
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
-        factory = ConferenceListViewModel.provideFactory(appContainer.repository, dispatchers)
+        factory = ConferenceListViewModel.provideFactory(appContainer.repository)
     )
 
     NavHost(
@@ -72,7 +74,10 @@ fun JavaZoneNavGraph(
             Text(text = "info screen")
         }
         composable(route = PartnerScreen.route) {
-            Text(text = "partner screen")
+            PartnersRoute(
+                appContainer,
+                viewModel
+            )
         }
         composable(
             route = SessionScreen.route,

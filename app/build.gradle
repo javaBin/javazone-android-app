@@ -101,7 +101,8 @@ dependencies {
     implementation "androidx.window:window:$windowVersion"
 
     // Image compose component
-    implementation "io.coil-kt:coil-compose:1.3.2"
+    implementation "io.coil-kt:coil-compose:$coilVersion"
+    implementation "io.coil-kt:coil-svg:$coilVersion"
 
     // database
     implementation "androidx.room:room-runtime:$roomVersion"

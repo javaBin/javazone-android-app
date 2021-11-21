@@ -24,6 +24,7 @@ import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.toLocalString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.OffsetDateTime
 
@@ -133,11 +134,13 @@ private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) s
 
 @Composable
 private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
-    return SessionTimeFormat.format(session.startTime) +
+    return session.startTime.toLocalString(SessionTimeFormat) +
             "-" +
-            SessionTimeFormat.format(session.endTime) +
-            ": " +
-            session.room.name
+            session.endTime.toLocalString(SessionTimeFormat) +
+            "\n" +
+            session.room.name +
+            "\n" +
+            session.format.name.lowercase()
 }
 
 class SampleTalkProvider : PreviewParameterProvider<ConferenceTalk> {

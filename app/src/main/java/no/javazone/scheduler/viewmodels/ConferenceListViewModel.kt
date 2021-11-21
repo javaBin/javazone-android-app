@@ -3,16 +3,12 @@ package no.javazone.scheduler.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.javazone.scheduler.model.Conference
-import no.javazone.scheduler.model.ConferenceDate
-import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.model.*
 import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
@@ -21,8 +17,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
-    private val repository: ConferenceRepository,
-    private val dispatchers: CoroutineDispatcher
+    private val repository: ConferenceRepository
 ) : ViewModel() {
 
     val conference: StateFlow<Resource<Conference>> = repository.getConference()
@@ -43,6 +38,13 @@ class ConferenceListViewModel(
         private set
 
     val mySchedule: StateFlow<List<String>> = repository.getSchedules()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+            initialValue = emptyList()
+        )
+
+    val partners: StateFlow<List<Partner>> = repository.getPartners()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
@@ -135,11 +137,10 @@ class ConferenceListViewModel(
     companion object {
         fun provideFactory(
             repository: ConferenceRepository,
-            dispatchers: CoroutineDispatcher
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ConferenceListViewModel(repository, dispatchers) as T
+                return ConferenceListViewModel(repository) as T
             }
         }
 

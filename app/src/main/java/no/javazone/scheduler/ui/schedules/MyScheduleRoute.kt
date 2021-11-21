@@ -26,6 +26,7 @@ import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.SessionDateTimeFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.toLocalString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.OffsetDateTime
 
@@ -71,7 +72,7 @@ private fun MyScheduleScreen(
         LazyColumn {
             conferenceTalks.forEach { (slot, talks) ->
                 stickyHeader {
-                   Row(
+                    Row(
                         modifier = Modifier
                             .background(MaterialTheme.colors.surface)
                             .fillMaxWidth()
@@ -80,7 +81,7 @@ private fun MyScheduleScreen(
                             modifier = Modifier.padding(end = 10.dp)
                         ) {
                             Text(
-                                SessionDateTimeFormat.format(slot),
+                                text = slot.toLocalString(SessionDateTimeFormat),
                                 fontSize = 27.sp
                             )
                         }
@@ -102,13 +103,17 @@ private fun MyScheduleScreen(
                             modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                         ) {
                             Text(
-                                text = SessionTimeFormat.format(talk.startTime) + " - " + SessionTimeFormat.format(
-                                    talk.endTime
-                                ),
+                                text = talk.startTime.toLocalString(SessionTimeFormat) +
+                                        " - " +
+                                        talk.endTime.toLocalString(SessionTimeFormat),
                                 fontSize = 10.sp
                             )
                             Text(
                                 text = talk.room.name,
+                                fontSize = 10.sp
+                            )
+                            Text(
+                                text = talk.format.name,
                                 fontSize = 10.sp
                             )
                         }

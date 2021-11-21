@@ -150,7 +150,7 @@ private fun AllSessionsScreen(
                                 modifier = Modifier.padding(end = 10.dp)
                             ) {
                                 Text(
-                                    SessionTimeFormat.format(session.time),
+                                    session.time.toLocalString(SessionTimeFormat),
                                     fontSize = 27.sp
                                 )
                             }
@@ -173,14 +173,18 @@ private fun AllSessionsScreen(
                                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                             ) {
                                 Text(
-                                    text = SessionTimeFormat.format(talk.startTime) + " - " + SessionTimeFormat.format(
-                                        talk.endTime
-                                    ),
+                                    text = talk.startTime.toLocalString(SessionTimeFormat) +
+                                            " - " +
+                                            talk.endTime.toLocalString(SessionTimeFormat),
                                     fontSize = 10.sp
                                 )
                                 Text(
                                     text = talk.room.name,
                                     fontSize = 10.sp
+                                )
+                                Text(
+                                   text = talk.format.name,
+                                   fontSize = 10.sp
                                 )
                             }
                             Column(
