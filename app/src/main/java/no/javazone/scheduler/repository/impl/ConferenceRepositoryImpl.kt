@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import no.javazone.scheduler.api.ConferenceSessionApi
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.Partner
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceDao
 import no.javazone.scheduler.repository.ConferenceRepository
@@ -79,12 +77,6 @@ class ConferenceRepositoryImpl private constructor(
             .map { schedules ->
                 schedules.map { it.talkId }
             }
-
-    override fun getPartners(): Flow<List<Partner>> = flow {
-        if (assetApi != null) {
-            emit(assetApi.fetchPartners())
-        }
-    }
 
     override suspend fun addOrRemoveSchedule(talkId: String) {
         db.withTransaction {
@@ -168,8 +160,6 @@ class ConferenceRepositoryImpl private constructor(
     }
 
     companion object {
-        private const val CACHE_EXPIRE_MIN = 10L
-
         @Volatile
         private var instance: ConferenceRepository? = null
 

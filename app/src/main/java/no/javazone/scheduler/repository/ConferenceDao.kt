@@ -36,7 +36,7 @@ interface ConferenceDao {
     @Query("SELECT * FROM speakers WHERE name = :name")
     suspend fun findSpeaker(name: String): SpeakerEntity?
 
-    @Transaction
+    @Transaction()
     @Query("DELETE FROM time_slots")
     suspend fun deleteAllSessions()
 
@@ -47,7 +47,6 @@ interface ConferenceDao {
     @Delete(entity = ScheduleEntity::class)
     suspend fun deleteSchedule(talkId: Schedule): Int
 
-    @Transaction
     @Query("DELETE FROM conferences")
     suspend fun deleteAllConference()
 

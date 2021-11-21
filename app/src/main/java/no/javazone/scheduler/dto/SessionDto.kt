@@ -2,15 +2,12 @@ package no.javazone.scheduler.dto
 
 import kotlinx.serialization.Serializable
 
-private const val TAG = "dto"
-
 @Serializable
 data class SessionsDto(val sessions: List<SessionDto>)
 
 @Serializable
 data class SessionDto(
     val intendedAudience: String,
-    val endTimeZulu: String,
     val registerLoc: String? = null,
     val format: String,
     val length: Int,
@@ -19,12 +16,11 @@ data class SessionDto(
     val video: String? = null,
     val abstract: String,
     val title: String,
-    val room: String,
+    val room: String? = null,
     val conferenceId: String,
-    val startTimeZulu: String,
-    val speakers: List<SpeakerDto>,
-    val startTime: String,
-    val endTime: String)
+    val startTimeZulu: String? = null,
+    val endTimeZulu: String? = null,
+    val speakers: List<SpeakerDto>)
 
 @Serializable
 data class SpeakerDto(
