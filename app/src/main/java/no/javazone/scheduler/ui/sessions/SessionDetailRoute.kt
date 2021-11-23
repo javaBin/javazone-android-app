@@ -61,6 +61,7 @@ private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) s
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
+                .padding(10.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -69,12 +70,12 @@ private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) s
                 Column {
                     Text(
                         text = sessionRoomAndTimeslot(session),
-                        //style = JavaZoneTypography.subtitle1
+                        style = JavaZoneTypography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = session.title,
-                        //style = JavaZoneTypography.subtitle1
+                        style = JavaZoneTypography.titleLarge
                     )
                 }
             }
@@ -110,11 +111,11 @@ private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) s
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
 
-                            Text(text = speaker.name, style = JavaZoneTypography.titleSmall)
+                            Text(text = speaker.name, style = JavaZoneTypography.titleMedium)
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = "Twitter: ${speaker.twitter}",
-                                style = JavaZoneTypography.titleMedium
+                                text = "Twitter: ${speaker.twitter?:""}",
+                                style = JavaZoneTypography.bodyMedium
                             )
                         }
                     }

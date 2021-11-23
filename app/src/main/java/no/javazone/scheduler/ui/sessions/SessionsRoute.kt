@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
@@ -17,6 +14,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -27,6 +26,7 @@ import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
+import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.*
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
@@ -108,33 +108,36 @@ private fun AllSessionsScreen(
     ) {
         Surface() {
             Column {
-
                 Row(
                     modifier = Modifier
                         .align(alignment = Alignment.CenterHorizontally)
+                        .fillMaxWidth()
                 ) {
-                    conferenceDays.forEach {
-                        OutlinedButton(
-                            modifier = Modifier
-                                .selectable(
-                                    selected = it.date == selectedDay,
-                                    role = Role.Button,
-                                    onClick = {}
-                                )
-                                .navigationBarsPadding(bottom = false),
-                            onClick = {
-                                Log.d("NavController debug", route)
-                                navigateToDay(it.date)
-                            },
-                        ) {
-                            Text(
-                                text = it.label,
-                                style = JavaZoneTypography.titleMedium,
-                                color = if (it.date == selectedDay) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
+                    conferenceDays.sortedBy { it.date }
+                        .forEach {
 
-                            )
+                            OutlinedButton(
+                                modifier = Modifier
+                                    .selectable(
+                                        selected = it.date == selectedDay,
+                                        role = Role.Button,
+                                        onClick = {}
+                                    )
+                                    .navigationBarsPadding(bottom = false)
+                                    .weight(1f),
+                                onClick = {
+                                    Log.d("NavController debug", route)
+                                    navigateToDay(it.date)
+                                },
+                            ) {
+                                Text(
+                                    text = SessionDayFormat.format(it.date),
+                                    style = if (it.date == selectedDay) JavaZoneTypography.titleLarge.plus(
+                                        TextStyle(fontWeight = FontWeight.Bold)
+                                    ) else JavaZoneTypography.titleLarge
+                                )
+                            }
                         }
-                    }
                 }
 
 
@@ -142,78 +145,93 @@ private fun AllSessionsScreen(
                     conferenceSessions.forEach { session ->
                         stickyHeader {
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Column(
-                                    modifier = Modifier.padding(end = 10.dp)
+                            Surface(
+                                color = MaterialTheme.colors.secondary,
+                                //elevation = 10.dp,
+
                                 ) {
-                                    Text(
-                                        session.time.toLocalString(SessionTimeFormat),
-                                        fontSize = 27.sp
-                                    )
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(end = 10.dp)
+                                            .weight(1f)
+                                    ) {
+                                        Text(
+                                            session.time.toLocalString(SessionTimeFormat),
+                                            fontSize = 27.sp
+                                        )
+                                    }
                                 }
                             }
                         }
 
                         items(session.talks) { talk ->
-                            Row(
-                                modifier = Modifier
-                                    .padding(1.dp)
-                                    .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
-                                    .fillMaxWidth()
-                                    .clickable(onClick = {
-                                        Log.w("SessionviewDebug", "Session is ${talk.id}")
-                                        navigateToDetail(talk.id)
-                                    })
+                            Surface(
+                                color = MaterialTheme.colors.primary,
+                                //elevation = 10.dp,
 
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(
-                                        top = 16.dp,
-                                        start = 16.dp,
-                                        end = 16.dp
-                                    )
+                                Row(
+                                    modifier = Modifier
+                                        //.padding(1.dp)
+                                        //.border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
+                                        .fillMaxWidth()
+                                        .clickable(onClick = {
+                                            Log.w("SessionviewDebug", "Session is ${talk.id}")
+                                            navigateToDetail(talk.id)
+                                        })
+
                                 ) {
-                                    Text(
-                                        text = talk.startTime.toLocalString(SessionTimeFormat) +
-                                                " - " +
-                                                talk.endTime.toLocalString(SessionTimeFormat),
-                                        fontSize = 10.sp
-                                    )
-                                    Text(
-                                        text = talk.room.name,
-                                        fontSize = 10.sp
-                                    )
-                                    Text(
-                                        text = talk.format.name,
-                                        fontSize = 10.sp
-                                    )
+                                    Column(
+                                        modifier = Modifier.padding(
+                                            top = 16.dp,
+                                            start = 16.dp,
+                                            end = 16.dp
+                                        )
+                                    ) {
+                                        Text(
+                                            text = talk.startTime.toLocalString(SessionTimeFormat) +
+                                                    " - " +
+                                                    talk.endTime.toLocalString(SessionTimeFormat),
+                                            fontSize = 10.sp
+                                        )
+                                        Text(
+                                            text = talk.room.name,
+                                            fontSize = 10.sp
+                                        )
+                                        Text(
+                                            text = talk.format.name,
+                                            fontSize = 10.sp
+                                        )
+                                    }
+                                    Column(
+                                        Modifier
+                                            .weight(1f)
+                                            .padding(top = 16.dp, bottom = 16.dp),
+                                    ) {
+                                        Text(
+                                            modifier = Modifier
+                                                .align(alignment = Alignment.CenterHorizontally)
+                                                .fillMaxWidth(),
+                                            text = talk.title,
+                                            style = JavaZoneTypography.bodyMedium
+                                        )
+                                        Text(
+                                            text = talk.speakers.joinToString { it.name },
+                                            fontSize = 10.sp
+                                        )
+                                    }
+                                    IconButton(onClick = { }) {
+                                        MyScheduleButton(
+                                            isScheduled = talk.scheduled,
+                                            onClick = { onToggleSchedule(talk.id) }
+                                        )
+                                    }
                                 }
-                                Column(
-                                    Modifier
-                                        .weight(1f)
-                                        .padding(top = 16.dp, bottom = 16.dp),
-                                ) {
-                                    Text(
-                                        modifier = Modifier
-                                            .align(alignment = Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        text = talk.title,
-                                        style = JavaZoneTypography.bodyMedium
-                                    )
-                                    Text(
-                                        text = talk.speakers.joinToString { it.name },
-                                        fontSize = 10.sp
-                                    )
-                                }
-                                IconButton(onClick = { }) {
-                                    MyScheduleButton(
-                                        isScheduled = talk.scheduled,
-                                        onClick = { onToggleSchedule(talk.id) }
-                                    )
-                                }
+                                Divider()
                             }
                         }
                     }

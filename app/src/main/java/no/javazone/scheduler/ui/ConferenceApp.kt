@@ -49,7 +49,7 @@ fun ConferenceApp(
                     TopAppBar {
                         Text(
                             text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
-                            //style = JavaZoneTypography.
+                            style = JavaZoneTypography.titleLarge
                         )
                     }
                 },
