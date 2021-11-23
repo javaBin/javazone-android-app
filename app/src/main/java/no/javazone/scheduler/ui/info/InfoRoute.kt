@@ -2,10 +2,10 @@ package no.javazone.scheduler.ui.info
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Launch
@@ -28,7 +28,8 @@ fun InfoRoute(
 
     InfoContent(
         onCodeOfConductClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.java.no/principles.html"))
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://www.java.no/principles.html"))
             context.startActivity(intent)
         },
         onLicenseDisplay = {
@@ -36,7 +37,10 @@ fun InfoRoute(
             context.startActivity(intent)
         },
         onGithubClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/javaBin/javazone-android-app"))
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://github.com/javaBin/javazone-android-app")
+            )
             context.startActivity(intent)
         },
         onJavaBinClick = {
@@ -58,34 +62,35 @@ fun InfoContent(
     onJavaBinClick: () -> Unit,
     onPolicyClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .padding(10.dp)
-            .background(color = Color.White)
-    ) {
-        InfoContentSection(
-            title = "JavaZone",
-            contents = listOf(
-                Triple(Icons.Filled.WifiLock, "WI-FI SSID: JavaZone", {}),
-                Triple(Icons.Filled.Launch, "Code of conduct", onCodeOfConductClick)
+    Surface() {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+        ) {
+            InfoContentSection(
+                title = "JavaZone",
+                contents = listOf(
+                    Triple(Icons.Filled.WifiLock, "WI-FI SSID: JavaZone", {}),
+                    Triple(Icons.Filled.Launch, "Code of conduct", onCodeOfConductClick)
+                )
             )
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
-        InfoContentSection(
-            title = "JavaZone App",
-            contents = listOf(
-                Triple(Icons.Filled.Launch, "Open source licences", onLicenseDisplay),
-                Triple(Icons.Filled.Launch, "github", onGithubClick)
+            Spacer(modifier = Modifier.padding(5.dp))
+            InfoContentSection(
+                title = "",
+                contents = listOf(
+                    Triple(Icons.Filled.Launch, "Open source licences", onLicenseDisplay),
+                    Triple(Icons.Filled.Launch, "github", onGithubClick)
+                )
             )
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
-        InfoContentSection(
-            title = "javaBin",
-            contents = listOf(
-                Triple(Icons.Filled.Launch, "javaBin", onJavaBinClick),
-                Triple(Icons.Filled.Launch, "Terms and Condition", onPolicyClick)
+            Spacer(modifier = Modifier.padding(5.dp))
+            InfoContentSection(
+                title = "javaBin",
+                contents = listOf(
+                    Triple(Icons.Filled.Launch, "javaBin", onJavaBinClick),
+                    Triple(Icons.Filled.Launch, "Terms and Condition", onPolicyClick)
+                )
             )
-        )
+        }
     }
 }
 
@@ -94,29 +99,39 @@ fun InfoContentSection(
     title: String,
     contents: List<Triple<ImageVector, String, () -> Unit>>
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.LightGray)
-    ) {
-        Text(
-            modifier = Modifier.padding(start = 10.dp),
-            text = title
-        )
-    }
-    Spacer(modifier = Modifier.padding(2.dp))
-    contents.forEach { (icon, text, onClick) ->
-        Row(
-            modifier = Modifier
-                .clickable {
-                    onClick()
+    Surface() {
+        Column() {
+
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 10.dp),
+                    text = title
+                )
+            }
+            Spacer(modifier = Modifier.padding(2.dp))
+            contents.forEach { (icon, text, onClick) ->
+                Row(
+                    modifier = Modifier
+                        .clickable {
+                            onClick()
+                        }
+                ) {
+                    Box(modifier = Modifier.layoutId("icon")) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.padding(start = 5.dp, top = 2.dp),
+                        text = text
+                    )
                 }
-        ) {
-            Box(modifier = Modifier.layoutId("icon")) { Icon(imageVector = icon, contentDescription = null) }
-            Text(
-                modifier = Modifier.padding(start = 5.dp, top = 2.dp),
-                text = text
-            )
+            }
         }
     }
 }

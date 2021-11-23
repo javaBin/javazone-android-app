@@ -3,10 +3,7 @@ package no.javazone.scheduler.ui.sessions
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -58,76 +55,76 @@ fun SessionDetailRoute(
 private fun sessionDetailFragment(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
 
     val scrollState = rememberScrollState()
-
-    Column(
-        modifier = Modifier
-            .background(color = MaterialTheme.colors.background)
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-    ) {
-        Row(
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-        ) {
-            Column {
-                Text(
-                    text = sessionRoomAndTimeslot(session),
-                    style = JavaZoneTypography.subtitle1
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = session.title,
-                    style = JavaZoneTypography.subtitle1
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
+    Surface() {
 
         Column(
             modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
+                .fillMaxSize()
+                .verticalScroll(scrollState)
         ) {
-            Text(text = "Abstract", style = JavaZoneTypography.subtitle1)
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = session.summary, style = JavaZoneTypography.body1)
-            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+            ) {
+                Column {
+                    Text(
+                        text = sessionRoomAndTimeslot(session),
+                        //style = JavaZoneTypography.subtitle1
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = session.title,
+                        //style = JavaZoneTypography.subtitle1
+                    )
+                }
+            }
 
-            Text(text = "Intended Audience", style = JavaZoneTypography.subtitle1)
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = session.intendedAudience, style = JavaZoneTypography.body1)
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = "Speakers", style = JavaZoneTypography.subtitle1)
-            Spacer(modifier = Modifier.height(10.dp))
-            for (speaker in session.speakers) {
-                Row {
+            Column(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+            ) {
+                Text(text = "Abstract", style = JavaZoneTypography.titleMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = session.summary, style = JavaZoneTypography.bodyMedium)
+                Spacer(modifier = Modifier.height(10.dp))
 
-                    Column {
-                        Image(
-                            painter = rememberImagePainter(speaker.avatarUrl),
-                            contentDescription = speaker.name,
-                            modifier = Modifier.size(74.dp)
-                        )
+                Text(text = "Intended Audience", style = JavaZoneTypography.titleMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = session.intendedAudience, style = JavaZoneTypography.bodyMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(text = "Speakers", style = JavaZoneTypography.titleMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+                for (speaker in session.speakers) {
+                    Row {
+
+                        Column {
+                            Image(
+                                painter = rememberImagePainter(speaker.avatarUrl),
+                                contentDescription = speaker.name,
+                                modifier = Modifier.size(74.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+
+                            Text(text = speaker.name, style = JavaZoneTypography.titleSmall)
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = "Twitter: ${speaker.twitter}",
+                                style = JavaZoneTypography.titleMedium
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-
-                        Text(text = speaker.name, style = JavaZoneTypography.subtitle2)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            text = "Twitter: ${speaker.twitter}",
-                            style = JavaZoneTypography.button
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = speaker.bio, style = JavaZoneTypography.bodyMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = speaker.bio, style = JavaZoneTypography.body1)
-                Spacer(modifier = Modifier.height(16.dp))
+
             }
-            Spacer(modifier = Modifier.height(10.dp))
-
-
         }
     }
 }
