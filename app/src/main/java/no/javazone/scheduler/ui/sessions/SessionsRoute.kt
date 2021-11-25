@@ -2,9 +2,11 @@ package no.javazone.scheduler.ui.sessions
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
@@ -16,12 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
@@ -132,9 +137,10 @@ private fun AllSessionsScreen(
                             ) {
                                 Text(
                                     text = SessionDayFormat.format(it.date),
-                                    style = if (it.date == selectedDay) JavaZoneTypography.titleLarge.plus(
-                                        TextStyle(fontWeight = FontWeight.Bold)
-                                    ) else JavaZoneTypography.titleLarge
+                                    style = if (it.date == selectedDay)
+                                        JavaZoneTypography.titleLarge.plus(
+                                            TextStyle(fontWeight = FontWeight.Bold)
+                                        ) else JavaZoneTypography.titleLarge
                                 )
                             }
                         }
@@ -149,7 +155,7 @@ private fun AllSessionsScreen(
                                 color = MaterialTheme.colors.secondary,
                                 //elevation = 10.dp,
 
-                                ) {
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -240,3 +246,29 @@ private fun AllSessionsScreen(
         }
     }
 }
+
+@Composable
+@Preview
+fun AllSessionsScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
+    val sessions = talks
+        .groupBy {
+            it.slotTime
+        }
+        .map {
+            ConferenceSession(time = it.key, talks = it.value)
+        }
+
+    var i = 0
+    AllSessionsScreen(
+        route = "thsroute",
+        onToggleSchedule = { },
+        navigateToDetail = {},
+        navigateToDay = {},
+        conferenceSessions = sessions,
+        conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
+            ConferenceDate(it, "day ${i++}")
+        },
+        selectedDay = FIRST_CONFERENCE_DAY
+    )
+}
+

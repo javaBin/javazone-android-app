@@ -10,21 +10,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
-import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.SessionDateTimeFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.SampleTalksProvider
 import no.javazone.scheduler.utils.toLocalString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.OffsetDateTime
@@ -63,11 +68,11 @@ private fun MyScheduleScreen(
     navigateToDetail: (String) -> Unit,
     conferenceTalks: Map<OffsetDateTime, List<ConferenceTalk>>
 ) {
-    val scaffoldState = rememberScaffoldState()
-
-    Scaffold(
-        scaffoldState = scaffoldState,
-    ) {
+//    val scaffoldState = rememberScaffoldState()
+//
+//    Scaffold(
+//        scaffoldState = scaffoldState,
+//    ) {
         Surface() {
             LazyColumn {
                 conferenceTalks.forEach { (slot, talks) ->
@@ -144,5 +149,21 @@ private fun MyScheduleScreen(
                 }
             }
         }
-    }
+//    }
 }
+
+@Composable
+@Preview
+fun MyScheduleScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
+    val sessions = talks
+        .groupBy {
+            it.slotTime
+        }
+        .toMap()
+
+    MyScheduleScreen(
+        onToggleSchedule = {},
+        navigateToDetail = {},
+        conferenceTalks = sessions)
+}
+

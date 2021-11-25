@@ -14,8 +14,8 @@ const val JAVAZONE_DATE_PATTERN = "dd.MM.yyyy"
 val APPLICATION_JSON: MediaType = MediaType.parse("application/json")!!
 
 
-val WORKSHOP_DAY = LocalDate.of(2021, 12, 7)
-val FIRST_CONFERENCE_DAY = LocalDate.of(2021, 12, 8)
+val WORKSHOP_DAY: LocalDate = LocalDate.of(2021, 12, 7)
+val FIRST_CONFERENCE_DAY: LocalDate = LocalDate.of(2021, 12, 8)
 
 val DEFAULT_CONFERENCE_DAYS = listOf(
     WORKSHOP_DAY,
