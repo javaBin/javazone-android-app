@@ -10,4 +10,4 @@ val SessionDateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(For
 
 val SessionDateTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
-val SessionDayFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE")
+val SessionDayFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE")

@@ -1,6 +1,5 @@
 package no.javazone.scheduler.utils
 
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceRoom
 import no.javazone.scheduler.model.ConferenceSpeaker
@@ -18,14 +17,6 @@ fun String.toJzLocalDate(): LocalDate =
 fun OffsetDateTime.toLocalString(formatter: DateTimeFormatter): String {
     val zoned = this.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
     return zoned.format(formatter)
-}
-
-
-class SampleTalksProvider : PreviewParameterProvider<List<ConferenceTalk>> {
-    override val values: Sequence<List<ConferenceTalk>> = sequenceOf(sampleTalks)
-
-    override val count: Int
-        get() = values.count()
 }
 
 

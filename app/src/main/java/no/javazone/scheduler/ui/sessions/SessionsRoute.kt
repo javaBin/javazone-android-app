@@ -20,13 +20,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
@@ -36,6 +36,7 @@ import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.*
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 @Composable
 fun SessionsRoute(
@@ -249,18 +250,11 @@ private fun AllSessionsScreen(
 
 @Composable
 @Preview
-fun AllSessionsScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
-    val sessions = talks
-        .groupBy {
-            it.slotTime
-        }
-        .map {
-            ConferenceSession(time = it.key, talks = it.value)
-        }
+fun AllSessionsScreenPreview(@PreviewParameter(SampleSessionProvider::class) sessions: List<ConferenceSession>) {
 
     var i = 0
     AllSessionsScreen(
-        route = "thsroute",
+        route = "theroute",
         onToggleSchedule = { },
         navigateToDetail = {},
         navigateToDay = {},
@@ -269,6 +263,23 @@ fun AllSessionsScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks
             ConferenceDate(it, "day ${i++}")
         },
         selectedDay = FIRST_CONFERENCE_DAY
+    )
+}
+
+class SampleSessionProvider : PreviewParameterProvider<List<ConferenceSession>> {
+    override val values: Sequence<List<ConferenceSession>> = sequenceOf(
+        listOf(
+            ConferenceSession(
+                time = OffsetDateTime.now().minusHours(1L),
+                talks = sampleTalks
+            ),
+            ConferenceSession(
+                time = OffsetDateTime.now().plusHours(2L),
+                talks = sampleTalks.map {
+                    it.copy(startTime = it.startTime.plusHours(2L), endTime = it.endTime.plusHours(2L))
+                }
+            )
+        )
     )
 }
 
