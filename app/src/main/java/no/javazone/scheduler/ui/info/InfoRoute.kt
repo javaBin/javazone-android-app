@@ -1,6 +1,7 @@
 package no.javazone.scheduler.ui.info
 
 import android.content.Intent
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +13,6 @@ import androidx.compose.material.icons.filled.Launch
 import androidx.compose.material.icons.filled.WifiLock
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -138,7 +138,19 @@ fun InfoContentSection(
 
 @Composable
 @Preview
-fun InfoContentPreview() {
+fun InfoContentLightPreview() {
+    InfoContent(
+        onCodeOfConductClick = {},
+        onLicenseDisplay = {},
+        onGithubClick = {},
+        onJavaBinClick = {},
+        onPolicyClick = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+fun InfoContentDarkPreview() {
     InfoContent(
         onCodeOfConductClick = {},
         onLicenseDisplay = {},

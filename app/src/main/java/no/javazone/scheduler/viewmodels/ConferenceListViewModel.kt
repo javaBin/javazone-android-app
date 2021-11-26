@@ -18,7 +18,6 @@ import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
 import no.javazone.scheduler.utils.SuccessResource
 import java.time.LocalDate
-import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
     private val repository: ConferenceRepository
@@ -93,7 +92,7 @@ class ConferenceListViewModel(
     fun selectMySchedule(
         sessions: List<ConferenceSession>,
         mySchedule: List<String>
-    ): Map<OffsetDateTime, List<ConferenceTalk>> =
+    ): Map<LocalDate, List<ConferenceTalk>> =
         sessions
             .map { session ->
                 session.copy(
@@ -113,7 +112,7 @@ class ConferenceListViewModel(
                 it.slotTime
             }
             .groupBy {
-                it.slotTime
+                it.slotTime.toLocalDate()
             }
 
     fun addOrRemoveSchedule(talkId: String) {

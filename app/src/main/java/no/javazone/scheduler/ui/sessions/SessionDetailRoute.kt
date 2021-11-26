@@ -1,5 +1,6 @@
 package no.javazone.scheduler.ui.sessions
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -144,14 +146,19 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
 }
 
 @Composable
-@Preview
-fun SessionDetailFragmentPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
-    SessionDetailFragment(session = session)
+@Preview(name = "Light Theme")
+fun SessionDetailFragmentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+    JavaZoneTheme {
+        SessionDetailFragment(session = session)
+    }
 }
 
+@Composable
+@Preview(name = "Dark Theme", uiMode = UI_MODE_NIGHT_YES)
+fun SessionDetailFragmentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+        SessionDetailFragment(session = session)
+}
 
 class SampleTalkProvider : PreviewParameterProvider<ConferenceTalk> {
-    override val values = sampleTalks.asSequence()
-
-    override val count: Int = sampleTalks.size
+    override val values = sequenceOf(sampleTalks.first())
 }
