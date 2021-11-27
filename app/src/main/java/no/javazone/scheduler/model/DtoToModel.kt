@@ -27,6 +27,11 @@ private val DEFAULT_FIRST_END_TIME = OffsetDateTime.of(
     ZoneOffset.UTC
 )
 
+/**
+ * Max number of minutes break between lightning talks
+ */
+private const val LIGHTNING_BREAKS = 11L
+
 fun ConferenceDto.toModel(): Conference =
     Conference(
         name = this.conferenceName,
@@ -91,7 +96,7 @@ fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSess
     }
 
     roomTalks.forEach {
-        it.value.sortWith(Comparator { o1, o2 -> o1.startTime.compareTo(o2.startTime) })
+        it.value.sortWith { o1, o2 -> o1.startTime.compareTo(o2.startTime) }
     }
 
     val sessions = mutableListOf<ConferenceSession>()
@@ -104,7 +109,9 @@ fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSess
                 prev = talk
                 continue
             }
-            if (prev.endTime.isEqual(talk.startTime)) {
+            // For 10 min lightning talks, there is a 5 min breaks between each session.
+            // For 20 min lightning talks, there is a 10 min break.
+            if (prev.endTime.plusMinutes(LIGHTNING_BREAKS).isAfter(talk.startTime)) {
                 current.add(talk)
                 prev = talk
             } else {
