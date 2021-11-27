@@ -156,9 +156,6 @@ private fun AllSessionsScreen(
 
                     items(session.talks) { talk ->
                         Surface(
-//                            color = MaterialTheme.colors.surface,
-                            //elevation = 10.dp,
-
                         ) {
                             Row(
                                 modifier = Modifier

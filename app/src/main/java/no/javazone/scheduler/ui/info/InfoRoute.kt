@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Launch
 import androidx.compose.material.icons.filled.WifiLock
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -124,6 +125,7 @@ fun InfoContentSection(
                     Box(modifier = Modifier.layoutId("icon")) {
                         Icon(
                             imageVector = icon,
+                            tint = MaterialTheme.colorScheme.onBackground,
                             contentDescription = null
                         )
                     }
