@@ -1,13 +1,16 @@
 package no.javazone.scheduler.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +38,9 @@ fun ConferenceChip(
                 value = selected,
                 onValueChange = {
                     onExecute()
-                }
+                },
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = true)
             )
         ) {
             Text(
