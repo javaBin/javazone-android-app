@@ -58,7 +58,7 @@ fun PartnersContent(
     imageLoader: ImageLoader
 ) {
     LazyVerticalGrid(
-        cells = GridCells.Adaptive(minSize = 128.dp),
+        cells = GridCells.Adaptive(minSize = 128.dp)
     ) {
         items(partners) { partner ->
             Card(

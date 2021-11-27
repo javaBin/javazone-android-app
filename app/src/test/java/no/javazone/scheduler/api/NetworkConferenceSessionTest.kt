@@ -64,9 +64,7 @@ class NetworkConferenceSessionTest {
                                         bio = "blasdjasdad",
                                         pictureUrl = ""
                                     )
-                                ),
-                                startTime = "",
-                                endTime = ""
+                                )
                             )
                         )
                     )
