@@ -5,6 +5,7 @@ import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,10 @@ fun ConferenceTabRow(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        BottomNavigation {
+        BottomNavigation(
+            backgroundColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ) {
             allScreens.forEach { navItem ->
                 BottomNavigationItem(
                     selected = navItem.route == currentRoute,

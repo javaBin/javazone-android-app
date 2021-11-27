@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
@@ -83,7 +82,7 @@ private fun MyScheduleScreen(
                         ) {
                             Text(
                                 text = slot.format(SessionDateFormat),
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleLarge
                             )
                         }
                     }
@@ -106,15 +105,15 @@ private fun MyScheduleScreen(
                                 text = talk.startTime.toLocalString(SessionTimeFormat) +
                                         " - " +
                                         talk.endTime.toLocalString(SessionTimeFormat),
-                                fontSize = 10.sp
+                                style = MaterialTheme.typography.titleMedium
                             )
                             Text(
                                 text = talk.room.name,
-                                fontSize = 10.sp
+                                style = MaterialTheme.typography.labelLarge
                             )
                             Text(
                                 text = talk.format.name,
-                                fontSize = 10.sp
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
                         Column(

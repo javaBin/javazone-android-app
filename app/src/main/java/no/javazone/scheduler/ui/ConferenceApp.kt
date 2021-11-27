@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
@@ -32,8 +31,9 @@ fun ConferenceApp(
 
         val systemUiController = rememberSystemUiController()
         val darkIcons = MaterialTheme.colorScheme.surface == md_theme_dark_surface
+        val color = MaterialTheme.colorScheme.primary
         SideEffect {
-            systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
+            systemUiController.setSystemBarsColor(color, darkIcons = darkIcons)
         }
 
         val navController = rememberNavController()
@@ -49,7 +49,10 @@ fun ConferenceApp(
             Scaffold(
                 scaffoldState = scaffoldState,
                 topBar = {
-                    TopAppBar {
+                    TopAppBar(
+                        backgroundColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ) {
                         Text(
                             text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
                             style = JavaZoneTypography.titleLarge

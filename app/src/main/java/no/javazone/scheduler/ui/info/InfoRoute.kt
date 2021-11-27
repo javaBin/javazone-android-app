@@ -78,18 +78,18 @@ fun InfoContent(
             )
             Spacer(modifier = Modifier.padding(5.dp))
             InfoContentSection(
-                title = "",
-                contents = listOf(
-                    Triple(Icons.Filled.Launch, "Open source licences", onLicenseDisplay),
-                    Triple(Icons.Filled.Launch, "github", onGithubClick)
-                )
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            InfoContentSection(
                 title = "javaBin",
                 contents = listOf(
                     Triple(Icons.Filled.Launch, "javaBin", onJavaBinClick),
                     Triple(Icons.Filled.Launch, "Terms and Condition", onPolicyClick)
+                )
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            InfoContentSection(
+                title = "",
+                contents = listOf(
+                    Triple(Icons.Filled.Launch, "Open source licences", onLicenseDisplay),
+                    Triple(Icons.Filled.Launch, "github", onGithubClick)
                 )
             )
         }
@@ -111,6 +111,7 @@ fun InfoContentSection(
             ) {
                 Text(
                     modifier = Modifier.padding(start = 10.dp),
+                    style = MaterialTheme.typography.headlineMedium,
                     text = title
                 )
             }
@@ -131,6 +132,7 @@ fun InfoContentSection(
                     }
                     Text(
                         modifier = Modifier.padding(start = 5.dp, top = 2.dp),
+                        style = MaterialTheme.typography.bodyMedium,
                         text = text
                     )
                 }

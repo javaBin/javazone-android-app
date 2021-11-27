@@ -1,5 +1,6 @@
 package no.javazone.scheduler.ui.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
@@ -8,9 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import no.javazone.scheduler.ui.theme.JavaZoneShapes
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 
 @Composable
 fun ConferenceChip(
@@ -23,7 +28,7 @@ fun ConferenceChip(
             .padding(end = 8.dp),
         elevation = 8.dp,
         shape = JavaZoneShapes.large,
-        color = if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
+        color = if (selected) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.secondary
     ) {
         Row(
             modifier = Modifier.toggleable(
@@ -36,7 +41,7 @@ fun ConferenceChip(
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (selected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onPrimary,
+                color = if (selected) Color.White else MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -45,10 +50,31 @@ fun ConferenceChip(
 
 @Composable
 @Preview
-fun ConferenceChipPreview() {
+fun ConferenceChipLightPreview(@PreviewParameter(SampleChipsProvider::class) param: Pair<String, Boolean>) {
     ConferenceChip(
-        label = "Monday",
-        selected = false,
+        label = param.first,
+        selected = param.second,
         onExecute = {}
     )
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+fun ConferenceChipDarkPreview(@PreviewParameter(SampleChipsProvider::class) param: Pair<String, Boolean>) {
+    JavaZoneTheme(useDarkTheme = true) {
+        ConferenceChip(
+            label = param.first,
+            selected = param.second,
+            onExecute = {}
+        )
+    }
+}
+
+class SampleChipsProvider : PreviewParameterProvider<Pair<String, Boolean>> {
+    override val values =
+        listOf(
+            "Selected" to true,
+            "Not" to false
+        ).asSequence()
+
 }
