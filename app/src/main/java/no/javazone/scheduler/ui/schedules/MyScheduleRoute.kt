@@ -1,5 +1,6 @@
 package no.javazone.scheduler.ui.schedules
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -10,9 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.MyScheduleButton
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionDateFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -77,11 +79,11 @@ private fun MyScheduleScreen(
                             .fillMaxWidth()
                     ) {
                         Column(
-                            modifier = Modifier.padding(end = 10.dp)
+                            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                         ) {
                             Text(
                                 text = slot.format(SessionDateFormat),
-                                style = MaterialTheme.typography.h4
+                                style = MaterialTheme.typography.titleMedium
                             )
                         }
                     }
@@ -125,11 +127,11 @@ private fun MyScheduleScreen(
                                     .align(alignment = Alignment.CenterHorizontally)
                                     .fillMaxWidth(),
                                 text = talk.title,
-                                style = MaterialTheme.typography.body2
+                                style = MaterialTheme.typography.bodyMedium
                             )
                             Text(
                                 text = talk.speakers.joinToString { it.name },
-                                style = MaterialTheme.typography.caption
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
                         IconButton(onClick = { }) {
@@ -147,7 +149,7 @@ private fun MyScheduleScreen(
 
 @Composable
 @Preview
-fun MyScheduleScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
+fun MyScheduleScreenLightPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
     val sessions = talks
         .groupBy {
             it.slotTime.toLocalDate()
@@ -159,6 +161,24 @@ fun MyScheduleScreenPreview(@PreviewParameter(SampleTalksProvider::class) talks:
         navigateToDetail = {},
         conferenceTalks = sessions
     )
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+fun MyScheduleScreenDarkPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
+    val sessions = talks
+        .groupBy {
+            it.slotTime.toLocalDate()
+        }
+        .toMap()
+
+    JavaZoneTheme(useDarkTheme = true) {
+        MyScheduleScreen(
+            onToggleSchedule = {},
+            navigateToDetail = {},
+            conferenceTalks = sessions
+        )
+    }
 }
 
 class SampleTalksProvider : PreviewParameterProvider<List<ConferenceTalk>> {

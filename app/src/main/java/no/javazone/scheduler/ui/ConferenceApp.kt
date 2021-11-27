@@ -2,7 +2,9 @@ package no.javazone.scheduler.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -16,7 +18,9 @@ import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.JavaZoneTypography
+import no.javazone.scheduler.ui.theme.md_theme_dark_surface
 
+@ExperimentalMaterial3Api
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
@@ -27,7 +31,7 @@ fun ConferenceApp(
     JavaZoneTheme {
 
         val systemUiController = rememberSystemUiController()
-        val darkIcons = MaterialTheme.colors.isLight
+        val darkIcons = MaterialTheme.colorScheme.surface == md_theme_dark_surface
         SideEffect {
             systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = darkIcons)
         }

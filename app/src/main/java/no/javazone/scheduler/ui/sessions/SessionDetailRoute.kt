@@ -7,10 +7,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -23,7 +22,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
-import no.javazone.scheduler.ui.theme.JavaZoneTypography
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.sampleTalks
@@ -40,18 +38,12 @@ fun SessionDetailRoute(
 ) {
     Log.d(LOG_TAG, "SessionDetailRoute route: $route, sessionId: $sessionId")
 
-    val scaffoldState = rememberScaffoldState()
-
     val session = viewModel.sessions.collectAsState().value.data
         .flatMap { it.talks }
         .find { it.id == sessionId }
         ?: return
 
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) {
-        SessionDetailFragment(session)
-    }
+    SessionDetailFragment(session)
 }
 
 @OptIn(ExperimentalCoilApi::class)
@@ -59,7 +51,9 @@ fun SessionDetailRoute(
 private fun SessionDetailFragment(session: ConferenceTalk) {
 
     val scrollState = rememberScrollState()
-    Surface {
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
 
         Column(
             modifier = Modifier
@@ -74,12 +68,12 @@ private fun SessionDetailFragment(session: ConferenceTalk) {
                 Column {
                     Text(
                         text = sessionRoomAndTimeslot(session),
-                        style = JavaZoneTypography.titleMedium
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = session.title,
-                        style = JavaZoneTypography.titleLarge
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }
@@ -90,17 +84,17 @@ private fun SessionDetailFragment(session: ConferenceTalk) {
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
-                Text(text = "Abstract", style = JavaZoneTypography.titleMedium)
+                Text(text = "Abstract", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = session.summary, style = JavaZoneTypography.bodyMedium)
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(text = "Intended Audience", style = JavaZoneTypography.titleMedium)
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(text = session.intendedAudience, style = JavaZoneTypography.bodyMedium)
+                Text(text = session.summary, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Speakers", style = JavaZoneTypography.titleMedium)
+                Text(text = "Intended Audience", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = session.intendedAudience, style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(text = "Speakers", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
                 for (speaker in session.speakers) {
                     Row {
@@ -115,16 +109,16 @@ private fun SessionDetailFragment(session: ConferenceTalk) {
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
 
-                            Text(text = speaker.name, style = JavaZoneTypography.titleMedium)
+                            Text(text = speaker.name, style = MaterialTheme.typography.titleMedium)
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = "Twitter: ${speaker.twitter?:""}",
-                                style = JavaZoneTypography.bodyMedium
+                                text = "Twitter: ${speaker.twitter ?: ""}",
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    Text(text = speaker.bio, style = JavaZoneTypography.bodyMedium)
+                    Text(text = speaker.bio, style = MaterialTheme.typography.bodyMedium)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -148,15 +142,15 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
 @Composable
 @Preview(name = "Light Theme")
 fun SessionDetailFragmentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
-    JavaZoneTheme {
-        SessionDetailFragment(session = session)
-    }
+    SessionDetailFragment(session = session)
 }
 
 @Composable
 @Preview(name = "Dark Theme", uiMode = UI_MODE_NIGHT_YES)
 fun SessionDetailFragmentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+    JavaZoneTheme(useDarkTheme = true) {
         SessionDetailFragment(session = session)
+    }
 }
 
 class SampleTalkProvider : PreviewParameterProvider<ConferenceTalk> {
