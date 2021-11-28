@@ -26,10 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.ui.components.ConferenceChip
-import no.javazone.scheduler.ui.components.FullScreenLoading
-import no.javazone.scheduler.ui.components.JavaZoneDestinations
-import no.javazone.scheduler.ui.components.MyScheduleButton
+import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
@@ -53,7 +50,6 @@ fun SessionsRoute(
     val selectedDay = day
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
-            route = route,
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
             navigateToDetail = { talkId ->
                 //navController.navigate(deepLink= "detail_session/${talk.id}"
@@ -61,7 +57,7 @@ fun SessionsRoute(
                 val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}/$talkId"
                 Log.d(LOG_TAG, "Navigating to $newRoute")
                 viewModel.updateDetailsArg(talkId, route)
-                navController.navigate(route = newRoute)
+                SessionScreen.navigateTo(navController, talkId)
             },
             navigateToDay = { selectDay ->
                 navController.navigate(route = "$route?day=${selectDay.toJzString()}")
@@ -98,7 +94,6 @@ fun SessionsRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AllSessionsScreen(
-    route: String,
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToDay: (LocalDate) -> Unit,
@@ -132,7 +127,6 @@ private fun AllSessionsScreen(
                     stickyHeader {
 
                         Surface(
-//                            color = MaterialTheme.colorScheme.background,
                             tonalElevation = 10.dp,
 
                         ) {
@@ -229,7 +223,6 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
 
     var i = 0
     AllSessionsScreen(
-        route = "theroute",
         onToggleSchedule = { },
         navigateToDetail = {},
         navigateToDay = {},
@@ -248,7 +241,6 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
     var i = 0
     JavaZoneTheme(useDarkTheme = true) {
         AllSessionsScreen(
-            route = "theroute",
             onToggleSchedule = { },
             navigateToDetail = {},
             navigateToDay = {},
