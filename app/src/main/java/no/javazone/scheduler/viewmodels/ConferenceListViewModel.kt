@@ -1,10 +1,7 @@
 package no.javazone.scheduler.viewmodels
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
@@ -47,18 +44,20 @@ class ConferenceListViewModel(
 
     private var _detailsArg: Pair<String, String> = "" to ""
 
-    val _isReady: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isReady: LiveData<Boolean> = sessions
+        .map {
+            it.data.isNotEmpty()
+        }
+        .asLiveData()
 
-    val isReady: LiveData<Boolean> = _isReady
+
 
     init {
         viewModelScope.launch {
-            _isReady.value = false
             val conf = conference.first {
                 it is SuccessResource<Conference>
             } as SuccessResource<Conference>
             conferenceDays = conf.data.days
-            _isReady.value = true
         }
     }
 
