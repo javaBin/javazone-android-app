@@ -1,13 +1,15 @@
 package no.javazone.scheduler.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.*
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
@@ -49,12 +51,18 @@ class ConferenceListViewModel(
 
     private var _detailsArg: String = ""
 
+    val _isReady: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    val isReady: LiveData<Boolean> = _isReady
+
     init {
         viewModelScope.launch {
+            _isReady.value = false
             val conf = conference.first {
                 it is SuccessResource<Conference>
             } as SuccessResource<Conference>
             conferenceDays = conf.data.days
+            _isReady.value = true
         }
     }
 

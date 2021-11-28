@@ -119,6 +119,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion"
 
+    implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
+
     // unittesting
     testImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "junit:junit:$junitVersion"

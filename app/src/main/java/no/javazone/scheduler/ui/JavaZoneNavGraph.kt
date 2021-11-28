@@ -15,7 +15,6 @@ import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.info.InfoRoute
-import no.javazone.scheduler.ui.landing.LandingRoute
 import no.javazone.scheduler.ui.partners.PartnersRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.SessionDetailRoute
@@ -94,14 +93,6 @@ fun JavaZoneNavGraph(
                 route = JavaZoneDestinations.SESSION_ROUTE,
                 viewModel = viewModel,
                 sessionId = sessionId
-            )
-        }
-        composable(
-            route = LandingScreen.route
-        ) { entry ->
-            LandingRoute(
-                navController = navController,
-                viewModel = viewModel
             )
         }
     }

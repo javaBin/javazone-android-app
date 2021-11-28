@@ -43,7 +43,7 @@ fun ConferenceApp(
 
         val navBackStackEntry =
             navController.currentBackStackEntryFlow.collectAsState(null).value
-        val currentRoute = navBackStackEntry?.destination?.route ?: LandingScreen.route
+        val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route
 
         Surface {
 
