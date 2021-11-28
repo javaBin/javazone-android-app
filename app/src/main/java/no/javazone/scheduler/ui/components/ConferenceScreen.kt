@@ -35,7 +35,7 @@ sealed interface ConferenceScreen {
             with (route) {
                 when {
                     startsWith(JavaZoneDestinations.SESSIONS_ROUTE) -> SessionsScreen
-                    startsWith(JavaZoneDestinations.SESSION_ROUTE) -> SessionScreen
+                    startsWith(JavaZoneDestinations.DETAILS_ROUTE) -> DetailsScreen
                     startsWith(JavaZoneDestinations.MY_SCHEDULE_ROUTE) -> MyScheduleScreen
                     startsWith(JavaZoneDestinations.INFO_ROUTE) -> InfoScreen
                     startsWith(JavaZoneDestinations.PARTNERS_ROUTE) -> PartnerScreen
@@ -55,7 +55,7 @@ object JavaZoneDestinations {
     const val MY_SCHEDULE_ROUTE = "schedule"
     const val INFO_ROUTE = "info"
     const val PARTNERS_ROUTE = "partners"
-    const val SESSION_ROUTE = "detail_session"
+    const val DETAILS_ROUTE = "detail_session"
 }
 
 
@@ -114,9 +114,9 @@ object PartnerScreen : ConferenceScreen {
     override val label: Int = R.string.partners
 }
 
-object SessionScreen : ConferenceScreen {
+object DetailsScreen : ConferenceScreen {
     override val icon: ImageVector =  Icons.Outlined.Info
-    override val route: String = "${JavaZoneDestinations.SESSION_ROUTE}/{id}"
+    override val route: String = "${JavaZoneDestinations.DETAILS_ROUTE}/{id}"
     override val label: Int = R.string.session
 
 }

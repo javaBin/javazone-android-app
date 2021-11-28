@@ -16,7 +16,7 @@ import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.info.InfoRoute
 import no.javazone.scheduler.ui.partners.PartnersRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
-import no.javazone.scheduler.ui.sessions.SessionDetailRoute
+import no.javazone.scheduler.ui.sessions.DetailsRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.toJzLocalDate
@@ -75,7 +75,7 @@ fun JavaZoneNavGraph(
             PartnersRoute(appContainer)
         }
         composable(
-            route = SessionScreen.route,
+            route = DetailsScreen.route,
             arguments = listOf(navArgument(name = "id") {
                 type = NavType.StringType
                 defaultValue = "NULLNULLNULL"
@@ -91,8 +91,8 @@ fun JavaZoneNavGraph(
             val fromRoute = navController.previousBackStackEntry?.destination?.route ?:
             viewModel.getDetailsArg().second
 
-            SessionDetailRoute(
-                route = JavaZoneDestinations.SESSION_ROUTE,
+            DetailsRoute(
+                route = JavaZoneDestinations.DETAILS_ROUTE,
                 fromRoute = fromRoute,
                 navController = navController,
                 viewModel = viewModel,

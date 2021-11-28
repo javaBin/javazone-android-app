@@ -34,7 +34,7 @@ import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SessionDetailRoute(
+fun DetailsRoute(
     route: String,
     fromRoute: String,
     navController: NavHostController,
@@ -48,7 +48,7 @@ fun SessionDetailRoute(
         .find { it.id == talkId }
         ?: return
 
-    SessionDetailContent(
+    DetailsContent(
         session = session,
         onBackClick = ConferenceScreen.currentScreen(fromRoute).navigateTo(navController)
     )
@@ -56,7 +56,7 @@ fun SessionDetailRoute(
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-private fun SessionDetailContent(
+private fun DetailsContent(
     session: ConferenceTalk,
     onBackClick: () -> Unit
 ) {
@@ -175,15 +175,15 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
 
 @Composable
 @Preview(name = "Light Theme")
-fun SessionDetailContentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
-    SessionDetailContent(session = session, onBackClick = {})
+fun DetailsContentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+    DetailsContent(session = session, onBackClick = {})
 }
 
 @Composable
 @Preview(name = "Dark Theme", uiMode = UI_MODE_NIGHT_YES)
-fun SessionDetailContentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+fun DetailsContentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
     JavaZoneTheme(useDarkTheme = true) {
-        SessionDetailContent(session = session, onBackClick = {})
+        DetailsContent(session = session, onBackClick = {})
     }
 }
 
