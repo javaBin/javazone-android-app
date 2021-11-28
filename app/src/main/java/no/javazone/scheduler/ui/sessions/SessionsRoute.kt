@@ -15,7 +15,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,9 +46,7 @@ fun SessionsRoute(
     val resource = viewModel.sessions.collectAsState().value
     val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
-    var selectedDay by remember {
-        mutableStateOf(viewModel.getDefaultDate())
-    }
+    val selectedDay = viewModel.selectedDay.value
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
@@ -60,7 +59,7 @@ fun SessionsRoute(
                 DetailsScreen.navigateTo(navController, talkId)()
             },
             navigateToDay = { selectDay ->
-                selectedDay = selectDay
+                viewModel.updateSelectedDay(selectDay)
             },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,

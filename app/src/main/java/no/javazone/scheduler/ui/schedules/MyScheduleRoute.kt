@@ -82,7 +82,7 @@ private fun MyScheduleScreen(
                         ) {
                             Text(
                                 text = slot.format(SessionDateFormat),
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.headlineLarge
                             )
                         }
                     }

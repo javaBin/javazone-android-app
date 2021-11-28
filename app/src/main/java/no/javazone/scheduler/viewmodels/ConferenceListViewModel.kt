@@ -1,5 +1,8 @@
 package no.javazone.scheduler.viewmodels
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -50,6 +53,9 @@ class ConferenceListViewModel(
         }
         .asLiveData()
 
+    private var _selectedDay: MutableState<LocalDate> = mutableStateOf(LocalDate.MIN)
+
+    val selectedDay: State<LocalDate> = _selectedDay
 
 
     init {
@@ -58,6 +64,7 @@ class ConferenceListViewModel(
                 it is SuccessResource<Conference>
             } as SuccessResource<Conference>
             conferenceDays = conf.data.days
+            _selectedDay.value = getDefaultDate()
         }
     }
 
@@ -129,6 +136,10 @@ class ConferenceListViewModel(
     }
 
     fun getDetailsArg(): Pair<String, String> = _detailsArg
+
+    fun updateSelectedDay(select: LocalDate) {
+        _selectedDay.value = select
+    }
 
     /**
      * Factory for HomeViewModel that takes PostsRepository as a dependency
