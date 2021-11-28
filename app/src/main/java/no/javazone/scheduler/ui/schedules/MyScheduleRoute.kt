@@ -52,7 +52,7 @@ fun MyScheduleRoute(
             Log.w("SessionviewDebug", "Session is $talkId")
             //navController.navigate(deepLink= "detail_session/${talk.id}"
             //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-            viewModel.updateDetailsArg(talkId)
+            viewModel.updateDetailsArg(talkId, route)
             navController.navigate(route = "${JavaZoneDestinations.SESSION_ROUTE}/${talkId}")
         },
         conferenceTalks = viewModel.selectMySchedule(

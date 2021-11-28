@@ -2,11 +2,11 @@ package no.javazone.scheduler.ui.sessions
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,9 +18,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.ui.components.ConferenceScreen
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -33,22 +35,30 @@ import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 @Composable
 fun SessionDetailRoute(
     route: String,
+    fromRoute: String,
+    navController: NavHostController,
     viewModel: ConferenceListViewModel,
-    sessionId: String,
+    talkId: String,
 ) {
-    Log.d(LOG_TAG, "SessionDetailRoute route: $route, sessionId: $sessionId")
+    Log.d(LOG_TAG, "SessionDetailRoute route: $route, talkId: $talkId, from: $fromRoute")
 
     val session = viewModel.sessions.collectAsState().value.data
         .flatMap { it.talks }
-        .find { it.id == sessionId }
+        .find { it.id == talkId }
         ?: return
 
-    SessionDetailFragment(session)
+    SessionDetailContent(
+        session = session,
+        onBackClick = ConferenceScreen.currentScreen(fromRoute).navigateTo(navController)
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-private fun SessionDetailFragment(session: ConferenceTalk) {
+private fun SessionDetailContent(
+    session: ConferenceTalk,
+    onBackClick: () -> Unit
+) {
 
     val scrollState = rememberScrollState()
     Surface(
@@ -61,6 +71,19 @@ private fun SessionDetailFragment(session: ConferenceTalk) {
                 .verticalScroll(scrollState)
                 .padding(10.dp)
         ) {
+            Row(
+                modifier = Modifier
+                    .align(alignment = Alignment.Start)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier.clickable {
+                        onBackClick()
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
@@ -141,15 +164,15 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
 
 @Composable
 @Preview(name = "Light Theme")
-fun SessionDetailFragmentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
-    SessionDetailFragment(session = session)
+fun SessionDetailContentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+    SessionDetailContent(session = session, onBackClick = {})
 }
 
 @Composable
 @Preview(name = "Dark Theme", uiMode = UI_MODE_NIGHT_YES)
-fun SessionDetailFragmentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
+fun SessionDetailContentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
     JavaZoneTheme(useDarkTheme = true) {
-        SessionDetailFragment(session = session)
+        SessionDetailContent(session = session, onBackClick = {})
     }
 }
 

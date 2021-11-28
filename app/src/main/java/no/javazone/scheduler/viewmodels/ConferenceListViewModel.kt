@@ -1,15 +1,11 @@
 package no.javazone.scheduler.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
@@ -49,7 +45,7 @@ class ConferenceListViewModel(
             initialValue = emptyList()
         )
 
-    private var _detailsArg: String = ""
+    private var _detailsArg: Pair<String, String> = "" to ""
 
     val _isReady: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -129,11 +125,11 @@ class ConferenceListViewModel(
         }
     }
 
-    fun updateDetailsArg(arg: String) {
-        _detailsArg = arg
+    fun updateDetailsArg(arg: String, from: String) {
+        _detailsArg = arg to from
     }
 
-    fun getDetailsArg(): String = _detailsArg
+    fun getDetailsArg(): Pair<String, String> = _detailsArg
 
     /**
      * Factory for HomeViewModel that takes PostsRepository as a dependency

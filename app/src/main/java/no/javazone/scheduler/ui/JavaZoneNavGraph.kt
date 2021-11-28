@@ -9,7 +9,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
@@ -29,7 +28,7 @@ import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 fun JavaZoneNavGraph(
     appContainer: AppContainer,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     startDestination: String = SessionsScreen.route
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
@@ -87,12 +86,17 @@ fun JavaZoneNavGraph(
                 entryArg
             } else {
                 Log.d(LOG_TAG, "Bug workaround: arguments null, retrieve from viewModel")
-                viewModel.getDetailsArg()
+                viewModel.getDetailsArg().first
             }
+            val fromRoute = navController.previousBackStackEntry?.destination?.route ?:
+            viewModel.getDetailsArg().second
+
             SessionDetailRoute(
                 route = JavaZoneDestinations.SESSION_ROUTE,
+                fromRoute = fromRoute,
+                navController = navController,
                 viewModel = viewModel,
-                sessionId = sessionId
+                talkId = sessionId
             )
         }
     }
