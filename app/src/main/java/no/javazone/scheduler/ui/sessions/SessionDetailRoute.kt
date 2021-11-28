@@ -6,6 +6,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -123,21 +124,31 @@ private fun SessionDetailContent(
                     Row {
 
                         Column {
-                            Image(
-                                painter = rememberImagePainter(speaker.avatarUrl),
-                                contentDescription = speaker.name,
-                                modifier = Modifier.size(74.dp)
-                            )
+                            if (speaker.avatarUrl != null) {
+                                Image(
+                                    painter = rememberImagePainter(speaker.avatarUrl),
+                                    contentDescription = speaker.name,
+                                    modifier = Modifier.size(74.dp)
+                                )
+                            } else {
+                                Image(
+                                    imageVector = Icons.Filled.Person,
+                                    contentDescription = speaker.name,
+                                    modifier = Modifier.size(74.dp)
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
 
                             Text(text = speaker.name, style = MaterialTheme.typography.titleMedium)
                             Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = "Twitter: ${speaker.twitter ?: ""}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            speaker.twitter?.let { twitter ->
+                                Text(
+                                    text = "Twitter: $twitter",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -177,5 +188,8 @@ fun SessionDetailContentDarkPreview(@PreviewParameter(SampleTalkProvider::class)
 }
 
 class SampleTalkProvider : PreviewParameterProvider<ConferenceTalk> {
-    override val values = sequenceOf(sampleTalks.first())
+    override val values = sequenceOf(
+        sampleTalks.first(),
+        sampleTalks.last()
+    )
 }
