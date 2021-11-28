@@ -62,11 +62,11 @@ object JavaZoneDestinations {
 
 object SessionsScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Filled.CalendarToday
-    override val route: String = "${JavaZoneDestinations.SESSIONS_ROUTE}?day={day}"
+    override val route: String = "${JavaZoneDestinations.SESSIONS_ROUTE}"
     override val label: Int = R.string.sessions
 
-    override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
-        val argRoute = "${JavaZoneDestinations.SESSIONS_ROUTE}?day=$arg"
+    override fun navigateTo(navController: NavHostController): () -> Unit = {
+        val argRoute = JavaZoneDestinations.SESSIONS_ROUTE
         Log.d(LOG_TAG, "Changing screen to $argRoute")
         navController.navigate(argRoute) {
             // Pop up to the start destination of the graph to
@@ -119,4 +119,21 @@ object DetailsScreen : ConferenceScreen {
     override val route: String = "${JavaZoneDestinations.DETAILS_ROUTE}/{id}"
     override val label: Int = R.string.session
 
+    override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
+        val argRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$arg"
+        Log.d(LOG_TAG, "Changing screen to $argRoute")
+        navController.navigate(argRoute) {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+    }
 }

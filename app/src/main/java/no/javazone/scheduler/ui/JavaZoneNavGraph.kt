@@ -19,7 +19,6 @@ import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.DetailsRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.LOG_TAG
-import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
 @ExperimentalCoilApi
@@ -41,22 +40,12 @@ fun JavaZoneNavGraph(
         modifier = modifier
     ) {
         composable(
-            route = SessionsScreen.route,
-            arguments = listOf(navArgument(name = "day") {
-                type = NavType.StringType
-                nullable = true
-            })
-        ) { entry ->
-            var day = entry.arguments
-                ?.getString("day")
-                ?.toJzLocalDate()
-            day = day ?: viewModel.getDefaultDate()
-
+            route = SessionsScreen.route
+        ) {
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
-                viewModel = viewModel,
-                day = day
+                viewModel = viewModel
             )
         }
         composable(

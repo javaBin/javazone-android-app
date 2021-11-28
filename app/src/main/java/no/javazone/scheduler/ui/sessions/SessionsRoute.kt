@@ -15,8 +15,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,15 +38,16 @@ import java.time.OffsetDateTime
 fun SessionsRoute(
     navController: NavHostController,
     route: String,
-    viewModel: ConferenceListViewModel,
-    day: LocalDate
+    viewModel: ConferenceListViewModel
 ) {
     Log.d(LOG_TAG, "route: $route")
 
     val resource = viewModel.sessions.collectAsState().value
     val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
-    val selectedDay = day
+    var selectedDay by remember {
+        mutableStateOf(viewModel.getDefaultDate())
+    }
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
@@ -57,10 +57,10 @@ fun SessionsRoute(
                 val newRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$talkId"
                 Log.d(LOG_TAG, "Navigating to $newRoute")
                 viewModel.updateDetailsArg(talkId, route)
-                DetailsScreen.navigateTo(navController, talkId)
+                DetailsScreen.navigateTo(navController, talkId)()
             },
             navigateToDay = { selectDay ->
-                navController.navigate(route = "$route?day=${selectDay.toJzString()}")
+                selectedDay = selectDay
             },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,

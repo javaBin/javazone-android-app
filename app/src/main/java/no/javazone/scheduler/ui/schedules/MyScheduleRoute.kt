@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceTalk
-import no.javazone.scheduler.ui.components.JavaZoneDestinations
+import no.javazone.scheduler.ui.components.DetailsScreen
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionDateFormat
@@ -53,7 +53,7 @@ fun MyScheduleRoute(
             //navController.navigate(deepLink= "detail_session/${talk.id}"
             //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
             viewModel.updateDetailsArg(talkId, route)
-            navController.navigate(route = "${JavaZoneDestinations.DETAILS_ROUTE}/${talkId}")
+            DetailsScreen.navigateTo(navController, talkId)()
         },
         conferenceTalks = viewModel.selectMySchedule(
             resource.data,
