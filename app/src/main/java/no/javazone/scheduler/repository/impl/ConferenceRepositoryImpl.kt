@@ -14,7 +14,6 @@ import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.Resource
-import no.javazone.scheduler.utils.SuccessResource
 import no.javazone.scheduler.utils.networkBoundResource
 import java.time.OffsetDateTime
 
@@ -59,8 +58,8 @@ class ConferenceRepositoryImpl private constructor(
         },
         fetch = {
             val conference = (getConference().first {
-                it is SuccessResource<Conference>
-            } as SuccessResource<Conference>).data
+                it.data != Conference.NULL_INSTANCE
+            }.data)
 
             Log.d(LOG_TAG, "fetching sessions from ${conference.conferenceUrl}")
             api.fetchSessions(conference.conferenceUrl)

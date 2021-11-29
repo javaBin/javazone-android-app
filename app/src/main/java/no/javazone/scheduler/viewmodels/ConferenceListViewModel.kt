@@ -14,7 +14,7 @@ import no.javazone.scheduler.repository.ConferenceRepository
 import no.javazone.scheduler.utils.DEFAULT_CONFERENCE_DAYS
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
-import no.javazone.scheduler.utils.SuccessResource
+import no.javazone.scheduler.utils.WORKSHOP_DAY
 import java.time.LocalDate
 
 class ConferenceListViewModel(
@@ -53,7 +53,7 @@ class ConferenceListViewModel(
         }
         .asLiveData()
 
-    private var _selectedDay: MutableState<LocalDate> = mutableStateOf(LocalDate.MIN)
+    private var _selectedDay: MutableState<LocalDate> = mutableStateOf(WORKSHOP_DAY)
 
     val selectedDay: State<LocalDate> = _selectedDay
 
@@ -61,8 +61,8 @@ class ConferenceListViewModel(
     init {
         viewModelScope.launch {
             val conf = conference.first {
-                it is SuccessResource<Conference>
-            } as SuccessResource<Conference>
+                it.data != Conference.NULL_INSTANCE
+            }
             conferenceDays = conf.data.days
             _selectedDay.value = getDefaultDate()
         }

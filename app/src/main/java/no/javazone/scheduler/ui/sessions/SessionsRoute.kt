@@ -72,17 +72,23 @@ fun SessionsRoute(
     }
 
     when (resource) {
-        is SuccessResource -> toAllSessionScreen()
+        is SuccessResource -> {
+            Log.d(LOG_TAG, "Successfully retrieved sessions")
+            toAllSessionScreen()
+        }
         is LoadingResource -> {
             if (resource.data.isEmpty()) {
+                Log.d(LOG_TAG, "Loading sessions, no data")
                 FullScreenLoading()
             } else {
+                Log.d(LOG_TAG, "Loading sessions, has data")
                 toAllSessionScreen()
             }
         }
         is ErrorResource -> {
 
             if (resource.data.isNotEmpty()) {
+                Log.d(LOG_TAG, "Loading sessions, has data")
                 toAllSessionScreen()
             }
         }
