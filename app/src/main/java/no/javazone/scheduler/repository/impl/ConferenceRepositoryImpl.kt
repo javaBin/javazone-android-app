@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import no.javazone.scheduler.api.ConferenceSessionApi
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.model.Partner
 import no.javazone.scheduler.repository.AppDatabase
 import no.javazone.scheduler.repository.ConferenceDao
 import no.javazone.scheduler.repository.ConferenceRepository
@@ -80,12 +78,6 @@ class ConferenceRepositoryImpl private constructor(
                 schedules.map { it.talkId }
             }
 
-    override fun getPartners(): Flow<List<Partner>> = flow {
-        if (assetApi != null) {
-            emit(assetApi.fetchPartners())
-        }
-    }
-
     override suspend fun addOrRemoveSchedule(talkId: String) {
         db.withTransaction {
             if (dao.deleteSchedule(Schedule(talkId)) == 0) {
@@ -150,22 +142,24 @@ class ConferenceRepositoryImpl private constructor(
         timeSlots: List<TimeSlotEntity>,
         rooms: List<RoomEntity>
     ) {
+        dao.deleteAllSpeakers()
+
         val talks = conferenceSessions.flatMap { it.talks }
         talks.forEach { talk ->
             val room = rooms.first { it.name == talk.room.name }
             val timeSlot = timeSlots.first { it.startTime == talk.slotTime }
 
             dao.addTalk(talk.toConferenceEntity(room, timeSlot))
-            talk.speakers.forEach { speaker ->
-                val id = dao.addSpeaker(speaker.toConferenceEntity())
+            talk.speakers.forEach { conferenceSpeaker ->
+                val storedSpeaker = dao.findSpeaker(conferenceSpeaker.name)
+
+                val id = storedSpeaker?.speakerId ?: dao.addSpeaker(conferenceSpeaker.toConferenceEntity())
                 dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = talk.id, speakerId = id))
             }
         }
     }
 
     companion object {
-        private const val CACHE_EXPIRE_MIN = 10L
-
         @Volatile
         private var instance: ConferenceRepository? = null
 

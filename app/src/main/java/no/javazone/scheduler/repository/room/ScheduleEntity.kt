@@ -1,7 +1,7 @@
 package no.javazone.scheduler.repository.room
 
 import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.NO_ACTION
 
 @Entity(
     tableName = "schedules",
@@ -12,8 +12,9 @@ import androidx.room.ForeignKey.CASCADE
             parentColumns = ["talk_id"],
             childColumns = ["talk_id"],
             deferred = true,
-            onUpdate = CASCADE,
-            onDelete = CASCADE)
+            onUpdate = NO_ACTION,
+            onDelete = NO_ACTION
+        )
     ]
 )
 data class ScheduleEntity(

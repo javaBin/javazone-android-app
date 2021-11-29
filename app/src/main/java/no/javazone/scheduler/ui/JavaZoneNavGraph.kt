@@ -9,19 +9,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.info.InfoRoute
-import no.javazone.scheduler.ui.landing.LandingRoute
 import no.javazone.scheduler.ui.partners.PartnersRoute
 import no.javazone.scheduler.ui.schedules.MyScheduleRoute
-import no.javazone.scheduler.ui.sessions.SessionDetailRoute
+import no.javazone.scheduler.ui.sessions.DetailsRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.LOG_TAG
-import no.javazone.scheduler.utils.toJzLocalDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
 @ExperimentalCoilApi
@@ -30,7 +27,7 @@ import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 fun JavaZoneNavGraph(
     appContainer: AppContainer,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     startDestination: String = SessionsScreen.route
 ) {
     val viewModel: ConferenceListViewModel = viewModel(
@@ -43,22 +40,12 @@ fun JavaZoneNavGraph(
         modifier = modifier
     ) {
         composable(
-            route = SessionsScreen.route,
-            arguments = listOf(navArgument(name = "day") {
-                type = NavType.StringType
-                nullable = true
-            })
-        ) { entry ->
-            var day = entry.arguments
-                ?.getString("day")
-                ?.toJzLocalDate()
-            day = day ?: viewModel.getDefaultDate()
-
+            route = SessionsScreen.route
+        ) {
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
-                viewModel = viewModel,
-                day = day
+                viewModel = viewModel
             )
         }
         composable(
@@ -74,13 +61,10 @@ fun JavaZoneNavGraph(
             InfoRoute()
         }
         composable(route = PartnerScreen.route) {
-            PartnersRoute(
-                appContainer,
-                viewModel
-            )
+            PartnersRoute(appContainer)
         }
         composable(
-            route = SessionScreen.route,
+            route = DetailsScreen.route,
             arguments = listOf(navArgument(name = "id") {
                 type = NavType.StringType
                 defaultValue = "NULLNULLNULL"
@@ -91,20 +75,17 @@ fun JavaZoneNavGraph(
                 entryArg
             } else {
                 Log.d(LOG_TAG, "Bug workaround: arguments null, retrieve from viewModel")
-                viewModel.getDetailsArg()
+                viewModel.getDetailsArg().first
             }
-            SessionDetailRoute(
-                route = JavaZoneDestinations.SESSION_ROUTE,
-                viewModel = viewModel,
-                sessionId = sessionId
-            )
-        }
-        composable(
-            route = LandingScreen.route
-        ) { entry ->
-            LandingRoute(
+            val fromRoute = navController.previousBackStackEntry?.destination?.route ?:
+            viewModel.getDetailsArg().second
+
+            DetailsRoute(
+                route = JavaZoneDestinations.DETAILS_ROUTE,
+                fromRoute = fromRoute,
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
+                talkId = sessionId
             )
         }
     }

@@ -2,11 +2,35 @@ package no.javazone.scheduler.model
 
 import android.util.Log
 import no.javazone.scheduler.dto.*
+import no.javazone.scheduler.utils.FIRST_CONFERENCE_DAY
 import no.javazone.scheduler.utils.JAVAZONE_DATE_PATTERN
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.WORKSHOP_DAY
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+
+private val DEFAULT_WORKSHOP_START_TIME =
+    OffsetDateTime.of(WORKSHOP_DAY, LocalTime.of(9, 0), ZoneOffset.UTC)
+private val DEFAULT_FIRST_START_TIME =
+    OffsetDateTime.of(FIRST_CONFERENCE_DAY, LocalTime.NOON, ZoneOffset.UTC)
+private val DEFAULT_WORKSHOP_END_TIME = OffsetDateTime.of(
+    WORKSHOP_DAY,
+    LocalTime.of(16, 0),
+    ZoneOffset.UTC
+)
+private val DEFAULT_FIRST_END_TIME = OffsetDateTime.of(
+    FIRST_CONFERENCE_DAY,
+    LocalTime.of(16, 0),
+    ZoneOffset.UTC
+)
+
+/**
+ * Max number of minutes break between lightning talks
+ */
+private const val LIGHTNING_BREAKS = 11L
 
 fun ConferenceDto.toModel(): Conference =
     Conference(
@@ -72,7 +96,7 @@ fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSess
     }
 
     roomTalks.forEach {
-        it.value.sortWith(Comparator { o1, o2 -> o1.startTime.compareTo(o2.startTime) })
+        it.value.sortWith { o1, o2 -> o1.startTime.compareTo(o2.startTime) }
     }
 
     val sessions = mutableListOf<ConferenceSession>()
@@ -85,7 +109,9 @@ fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSess
                 prev = talk
                 continue
             }
-            if (prev.endTime.isEqual(talk.startTime)) {
+            // For 10 min lightning talks, there is a 5 min breaks between each session.
+            // For 20 min lightning talks, there is a 10 min break.
+            if (prev.endTime.plusMinutes(LIGHTNING_BREAKS).isAfter(talk.startTime)) {
                 current.add(talk)
                 prev = talk
             } else {
@@ -107,8 +133,16 @@ private fun SessionDto.toModel(): ConferenceTalk? {
         ConferenceTalk(
             id = sessionId,
             title = title,
-            startTime = OffsetDateTime.parse(startTimeZulu),
-            endTime = OffsetDateTime.parse(endTimeZulu),
+            startTime = if (startTimeZulu != null) OffsetDateTime.parse(startTimeZulu) else getDefaultTime(
+                format,
+                DEFAULT_WORKSHOP_START_TIME,
+                DEFAULT_FIRST_START_TIME
+            ),
+            endTime = if (endTimeZulu != null) OffsetDateTime.parse(endTimeZulu) else getDefaultTime(
+                format,
+                DEFAULT_WORKSHOP_END_TIME,
+                DEFAULT_FIRST_END_TIME
+            ),
             length = length,
             intendedAudience = intendedAudience,
             language = language,
@@ -121,6 +155,19 @@ private fun SessionDto.toModel(): ConferenceTalk? {
     } catch (ex: Exception) {
         Log.e(LOG_TAG, "Unknown format: $format")
         null
+    }
+}
+
+private fun getDefaultTime(
+    format: String,
+    workshopTime: OffsetDateTime,
+    conferenceTime: OffsetDateTime
+): OffsetDateTime {
+    val conference = format.toConferenceFormat()
+    return if (conference == ConferenceFormat.WORKSHOP) {
+        workshopTime
+    } else {
+        conferenceTime
     }
 }
 

@@ -1,20 +1,21 @@
 package no.javazone.scheduler.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.*
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import no.javazone.scheduler.model.*
+import no.javazone.scheduler.model.Conference
+import no.javazone.scheduler.model.ConferenceDate
+import no.javazone.scheduler.model.ConferenceSession
+import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.ConferenceRepository
+import no.javazone.scheduler.utils.DEFAULT_CONFERENCE_DAYS
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
 import no.javazone.scheduler.utils.SuccessResource
 import java.time.LocalDate
-import java.time.OffsetDateTime
 
 class ConferenceListViewModel(
     private val repository: ConferenceRepository
@@ -44,14 +45,18 @@ class ConferenceListViewModel(
             initialValue = emptyList()
         )
 
-    val partners: StateFlow<List<Partner>> = repository.getPartners()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-            initialValue = emptyList()
-        )
+    private var _detailsArg: Pair<String, String> = "" to ""
 
-    private var _detailsArg: String = ""
+    val isReady: LiveData<Boolean> = sessions
+        .map {
+            it.data.isNotEmpty()
+        }
+        .asLiveData()
+
+    private var _selectedDay: MutableState<LocalDate> = mutableStateOf(LocalDate.MIN)
+
+    val selectedDay: State<LocalDate> = _selectedDay
+
 
     init {
         viewModelScope.launch {
@@ -59,6 +64,7 @@ class ConferenceListViewModel(
                 it is SuccessResource<Conference>
             } as SuccessResource<Conference>
             conferenceDays = conf.data.days
+            _selectedDay.value = getDefaultDate()
         }
     }
 
@@ -96,7 +102,7 @@ class ConferenceListViewModel(
     fun selectMySchedule(
         sessions: List<ConferenceSession>,
         mySchedule: List<String>
-    ): Map<OffsetDateTime, List<ConferenceTalk>> =
+    ): Map<LocalDate, List<ConferenceTalk>> =
         sessions
             .map { session ->
                 session.copy(
@@ -116,7 +122,7 @@ class ConferenceListViewModel(
                 it.slotTime
             }
             .groupBy {
-                it.slotTime
+                it.slotTime.toLocalDate()
             }
 
     fun addOrRemoveSchedule(talkId: String) {
@@ -125,11 +131,15 @@ class ConferenceListViewModel(
         }
     }
 
-    fun updateDetailsArg(arg: String) {
-        _detailsArg = arg
+    fun updateDetailsArg(arg: String, from: String) {
+        _detailsArg = arg to from
     }
 
-    fun getDetailsArg(): String = _detailsArg
+    fun getDetailsArg(): Pair<String, String> = _detailsArg
+
+    fun updateSelectedDay(select: LocalDate) {
+        _selectedDay.value = select
+    }
 
     /**
      * Factory for HomeViewModel that takes PostsRepository as a dependency
@@ -143,11 +153,5 @@ class ConferenceListViewModel(
                 return ConferenceListViewModel(repository) as T
             }
         }
-
-        val DEFAULT_CONFERENCE_DAYS = listOf(
-            LocalDate.of(2019, 9, 10),
-            LocalDate.of(2019, 9, 11),
-            LocalDate.of(2019, 9, 12),
-        )
     }
 }

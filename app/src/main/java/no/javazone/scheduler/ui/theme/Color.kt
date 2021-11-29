@@ -1,25 +1,58 @@
-/*
- * Copyright 2020 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package no.javazone.scheduler.ui.theme
-
 import androidx.compose.ui.graphics.Color
 
-val Red200 = Color(0xfff297a2)
-val Red300 = Color(0xffea6d7e)
-val Red700 = Color(0xffdd0d3c)
-val Red800 = Color(0xffd00036)
-val Red900 = Color(0xffc20029)
+
+val md_theme_light_primary = Color(0xFF5454ac)
+val md_theme_light_onPrimary = Color(0xFFffffff)
+val md_theme_light_primaryContainer = Color(0xFFe1e0ff)
+val md_theme_light_onPrimaryContainer = Color(0xFF0c0368)
+val md_theme_light_secondary = Color(0xFF566500)
+val md_theme_light_onSecondary = Color(0xFFffffff)
+val md_theme_light_secondaryContainer = Color(0xFFd6ef49)
+val md_theme_light_onSecondaryContainer = Color(0xFF181e00)
+val md_theme_light_tertiary = Color(0xFFad2273)
+val md_theme_light_onTertiary = Color(0xFFffffff)
+val md_theme_light_tertiaryContainer = Color(0xFFffd9e8)
+val md_theme_light_onTertiaryContainer = Color(0xFF3d0023)
+val md_theme_light_error = Color(0xFFba1b1b)
+val md_theme_light_errorContainer = Color(0xFFffdad4)
+val md_theme_light_onError = Color(0xFFffffff)
+val md_theme_light_onErrorContainer = Color(0xFF410001)
+val md_theme_light_background = Color(0xFFfffbff)
+val md_theme_light_onBackground = Color(0xFF1c1b1e)
+val md_theme_light_surface = Color(0xFFfffbff)
+val md_theme_light_onSurface = Color(0xFF1c1b1e)
+val md_theme_light_surfaceVariant = Color(0xFFe4e1ec)
+val md_theme_light_onSurfaceVariant = Color(0xFF47464f)
+val md_theme_light_outline = Color(0xFF787680)
+val md_theme_light_inverseOnSurface = Color(0xFFf4f0f4)
+val md_theme_light_inverseSurface = Color(0xFF313033)
+
+val md_theme_dark_primary = Color(0xFFc1c1ff)
+val md_theme_dark_onPrimary = Color(0xFF24227b)
+val md_theme_dark_primaryContainer = Color(0xFF3c3c92)
+val md_theme_dark_onPrimaryContainer = Color(0xFFe1e0ff)
+val md_theme_dark_secondary = Color(0xFFbad22c)
+val md_theme_dark_onSecondary = Color(0xFF2b3400)
+val md_theme_dark_secondaryContainer = Color(0xFF404c00)
+val md_theme_dark_onSecondaryContainer = Color(0xFFd6ef49)
+val md_theme_dark_tertiary = Color(0xFFffafd3)
+val md_theme_dark_onTertiary = Color(0xFF63003d)
+val md_theme_dark_tertiaryContainer = Color(0xFF8b0059)
+val md_theme_dark_onTertiaryContainer = Color(0xFFffd9e8)
+val md_theme_dark_error = Color(0xFFffb4a9)
+val md_theme_dark_errorContainer = Color(0xFF930006)
+val md_theme_dark_onError = Color(0xFF680003)
+val md_theme_dark_onErrorContainer = Color(0xFFffdad4)
+val md_theme_dark_background = Color(0xFF1c1b1e)
+val md_theme_dark_onBackground = Color(0xFFe5e1e6)
+val md_theme_dark_surface = Color(0xFF1c1b1e)
+val md_theme_dark_onSurface = Color(0xFFe5e1e6)
+val md_theme_dark_surfaceVariant = Color(0xFF47464f)
+val md_theme_dark_onSurfaceVariant = Color(0xFFc8c5d0)
+val md_theme_dark_outline = Color(0xFF918f99)
+val md_theme_dark_inverseOnSurface = Color(0xFF1c1b1e)
+val md_theme_dark_inverseSurface = Color(0xFFe5e1e6)
+
+val seed = Color(0xFF404097)
+val error = Color(0xFFba1b1b)

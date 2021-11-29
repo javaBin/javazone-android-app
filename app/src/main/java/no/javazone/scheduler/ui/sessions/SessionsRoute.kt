@@ -1,9 +1,8 @@
 package no.javazone.scheduler.ui.sessions
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,55 +10,56 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.accompanist.insets.navigationBarsPadding
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.ui.components.FullScreenLoading
-import no.javazone.scheduler.ui.components.JavaZoneDestinations
-import no.javazone.scheduler.ui.components.MyScheduleButton
-import no.javazone.scheduler.ui.theme.JavaZoneTypography
+import no.javazone.scheduler.ui.components.*
+import no.javazone.scheduler.ui.theme.JavaZoneTheme
+import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.*
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 import java.time.LocalDate
+import java.time.OffsetDateTime
 
 @Composable
 fun SessionsRoute(
     navController: NavHostController,
     route: String,
-    viewModel: ConferenceListViewModel,
-    day: LocalDate
+    viewModel: ConferenceListViewModel
 ) {
     Log.d(LOG_TAG, "route: $route")
 
     val resource = viewModel.sessions.collectAsState().value
     val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
-    val selectedDay = day
+    val selectedDay = viewModel.selectedDay.value
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
-            route = route,
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
             navigateToDetail = { talkId ->
                 //navController.navigate(deepLink= "detail_session/${talk.id}"
                 //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
-                val newRoute = "${JavaZoneDestinations.SESSION_ROUTE}/$talkId"
+                val newRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$talkId"
                 Log.d(LOG_TAG, "Navigating to $newRoute")
-                viewModel.updateDetailsArg(talkId)
-                navController.navigate(route = newRoute)
+                viewModel.updateDetailsArg(talkId, route)
+                DetailsScreen.navigateTo(navController, talkId)()
             },
             navigateToDay = { selectDay ->
-                navController.navigate(route = "$route?day=${selectDay.toJzString()}")
+                viewModel.updateSelectedDay(selectDay)
             },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,
@@ -93,7 +93,6 @@ fun SessionsRoute(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AllSessionsScreen(
-    route: String,
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToDay: (LocalDate) -> Unit,
@@ -102,114 +101,113 @@ private fun AllSessionsScreen(
     selectedDay: LocalDate
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
-    val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-    ) {
+    Surface() {
         Column {
             Row(
                 modifier = Modifier
-                    .background(color = MaterialTheme.colors.background)
                     .align(alignment = Alignment.CenterHorizontally)
+                    .padding(start = 5.dp, bottom = 10.dp)
+                    .fillMaxWidth()
             ) {
-                conferenceDays.forEach {
-                    OutlinedButton(
-                        modifier = Modifier
-                            .selectable(
-                                selected = it.date == selectedDay,
-                                role = Role.Button,
-                                onClick = {}
-                            )
-                            .navigationBarsPadding(bottom = false),
-                        onClick = {
-                            Log.d("NavController debug", route)
-                            navigateToDay(it.date)
-                        },
-                    ) {
-                        Text(
-                            text = it.label,
-                            style = JavaZoneTypography.button,
-                            color = if (it.date == selectedDay) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
-
+                conferenceDays.sortedBy { it.date }
+                    .forEach {
+                        ConferenceChip(
+                            label = SessionDayFormat.format(it.date),
+                            selected = it.date == selectedDay,
+                            onExecute = { navigateToDay(it.date) }
                         )
                     }
-                }
             }
+
 
             LazyColumn {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
 
-                        Row(
-                            modifier = Modifier
-                                .background(MaterialTheme.colors.surface)
-                                .fillMaxWidth()
+                        Surface(
+                            tonalElevation = 10.dp,
+
                         ) {
-                            Column(
-                                modifier = Modifier.padding(end = 10.dp)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Text(
-                                    session.time.toLocalString(SessionTimeFormat),
-                                    fontSize = 27.sp
-                                )
+                                Column(
+                                    modifier = Modifier
+                                        .padding(start = 10.dp, end = 10.dp)
+                                        .weight(1f)
+                                ) {
+                                    Text(
+                                        session.time.toLocalString(SessionTimeFormat),
+                                        style = MaterialTheme.typography.headlineMedium
+                                    )
+                                }
                             }
                         }
                     }
 
                     items(session.talks) { talk ->
-                        Row(
-                            modifier = Modifier
-                                .padding(1.dp)
-                                .border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
-                                .fillMaxWidth()
-                                .clickable(onClick = {
-                                    Log.w("SessionviewDebug", "Session is ${talk.id}")
-                                    navigateToDetail(talk.id)
-                                })
-
+                        Surface(
                         ) {
-                            Column(
-                                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                            Row(
+                                modifier = Modifier
+                                    //.padding(1.dp)
+                                    //.border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
+                                    .fillMaxWidth()
+                                    .clickable(onClick = {
+                                        Log.w("SessionviewDebug", "Session is ${talk.id}")
+                                        navigateToDetail(talk.id)
+                                    })
+
                             ) {
-                                Text(
-                                    text = talk.startTime.toLocalString(SessionTimeFormat) +
-                                            " - " +
-                                            talk.endTime.toLocalString(SessionTimeFormat),
-                                    fontSize = 10.sp
-                                )
-                                Text(
-                                    text = talk.room.name,
-                                    fontSize = 10.sp
-                                )
-                                Text(
-                                   text = talk.format.name,
-                                   fontSize = 10.sp
-                                )
+                                Column(
+                                    modifier = Modifier.padding(
+                                        top = 16.dp,
+                                        start = 16.dp,
+                                        end = 16.dp
+                                    )
+                                ) {
+                                    Text(
+                                        text = talk.startTime.toLocalString(SessionTimeFormat) +
+                                                " - " +
+                                                talk.endTime.toLocalString(SessionTimeFormat),
+                                        style = MaterialTheme.typography.titleSmall
+                                    )
+                                    Text(
+                                        text = talk.room.name,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                    Text(
+                                        text = talk.format.name,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                                Column(
+                                    Modifier
+                                        .weight(1f)
+                                        .padding(top = 16.dp, bottom = 16.dp),
+                                ) {
+                                    Text(
+                                        modifier = Modifier
+                                            .align(alignment = Alignment.CenterHorizontally)
+                                            .fillMaxWidth(),
+                                        text = talk.title,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                    Text(
+                                        text = talk.speakers.joinToString { it.name },
+                                        style = MaterialTheme.typography.labelLarge
+                                    )
+                                }
+                                IconButton(onClick = { }) {
+                                    MyScheduleButton(
+                                        isScheduled = talk.scheduled,
+                                        onClick = { onToggleSchedule(talk.id) }
+                                    )
+                                }
                             }
-                            Column(
-                                Modifier
-                                    .weight(1f)
-                                    .padding(top = 16.dp, bottom = 16.dp),
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .align(alignment = Alignment.CenterHorizontally)
-                                        .fillMaxWidth(),
-                                    text = talk.title,
-                                    style = JavaZoneTypography.body1
-                                )
-                                Text(
-                                    text = talk.speakers.joinToString { it.name },
-                                    fontSize = 10.sp
-                                )
-                            }
-                            IconButton(onClick = { }) {
-                                MyScheduleButton(
-                                    isScheduled = talk.scheduled,
-                                    onClick = { onToggleSchedule(talk.id) }
-                                )
-                            }
+                            Divider()
                         }
                     }
                 }
@@ -217,3 +215,60 @@ private fun AllSessionsScreen(
         }
     }
 }
+
+@Composable
+@Preview
+fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class) sessions: List<ConferenceSession>) {
+
+    var i = 0
+    AllSessionsScreen(
+        onToggleSchedule = { },
+        navigateToDetail = {},
+        navigateToDay = {},
+        conferenceSessions = sessions,
+        conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
+            ConferenceDate(it, "day ${i++}")
+        },
+        selectedDay = FIRST_CONFERENCE_DAY
+    )
+}
+
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class) sessions: List<ConferenceSession>) {
+
+    var i = 0
+    JavaZoneTheme(useDarkTheme = true) {
+        AllSessionsScreen(
+            onToggleSchedule = { },
+            navigateToDetail = {},
+            navigateToDay = {},
+            conferenceSessions = sessions,
+            conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
+                ConferenceDate(it, "day ${i++}")
+            },
+            selectedDay = FIRST_CONFERENCE_DAY
+        )
+    }
+}
+
+class SampleSessionProvider : PreviewParameterProvider<List<ConferenceSession>> {
+    override val values: Sequence<List<ConferenceSession>> = sequenceOf(
+        listOf(
+            ConferenceSession(
+                time = OffsetDateTime.now().minusHours(1L),
+                talks = sampleTalks
+            ),
+            ConferenceSession(
+                time = OffsetDateTime.now().plusHours(2L),
+                talks = sampleTalks.map {
+                    it.copy(
+                        startTime = it.startTime.plusHours(2L),
+                        endTime = it.endTime.plusHours(2L)
+                    )
+                }
+            )
+        )
+    )
+}
+

@@ -5,14 +5,16 @@ data class ConferenceRoom(val name: String) : Comparable<ConferenceRoom> {
         name.compareTo(other.name)
 
     companion object {
-        val DEFAULT: ConferenceRoom = ConferenceRoom("")
+        val DEFAULT: ConferenceRoom = ConferenceRoom("Room Unknown")
 
         private val CONFERENCE_ROOMS: MutableMap<Int, ConferenceRoom> = mutableMapOf()
 
-        fun create(name: String): ConferenceRoom {
-            val key = name.hashCode()
+        fun create(name: String?): ConferenceRoom {
+            val roomName = name ?: DEFAULT.name
+            val key = roomName.hashCode()
+
             return CONFERENCE_ROOMS.getOrPut(key) {
-                ConferenceRoom(name)
+                ConferenceRoom(roomName)
             }
         }
     }

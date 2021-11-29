@@ -15,9 +15,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:configChanges="uiMode"
+        android:theme="@style/SplashScreenTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.SplashScreenActivity"
+            android:launchMode="singleTask"
             android:exported="true">
 
             <intent-filter>
@@ -26,6 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

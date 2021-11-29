@@ -18,7 +18,9 @@ interface NetworkClient {
     suspend fun getSessions(@Url conferenceUrl: String): SessionsDto
 
     companion object {
-        private val jsonFormatter = Json { ignoreUnknownKeys = true }
+        private val jsonFormatter = Json {
+            ignoreUnknownKeys = true
+        }
 
         @ExperimentalSerializationApi
         fun create(baseUrl: String): NetworkClient =

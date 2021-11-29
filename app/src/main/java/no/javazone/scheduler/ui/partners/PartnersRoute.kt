@@ -17,21 +17,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.model.Partner
-import no.javazone.scheduler.viewmodels.ConferenceListViewModel
+import no.javazone.scheduler.viewmodels.PartnersViewModel
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
 fun PartnersRoute(
-    appContainer: AppContainer,
-    viewModel: ConferenceListViewModel
+    appContainer: AppContainer
 ) {
+    val viewModel: PartnersViewModel = viewModel(
+        factory = PartnersViewModel.provideFactory(appContainer.partnersRepository)
+    )
+
     val partners = viewModel.partners.collectAsState().value
     val context = LocalContext.current
 
@@ -54,7 +58,7 @@ fun PartnersContent(
     imageLoader: ImageLoader
 ) {
     LazyVerticalGrid(
-        cells = GridCells.Adaptive(minSize = 128.dp),
+        cells = GridCells.Adaptive(minSize = 128.dp)
     ) {
         items(partners) { partner ->
             Card(

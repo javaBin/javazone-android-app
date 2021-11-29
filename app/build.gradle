@@ -78,6 +78,7 @@ dependencies {
     implementation "androidx.compose.ui:ui:$composeVersion"
     implementation "androidx.compose.foundation:foundation-layout:$composeVersion"
     implementation "androidx.compose.material:material:$composeVersion"
+    implementation "androidx.compose.material3:material3:$material3Version"
     implementation "androidx.compose.material:material-icons-extended:$composeVersion"
     implementation "androidx.compose.foundation:foundation:$composeVersion"
     implementation "androidx.compose.animation:animation:$composeVersion"
@@ -85,6 +86,8 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$composeVersion"
 
     // google support libraries for android compose
+    implementation "com.google.android.material:material:$googleMaterialversion"
+
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
@@ -98,6 +101,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
 
     implementation "androidx.navigation:navigation-compose:$navVersion"
 
@@ -115,6 +119,9 @@ dependencies {
     // http-client
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion"
+
+    // v31 splash screen - later
+    // implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
 
     // unittesting
     testImplementation "com.google.truth:truth:$truthVersion"

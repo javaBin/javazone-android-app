@@ -7,6 +7,7 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ fun MyScheduleButton(
         ) {
             Icon(
                 imageVector = if (isScheduled) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
+                tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = null // handled by click label of parent
             )
         }

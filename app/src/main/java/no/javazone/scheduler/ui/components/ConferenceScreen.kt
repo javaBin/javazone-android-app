@@ -20,12 +20,6 @@ sealed interface ConferenceScreen {
     fun navigateTo(navController: NavHostController): () -> Unit = {
         Log.d(LOG_TAG, "Changing screen to $route")
         navController.navigate(route) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
             // Avoid multiple copies of the same destination when
             // reselecting the same item
             launchSingleTop = true
@@ -41,11 +35,11 @@ sealed interface ConferenceScreen {
             with (route) {
                 when {
                     startsWith(JavaZoneDestinations.SESSIONS_ROUTE) -> SessionsScreen
-                    startsWith(JavaZoneDestinations.SESSION_ROUTE) -> SessionScreen
+                    startsWith(JavaZoneDestinations.DETAILS_ROUTE) -> DetailsScreen
                     startsWith(JavaZoneDestinations.MY_SCHEDULE_ROUTE) -> MyScheduleScreen
                     startsWith(JavaZoneDestinations.INFO_ROUTE) -> InfoScreen
                     startsWith(JavaZoneDestinations.PARTNERS_ROUTE) -> PartnerScreen
-                    else -> LandingScreen
+                    else -> SessionsScreen
                 }.also {
                     Log.d(LOG_TAG, "Setting ${it.route}:${it.label}")
                 }
@@ -61,19 +55,18 @@ object JavaZoneDestinations {
     const val MY_SCHEDULE_ROUTE = "schedule"
     const val INFO_ROUTE = "info"
     const val PARTNERS_ROUTE = "partners"
-    const val SESSION_ROUTE = "detail_session"
-    const val LANDING_ROUTE = "landing"
+    const val DETAILS_ROUTE = "detail_session"
 }
 
 
 
 object SessionsScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Filled.CalendarToday
-    override val route: String = "${JavaZoneDestinations.SESSIONS_ROUTE}?day={day}"
+    override val route: String = "${JavaZoneDestinations.SESSIONS_ROUTE}"
     override val label: Int = R.string.sessions
 
-    override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
-        val argRoute = "${JavaZoneDestinations.SESSIONS_ROUTE}?day=$arg"
+    override fun navigateTo(navController: NavHostController): () -> Unit = {
+        val argRoute = JavaZoneDestinations.SESSIONS_ROUTE
         Log.d(LOG_TAG, "Changing screen to $argRoute")
         navController.navigate(argRoute) {
             // Pop up to the start destination of the graph to
@@ -100,12 +93,6 @@ object MyScheduleScreen : ConferenceScreen {
         val argRoute = JavaZoneDestinations.MY_SCHEDULE_ROUTE
         Log.d(LOG_TAG, "Changing screen to $argRoute")
         navController.navigate(argRoute) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
             // Avoid multiple copies of the same destination when
             // reselecting the same item
             launchSingleTop = true
@@ -127,15 +114,26 @@ object PartnerScreen : ConferenceScreen {
     override val label: Int = R.string.partners
 }
 
-object SessionScreen : ConferenceScreen {
+object DetailsScreen : ConferenceScreen {
     override val icon: ImageVector =  Icons.Outlined.Info
-    override val route: String = "${JavaZoneDestinations.SESSION_ROUTE}/{id}"
+    override val route: String = "${JavaZoneDestinations.DETAILS_ROUTE}/{id}"
     override val label: Int = R.string.session
 
-}
-
-object LandingScreen : ConferenceScreen {
-    override val icon: ImageVector =  Icons.Outlined.Info
-    override val route: String = JavaZoneDestinations.LANDING_ROUTE
-    override val label: Int = R.string.landing
+    override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
+        val argRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$arg"
+        Log.d(LOG_TAG, "Changing screen to $argRoute")
+        navController.navigate(argRoute) {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+    }
 }
