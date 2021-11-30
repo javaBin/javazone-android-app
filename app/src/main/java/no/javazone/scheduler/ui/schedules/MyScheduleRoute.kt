@@ -28,6 +28,7 @@ import no.javazone.scheduler.ui.components.DetailsScreen
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionDateFormat
+import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.sampleTalks
@@ -73,71 +74,78 @@ private fun MyScheduleScreen(
         LazyColumn {
             conferenceTalks.forEach { (slot, talks) ->
                 stickyHeader {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                    Surface(
+                        tonalElevation = 10.dp,
+
                         ) {
-                            Text(
-                                text = slot.format(SessionDateFormat),
-                                style = MaterialTheme.typography.headlineLarge
-                            )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                            ) {
+                                Text(
+                                    text = slot.format(SessionDayFormat),
+                                    style = MaterialTheme.typography.headlineLarge
+                                )
+                            }
                         }
                     }
                 }
 
                 items(talks) { talk ->
-                    Row(
-                        modifier = Modifier
-                            .padding(1.dp)
-                            .fillMaxWidth()
-                            .clickable(onClick = {
-                                navigateToDetail(talk.id)
-                            })
-
+                    Surface(
                     ) {
-                        Column(
-                            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable(onClick = {
+                                    navigateToDetail(talk.id)
+                                })
+
                         ) {
-                            Text(
-                                text = talk.startTime.toLocalString(SessionTimeFormat) +
-                                        " - " +
-                                        talk.endTime.toLocalString(SessionTimeFormat),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                text = talk.room.name,
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                            Text(
-                                text = talk.format.name,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .weight(1f)
-                                .padding(top = 16.dp, bottom = 16.dp),
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .align(alignment = Alignment.CenterHorizontally)
-                                    .fillMaxWidth(),
-                                text = talk.title,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            Text(
-                                text = talk.speakers.joinToString { it.name },
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                        IconButton(onClick = { }) {
-                            MyScheduleButton(
-                                isScheduled = talk.scheduled,
-                                onClick = { onToggleSchedule(talk.id) }
-                            )
+                            Column(
+                                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                            ) {
+                                Text(
+                                    text = talk.startTime.toLocalString(SessionTimeFormat) +
+                                            " - " +
+                                            talk.endTime.toLocalString(SessionTimeFormat),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = talk.room.name,
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                                Text(
+                                    text = talk.format.name,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                            Column(
+                                Modifier
+                                    .weight(1f)
+                                    .padding(top = 16.dp, bottom = 16.dp),
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(alignment = Alignment.CenterHorizontally)
+                                        .fillMaxWidth(),
+                                    text = talk.title,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    text = talk.speakers.joinToString { it.name },
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                            IconButton(onClick = { }) {
+                                MyScheduleButton(
+                                    isScheduled = talk.scheduled,
+                                    onClick = { onToggleSchedule(talk.id) }
+                                )
+                            }
                         }
                     }
                 }

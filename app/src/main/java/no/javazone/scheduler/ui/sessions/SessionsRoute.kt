@@ -1,13 +1,12 @@
 package no.javazone.scheduler.ui.sessions
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
@@ -109,20 +108,24 @@ private fun AllSessionsScreen(
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
     Surface() {
-        Column {
+        Column (modifier = Modifier.fillMaxWidth()){
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
-                    .padding(start = 5.dp, bottom = 10.dp)
-                    .fillMaxWidth()
+                    .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
+
             ) {
                 conferenceDays.sortedBy { it.date }
                     .forEach {
+                        Column(modifier = Modifier
+                            .padding(start = 4.dp, end = 4.dp)
+                        ){
                         ConferenceChip(
                             label = SessionDayFormat.format(it.date),
                             selected = it.date == selectedDay,
                             onExecute = { navigateToDay(it.date) }
                         )
+                        }
                     }
             }
 
