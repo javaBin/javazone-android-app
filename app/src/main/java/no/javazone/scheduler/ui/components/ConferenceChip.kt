@@ -29,7 +29,7 @@ fun ConferenceChip(
     Surface(
         elevation = 8.dp,
         shape = JavaZoneShapes.large,
-        color = if (selected) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.secondary
+        color = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.outline
     ) {
         Row(
             modifier = Modifier.toggleable(
@@ -44,7 +44,7 @@ fun ConferenceChip(
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (selected) Color.White else MaterialTheme.colorScheme.onSecondary,
+                color = if (selected) MaterialTheme.colorScheme.inverseOnSurface else Color.White,
                 modifier = Modifier.padding(8.dp)
             )
         }
