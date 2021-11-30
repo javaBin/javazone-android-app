@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JavaZone</string>
+    <string name="app_name" translatable="false">JavaZone</string>
     <string name="unschedule">unschedule</string>
     <string name="schedule">schedule</string>
-    <string name="sessions">Sessions</string>
+    <string name="sessions">Schedule</string>
     <string name="session">Session</string>
     <string name="landing">Loading</string>
     <string name="my_schedule">My Schedule</string>
