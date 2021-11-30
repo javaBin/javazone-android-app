@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JavaZone</string>
     <string name="unschedule">unschedule</string>
@@ -8,4 +9,7 @@
     <string name="my_schedule">My Schedule</string>
     <string name="info">Info</string>
     <string name="partners">Partners</string>
+    <string name="description">Abstract</string>
+    <string name="intended_audience">Intended Audience</string>
+    <string name="speakers">Speakers</string>
 </resources>

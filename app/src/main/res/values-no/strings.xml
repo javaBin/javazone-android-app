@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JavaZone</string>
+    <string name="unschedule">unschedule</string>
+    <string name="schedule">schedule</string>
+    <string name="sessions">Program</string>
+    <string name="session">Program</string>
+    <string name="landing">Laster Inn</string>
+    <string name="my_schedule">Mitt Program</string>
+    <string name="info">Info</string>
+    <string name="partners">Partnere</string>
+    <string name="description">Beskrivelse</string>
+    <string name="intended_audience">Målgruppe</string>
+    <string name="speakers">Foredragsholdere</string>
+</resources>

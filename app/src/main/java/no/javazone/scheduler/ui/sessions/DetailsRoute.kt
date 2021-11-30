@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.ConferenceScreen
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
@@ -108,17 +110,17 @@ private fun DetailsContent(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
-                Text(text = "Abstract", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.description), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = session.summary, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Intended Audience", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(id = R.string.intended_audience), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = session.intendedAudience, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Speakers", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(id = R.string.speakers), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
                 for (speaker in session.speakers) {
                     Row {
