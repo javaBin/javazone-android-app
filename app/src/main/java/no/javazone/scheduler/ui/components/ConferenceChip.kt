@@ -27,8 +27,6 @@ fun ConferenceChip(
     onExecute: () -> Unit
 ) {
     Surface(
-        modifier = Modifier
-            .padding(end = 8.dp),
         elevation = 8.dp,
         shape = JavaZoneShapes.large,
         color = if (selected) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.secondary
