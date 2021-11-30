@@ -44,7 +44,7 @@ class ConferenceRepositoryImpl private constructor(
         },
         shouldFetch = {
             Log.d(LOG_TAG, "retrieved ${it.name} from db")
-            true
+            it == Conference.NULL_INSTANCE
         }
     )
 
