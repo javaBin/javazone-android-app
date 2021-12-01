@@ -1,9 +1,11 @@
 package no.javazone.scheduler.model
 
-enum class ConferenceFormat {
-    WORKSHOP,
-    PRESENTATION,
-    LIGHTNING_TALK
+import no.javazone.scheduler.R
+
+enum class ConferenceFormat(val label: Int) {
+    WORKSHOP(R.string.workshop),
+    PRESENTATION(R.string.presentation),
+    LIGHTNING_TALK(R.string.lightning_talk)
 }
 
 fun String.toConferenceFormat(): ConferenceFormat =

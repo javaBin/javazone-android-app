@@ -24,7 +24,7 @@ android {
                                       "$projectDir/schemas".toString()]
             }
         }
-
+        resConfigs "en", "no"
     }
     buildFeatures {
         dataBinding = true

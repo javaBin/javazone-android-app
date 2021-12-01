@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -27,7 +28,6 @@ import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.DetailsScreen
 import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
-import no.javazone.scheduler.ui.theme.SessionDateFormat
 import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -119,7 +119,7 @@ private fun MyScheduleScreen(
                                     style = MaterialTheme.typography.labelLarge
                                 )
                                 Text(
-                                    text = talk.format.name,
+                                    text = stringResource(id = talk.format.label),
                                     style = MaterialTheme.typography.labelMedium
                                 )
                             }
