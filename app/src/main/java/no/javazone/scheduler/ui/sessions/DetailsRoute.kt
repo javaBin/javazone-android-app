@@ -172,7 +172,7 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
             "\n" +
             session.room.name +
             "\n" +
-            session.format.name.lowercase()
+            stringResource(id = session.format.label)
 }
 
 @Composable

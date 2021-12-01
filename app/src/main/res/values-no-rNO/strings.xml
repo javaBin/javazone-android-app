@@ -11,4 +11,7 @@
     <string name="description">Beskrivelse</string>
     <string name="intended_audience">Målgruppe</string>
     <string name="speakers">Foredragsholdere</string>
+    <string name="workshop">workshop</string>
+    <string name="presentation">presentasjon</string>
+    <string name="lightning_talk">lyntale</string>
 </resources>

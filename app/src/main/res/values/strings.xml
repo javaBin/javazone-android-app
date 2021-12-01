@@ -12,4 +12,7 @@
     <string name="description">Abstract</string>
     <string name="intended_audience">Intended Audience</string>
     <string name="speakers">Speakers</string>
+    <string name="workshop">workshop</string>
+    <string name="presentation">presentation</string>
+    <string name="lightning_talk">lightning-talk</string>
 </resources>
