@@ -38,7 +38,7 @@ fun ConferenceApp(
 
         val navController = rememberNavController()
 
-        val scaffoldState = rememberScaffoldState()
+//        val scaffoldState = rememberScaffoldState()
 
         val navBackStackEntry =
             navController.currentBackStackEntryFlow.collectAsState(null).value
@@ -47,7 +47,7 @@ fun ConferenceApp(
         Surface {
 
             Scaffold(
-                scaffoldState = scaffoldState,
+//                scaffoldState = scaffoldState,
                 topBar = {
                     TopAppBar(
                         backgroundColor = MaterialTheme.colorScheme.primary,
