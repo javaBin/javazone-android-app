@@ -24,7 +24,7 @@ android {
                                       "$projectDir/schemas".toString()]
             }
         }
-        resConfigs "en", "no"
+        resConfigs 'en', 'no'
     }
     buildFeatures {
         dataBinding = true
@@ -50,11 +50,12 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+        freeCompilerArgs += ['-Xopt-in=kotlin.RequiresOptIn', '-Xjvm-default=enable']
     }
     packagingOptions {
-        pickFirst 'META-INF/AL2.0'
-        pickFirst 'META-INF/LGPL2.1'
+        resources {
+            pickFirsts += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
     }
     testOptions {
         unitTests.includeAndroidResources = true
