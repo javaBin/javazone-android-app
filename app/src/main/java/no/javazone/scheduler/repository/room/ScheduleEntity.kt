@@ -1,7 +1,7 @@
 package no.javazone.scheduler.repository.room
 
 import androidx.room.*
-import androidx.room.ForeignKey.NO_ACTION
+import androidx.room.ForeignKey.Companion.NO_ACTION
 
 @Entity(
     tableName = "schedules",

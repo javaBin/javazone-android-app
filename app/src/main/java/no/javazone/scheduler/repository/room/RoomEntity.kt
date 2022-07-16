@@ -2,6 +2,7 @@ package no.javazone.scheduler.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlin.math.abs
 
@@ -13,6 +14,7 @@ data class RoomEntity(
     @ColumnInfo(name = "name")
     val name: String
 ) {
+    @Ignore
     constructor(
         name: String
     ) : this(roomId = abs(name.hashCode()), name = name)

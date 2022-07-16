@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import coil.ImageLoader
 import coil.decode.SvgDecoder
+import kotlinx.serialization.ExperimentalSerializationApi
 import no.javazone.scheduler.api.AssetConferenceSession
 import no.javazone.scheduler.api.NetworkClient
 import no.javazone.scheduler.api.NetworkConferenceSession
@@ -29,6 +30,7 @@ interface AppContainer {
  *
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
+@OptIn(ExperimentalSerializationApi::class)
 class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
     override val repository: ConferenceRepository by lazy {
