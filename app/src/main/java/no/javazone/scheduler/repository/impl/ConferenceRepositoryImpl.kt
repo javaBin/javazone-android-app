@@ -93,7 +93,7 @@ class ConferenceRepositoryImpl private constructor(
             Log.d(LOG_TAG, "saving sessions to db")
             db.withTransaction {
                 dao.deleteAllSessions()
-                dao.deleteAllRooms()
+//                dao.deleteAllRooms()
 
                 val timeSlots = saveTimeSlots(conferenceSessions)
                 val rooms = saveRooms(conferenceSessions)
@@ -132,7 +132,8 @@ class ConferenceRepositoryImpl private constructor(
             .distinct()
             .sorted()
             .map { RoomEntity(it.name) }
-        dao.addRooms(rooms)
+        val results = dao.addRooms(rooms)
+        Log.d(LOG_TAG, "Add ${results.size}")
         return rooms
     }
 
@@ -148,18 +149,20 @@ class ConferenceRepositoryImpl private constructor(
             val room = rooms.first { it.name == talk.room.name }
             val timeSlot = timeSlots.first { it.startTime == talk.slotTime }
 
-            dao.addTalk(talk.toConferenceEntity(room, timeSlot))
+            val talk1 = talk.toConferenceEntity(room, timeSlot)
+            Log.d(LOG_TAG, "insert talk ${talk1.talkId} with room ${room.roomId}/${room.name}")
+            dao.addTalk(talk1)
             talk.speakers.forEach { conferenceSpeaker ->
                 val storedSpeaker = dao.findSpeaker(conferenceSpeaker.name)
 
                 val id = storedSpeaker?.speakerId ?: dao.addSpeaker(conferenceSpeaker.toConferenceEntity())
+                Log.d(LOG_TAG, "Set ${conferenceSpeaker.name} with id $id, talkId ${talk.id}")
                 dao.addTalkSpeaker(TalkSpeakerCrossRef(talkId = talk.id, speakerId = id))
             }
         }
     }
 
     companion object {
-        @Volatile
         private var instance: ConferenceRepository? = null
 
         fun getInstance(

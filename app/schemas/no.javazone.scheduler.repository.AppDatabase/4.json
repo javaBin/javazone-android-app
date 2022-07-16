@@ -28,10 +28,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [
           {
@@ -70,10 +70,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "date"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [
           {
@@ -118,10 +118,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "room_id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -162,10 +162,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "time_slot_id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [
           {
@@ -207,10 +207,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "schedule_id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [
           {
@@ -273,10 +273,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "speaker_id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [
           {
@@ -369,10 +369,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "talk_id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [
           {
@@ -437,11 +437,11 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "talk_id",
             "speaker_id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [
           {

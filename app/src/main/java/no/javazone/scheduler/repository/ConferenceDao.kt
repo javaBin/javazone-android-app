@@ -36,7 +36,7 @@ interface ConferenceDao {
     @Query("SELECT * FROM speakers WHERE name = :name")
     suspend fun findSpeaker(name: String): SpeakerEntity?
 
-    @Transaction()
+    @Transaction
     @Query("DELETE FROM time_slots")
     suspend fun deleteAllSessions()
 
@@ -64,7 +64,7 @@ interface ConferenceDao {
     suspend fun addTimeSlots(timeSlots: List<TimeSlotEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addRooms(rooms: List<RoomEntity>)
+    suspend fun addRooms(rooms: List<RoomEntity>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTalk(talk: TalkEntity)

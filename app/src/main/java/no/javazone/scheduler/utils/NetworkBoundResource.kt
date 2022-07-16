@@ -3,7 +3,7 @@ package no.javazone.scheduler.utils
 import android.util.Log
 import kotlinx.coroutines.flow.*
 
-inline fun <RESULT_TYPE, REQUEST_TYPE> networkBoundResource(
+inline fun <RESULT_TYPE, REQUEST_TYPE>  networkBoundResource(
     crossinline query: () -> Flow<RESULT_TYPE>,
     crossinline fetch: suspend () -> REQUEST_TYPE,
     crossinline saveFetchResult: suspend (REQUEST_TYPE) -> Unit,

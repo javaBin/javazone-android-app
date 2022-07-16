@@ -2,6 +2,7 @@ package no.javazone.scheduler.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -27,6 +28,7 @@ data class TimeSlotEntity(
     @ColumnInfo(name = "end_time")
     val endTime: OffsetDateTime,
 ) {
+    @Ignore
     constructor(
         startTime: OffsetDateTime,
         endTime: OffsetDateTime

@@ -3,7 +3,7 @@ package no.javazone.scheduler.repository.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import no.javazone.scheduler.model.ConferenceFormat
 import java.time.OffsetDateTime
