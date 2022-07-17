@@ -4,10 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.IconButton
@@ -106,7 +103,9 @@ private fun MyScheduleScreen(
 
                         ) {
                             Column(
-                                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                                modifier = Modifier
+                                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                                    .width(100.dp)
                             ) {
                                 Text(
                                     text = talk.startTime.toLocalString(SessionTimeFormat) +
