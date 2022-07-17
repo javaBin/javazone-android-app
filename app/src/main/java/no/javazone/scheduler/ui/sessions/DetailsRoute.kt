@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
@@ -56,7 +55,6 @@ fun DetailsRoute(
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun DetailsContent(
     session: ConferenceTalk,
