@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.LocalImageLoader
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.model.Partner
 import no.javazone.scheduler.viewmodels.PartnersViewModel
@@ -65,7 +65,7 @@ fun PartnersContent(
                 modifier = Modifier.padding(5.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(partner.logoUrl, imageLoader = imageLoader),
+                    painter = rememberAsyncImagePainter(partner.logoUrl, imageLoader = imageLoader),
                     contentDescription = partner.name,
                     modifier = Modifier
                         .size(74.dp)
