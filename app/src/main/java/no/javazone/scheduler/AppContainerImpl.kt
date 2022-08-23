@@ -63,8 +63,8 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
     override val imageLoader: ImageLoader by lazy {
         ImageLoader.Builder(applicationContext)
-            .componentRegistry {
-                add(SvgDecoder(applicationContext))
+            .components {
+                add(SvgDecoder.Factory())
             }
             .build()
     }

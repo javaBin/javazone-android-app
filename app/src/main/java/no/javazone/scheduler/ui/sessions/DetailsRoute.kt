@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
@@ -126,7 +127,7 @@ private fun DetailsContent(
                         Column {
                             if (speaker.avatarUrl != null) {
                                 Image(
-                                    painter = rememberImagePainter(speaker.avatarUrl),
+                                    painter = rememberAsyncImagePainter(speaker.avatarUrl),
                                     contentDescription = speaker.name,
                                     modifier = Modifier.size(74.dp)
                                 )
