@@ -15,6 +15,11 @@
     "name": "Storebrand"
   },
   {
+    "homepageUrl": "https://www.dfindconsulting.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/dfind.svg",
+    "name": "Dfind Consulting"
+  },
+  {
     "homepageUrl": "https://www.ssb.no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/ssb.png",
     "name": "SSB"
@@ -25,7 +30,7 @@
     "name": "Redhat"
   },
   {
-    "homepageUrl": "https://techpros.no/new/",
+    "homepageUrl": "https://techpros.no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/techpros-v2.png",
     "name": "TECHPROS"
   },
@@ -65,6 +70,11 @@
     "name": "Itera"
   },
   {
+    "homepageUrl": "https://www.computas.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/computas.svg",
+    "name": "Computas"
+  },
+  {
     "homepageUrl": "https://www.kantega.no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/kantega.png",
     "name": "Kantega AS"
@@ -73,6 +83,11 @@
     "homepageUrl": "https://www.fremtind.no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/fremtind.svg",
     "name": "Fremtind Forsikring AS"
+  },
+  {
+    "homepageUrl": "https://www.variant.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/variant.svg",
+    "name": "Variant"
   },
   {
     "homepageUrl": "https://www.finn.no/",
@@ -95,16 +110,6 @@
     "name": "Visma Consulting"
   },
   {
-    "homepageUrl": "https://www.ambita.com/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/ambita.svg",
-    "name": "Ambita"
-  },
-  {
-    "homepageUrl": "https://2park.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/2park.svg",
-    "name": "2Park Technologes AS"
-  },
-  {
     "homepageUrl": "https://www.tietoevry.com/no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/tietoevry.svg",
     "name": "TietoEVRY AS"
@@ -113,6 +118,11 @@
     "homepageUrl": "https://www.dips.com/no",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/dips.svg",
     "name": "DIPS AS"
+  },
+  {
+    "homepageUrl": "https://www.vegvesen.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/vegvesen.svg",
+    "name": "Statens vegvesen"
   },
   {
     "homepageUrl": "https://www.statnett.no/",
@@ -143,6 +153,11 @@
     "homepageUrl": "https://enso.no/",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/enso.svg",
     "name": "Konsulentselskapet Enso AS"
+  },
+  {
+    "homepageUrl": "https://www.kodemaker.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/kodemaker.svg",
+    "name": "Kodemaker"
   },
   {
     "homepageUrl": "https://scelto.no/",
@@ -223,6 +238,11 @@
     "homepageUrl": "https://experis.no",
     "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/experis.png",
     "name": "Experis"
+  },
+  {
+    "homepageUrl": "https://www.postennorge.no/",
+    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/postenbring.svg",
+    "name": "Posten Norge"
   },
   {
     "homepageUrl": "https://embriq.no",
