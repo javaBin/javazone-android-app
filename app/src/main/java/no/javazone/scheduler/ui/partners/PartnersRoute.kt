@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.LocalImageLoader
 import coil.compose.rememberAsyncImagePainter
+import coil.imageLoader
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.model.Partner
 import no.javazone.scheduler.viewmodels.PartnersViewModel
@@ -126,5 +126,5 @@ fun PartnersContentPreview() {
         ),
     )
 
-    PartnersContent(partners = partners, imageLoader = LocalImageLoader.current, forwardToWeb = { })
+    PartnersContent(partners = partners, imageLoader = LocalContext.current.imageLoader, forwardToWeb = { })
 }
