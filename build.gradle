@@ -3,29 +3,29 @@
 buildscript {
     ext {
         accompanistVersion = '0.20.0'
-        activityVersion = '1.5.1'
-        appCompatVersion = '1.5.0'
+        activityVersion = '1.6.1'
+        appCompatVersion = '1.5.1'
         coilVersion = '2.2.0'
-        composeCompilerVersion = '1.2.0'
-        composeVersion = '1.2.1'
+        composeCompilerVersion = '1.3.2'
+        composeVersion = '1.3.0'
         constraintLayoutVersion = '2.1.1'
-        coreKtxVersion = '1.8.0'
+        coreKtxVersion = '1.9.0'
         coroutinesVersion = '1.5.2'
         desugarLibVersion = '1.1.5'
         espressoVersion = '3.4.0'
         extJunitVersion = '1.1.3'
-        googleMaterialversion = '1.7.0-beta01'
-        kotlinVersion = "1.7.0"
+        googleMaterialversion = '1.7.0'
+        kotlinVersion = "1.7.20"
         kotlinxSerializationVersion = "1.3.2"
         lifecycleVersion = '2.5.1'
-        material3Version = '1.0.0-alpha16'
+        material3Version = '1.0.0'
         materialVersion = '1.4.0'
-        navVersion = "2.5.1"
+        navVersion = "2.5.3"
         junitVersion = "4.13.2"
         retroFit2Version = "2.9.0"
         retroFitKotlinSerializationVersion = "0.8.0"
         roboeletricVersion = "4.7"
-        roomVersion = '2.5.0-alpha02'
+        roomVersion = '2.5.0-beta01'
         truthVersion = "1.0.1"
         uiToolingVersion = "1.0.5"
         windowVersion = '1.0.0'
@@ -37,7 +37,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
