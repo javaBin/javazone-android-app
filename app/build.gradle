@@ -60,6 +60,7 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
     }
+    namespace 'no.javazone.scheduler'
 }
 
 dependencies {
