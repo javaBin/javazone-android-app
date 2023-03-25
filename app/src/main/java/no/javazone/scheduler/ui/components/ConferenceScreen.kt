@@ -62,7 +62,7 @@ object JavaZoneDestinations {
 
 object SessionsScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Filled.CalendarToday
-    override val route: String = "${JavaZoneDestinations.SESSIONS_ROUTE}"
+    override val route: String = JavaZoneDestinations.SESSIONS_ROUTE
     override val label: Int = R.string.sessions
 
     override fun navigateTo(navController: NavHostController): () -> Unit = {
