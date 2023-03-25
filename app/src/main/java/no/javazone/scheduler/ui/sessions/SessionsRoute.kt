@@ -7,13 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Chip
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -94,6 +95,89 @@ fun SessionsRoute(
 }
 
 
+
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@Composable
+private fun  ColumnScope.FilterSelector(
+    conferenceDays: List<ConferenceDate>,
+    selectedDay: LocalDate,
+    navigateToDay: (LocalDate)->Unit){
+
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, bottom = 10.dp, top = 10.dp, end = 5.dp)
+
+    ) {
+
+        TextField(
+            value = "",
+            onValueChange = { },
+            label = { Text("Search") },// stringResource(id = R.string.search)
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                //.padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
+        )
+        Button(onClick = { /*TODO*/ }) {
+            Text("Filter")
+        }
+    }
+
+
+
+    Row(
+        modifier = Modifier
+            //.align(alignment = Alignment.CenterHorizontally)
+            .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
+
+    ) {
+
+        var expanded by remember { mutableStateOf(false) }
+
+        Box(modifier = Modifier
+            ///.fillMaxSize()
+            .wrapContentSize(Alignment.TopStart)) {
+            Chip(
+                onClick = { expanded = true },
+                content = { Text("Day") },
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+
+
+                conferenceDays.sortedBy { it.date }
+                    .forEach {
+                            DropdownMenuItem(
+                                onClick = {
+                                    expanded = false
+                                    navigateToDay(it.date)
+                                          },
+                                trailingIcon = {
+                                    if (it.date == selectedDay){
+                                        Icon(Icons.Filled.Check , contentDescription = null)
+                                    }
+                                },
+                                //selected = it.date == selectedDay,
+                                text = { Text(SessionDayFormat.format(it.date))}
+
+                            )
+                    }
+
+            }
+        }
+
+
+
+    }
+
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AllSessionsScreen(
@@ -108,27 +192,7 @@ private fun AllSessionsScreen(
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()){
-            Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
-
-            ) {
-                conferenceDays.sortedBy { it.date }
-                    .forEach {
-                        Column(modifier = Modifier
-                            .padding(start = 4.dp, end = 4.dp)
-                        ){
-                        ConferenceChip(
-                            label = SessionDayFormat.format(it.date),
-                            selected = it.date == selectedDay,
-                            onExecute = { navigateToDay(it.date) }
-                        )
-                        }
-                    }
-            }
-
-
+            FilterSelector(conferenceDays, selectedDay, navigateToDay)
             LazyColumn {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
