@@ -125,14 +125,13 @@ private fun  ColumnScope.FilterSelector(
                 textState.value = it
                 // Apply filter but also show in the text field
                 applyFilter(it.text)
-                cdsa
 
-                            },
+            },
             label = { Text("Search") },// stringResource(id = R.string.search)
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                //.padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
+            //.padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
         )
 
     }
