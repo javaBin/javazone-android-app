@@ -45,7 +45,7 @@ fun JavaZoneNavGraph(
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
         composable(

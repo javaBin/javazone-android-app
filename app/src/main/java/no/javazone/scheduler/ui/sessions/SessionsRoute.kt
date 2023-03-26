@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -38,7 +39,8 @@ import java.time.OffsetDateTime
 fun SessionsRoute(
     navController: NavHostController,
     route: String,
-    viewModel: ConferenceListViewModel
+    viewModel: ConferenceListViewModel,
+    filter: String = "*"
 ) {
     Log.d(LOG_TAG, "route: $route")
 
@@ -60,9 +62,13 @@ fun SessionsRoute(
             navigateToDay = { selectDay ->
                 viewModel.updateSelectedDay(selectDay)
             },
+            applyFilter = { filter ->
+                viewModel.updateFilter(filter)
+            },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,
                 selectedDay,
+                filter,
                 mySchedule
             ),
             conferenceDays = conferenceDays,
@@ -102,6 +108,7 @@ fun SessionsRoute(
 private fun  ColumnScope.FilterSelector(
     conferenceDays: List<ConferenceDate>,
     selectedDay: LocalDate,
+    applyFilter: (String)->Unit,
     navigateToDay: (LocalDate)->Unit){
 
 
@@ -111,19 +118,23 @@ private fun  ColumnScope.FilterSelector(
             .padding(start = 5.dp, bottom = 10.dp, top = 10.dp, end = 5.dp)
 
     ) {
-
+        val textState = remember { mutableStateOf(TextFieldValue()) }
         TextField(
-            value = "",
-            onValueChange = { },
+            value = textState.value,
+            onValueChange = {
+                textState.value = it
+                // Apply filter but also show in the text field
+                applyFilter(it.text)
+                cdsa
+
+                            },
             label = { Text("Search") },// stringResource(id = R.string.search)
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
                 //.padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp)
         )
-        Button(onClick = { /*TODO*/ }) {
-            Text("Filter")
-        }
+
     }
 
 
@@ -184,6 +195,7 @@ private fun AllSessionsScreen(
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToDay: (LocalDate) -> Unit,
+    applyFilter: (String) -> Unit,
     conferenceSessions: List<ConferenceSession>,
     conferenceDays: List<ConferenceDate>,
     selectedDay: LocalDate
@@ -192,7 +204,7 @@ private fun AllSessionsScreen(
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()){
-            FilterSelector(conferenceDays, selectedDay, navigateToDay)
+            FilterSelector(conferenceDays, selectedDay, applyFilter, navigateToDay)
             LazyColumn {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
@@ -303,7 +315,10 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
         conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
             ConferenceDate(it, "day ${i++}")
         },
-        selectedDay = FIRST_CONFERENCE_DAY
+        selectedDay = FIRST_CONFERENCE_DAY,
+        applyFilter = { filter ->
+            //viewModel.updateFilter(filter)
+        },
     )
 }
 
@@ -321,7 +336,10 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
             conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
                 ConferenceDate(it, "day ${i++}")
             },
-            selectedDay = FIRST_CONFERENCE_DAY
+            selectedDay = FIRST_CONFERENCE_DAY,
+            applyFilter = { filter ->
+                //viewModel.updateFilter(filter)
+            },
         )
     }
 }

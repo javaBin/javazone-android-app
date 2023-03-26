@@ -54,8 +54,10 @@ class ConferenceListViewModel(
         .asLiveData()
 
     private var _selectedDay: MutableState<LocalDate> = mutableStateOf(WORKSHOP_DAY)
+    private var _filter: MutableState<String> = mutableStateOf("*")
 
     val selectedDay: State<LocalDate> = _selectedDay
+    val filter : State<String> = _filter
 
 
     init {
@@ -65,6 +67,7 @@ class ConferenceListViewModel(
             }
             conferenceDays = conf.data.days
             _selectedDay.value = getDefaultDate()
+            _filter.value = "*";
         }
     }
 
@@ -78,15 +81,27 @@ class ConferenceListViewModel(
     fun updateSessionsWithMySchedule(
         sessions: List<ConferenceSession>,
         selectedDay: LocalDate,
+        filter: String,
         mySchedule: List<String>
     ): List<ConferenceSession> =
         sessions
             .filter {
-                it.time.toLocalDate() == selectedDay
+                it.time.toLocalDate() == selectedDay && (
+                        _filter.value == "*" ||
+                        it.talks.any { talk ->
+                    talk.title.contains(_filter.value, true) }
+                        )
             }
             .map { session ->
                 session.copy(
-                    talks = session.talks.map { talk ->
+                    talks = session.talks
+                        .filter {
+                            _filter.value == "*" ||
+                                    it.title.contains(_filter.value, true)
+
+
+                        }
+                        .map { talk ->
                         if (mySchedule.contains(talk.id)) {
                             talk.copy(scheduled = true)
                         } else {
@@ -139,6 +154,10 @@ class ConferenceListViewModel(
 
     fun updateSelectedDay(select: LocalDate) {
         _selectedDay.value = select
+    }
+
+    fun updateFilter(filter: String) {
+        _filter.value = filter
     }
 
     /**
