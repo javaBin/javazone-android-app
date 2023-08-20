@@ -82,6 +82,7 @@ class ConferenceListViewModel(
     ): List<ConferenceSession> =
         sessions
             .filter {
+                selectedDay == LocalDate.MIN ||
                 it.time.toLocalDate() == selectedDay
             }
             .map { session ->

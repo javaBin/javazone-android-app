@@ -9,21 +9,22 @@ import no.javazone.scheduler.utils.WORKSHOP_DAY
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private val DEFAULT_WORKSHOP_START_TIME =
-    OffsetDateTime.of(WORKSHOP_DAY, LocalTime.of(9, 0), ZoneOffset.UTC)
+    OffsetDateTime.of(WORKSHOP_DAY, LocalTime.of(8, 0), ZoneOffset.UTC)
 private val DEFAULT_FIRST_START_TIME =
     OffsetDateTime.of(FIRST_CONFERENCE_DAY, LocalTime.NOON, ZoneOffset.UTC)
 private val DEFAULT_WORKSHOP_END_TIME = OffsetDateTime.of(
     WORKSHOP_DAY,
-    LocalTime.of(16, 0),
+    LocalTime.of(15, 0),
     ZoneOffset.UTC
 )
 private val DEFAULT_FIRST_END_TIME = OffsetDateTime.of(
     FIRST_CONFERENCE_DAY,
-    LocalTime.of(16, 0),
+    LocalTime.of(15, 0),
     ZoneOffset.UTC
 )
 

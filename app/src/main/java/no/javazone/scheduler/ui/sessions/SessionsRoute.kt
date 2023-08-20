@@ -126,6 +126,11 @@ private fun AllSessionsScreen(
                         )
                         }
                     }
+                ConferenceChip(
+                    label = "All",
+                    selected = LocalDate.MIN == selectedDay,
+                    onExecute = { navigateToDay(LocalDate.MIN) }
+                )
             }
 
 
