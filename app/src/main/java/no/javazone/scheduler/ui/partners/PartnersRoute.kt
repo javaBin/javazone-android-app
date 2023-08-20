@@ -14,6 +14,8 @@ import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,10 @@ fun PartnersContent(
                 modifier = Modifier.padding(5.dp)
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(partner.logoUrl, imageLoader = imageLoader),
+                    painter = rememberAsyncImagePainter(partner.logoUrl,
+                        imageLoader = imageLoader,
+                    ),
+                    colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
                     contentDescription = partner.name,
                     modifier = Modifier
                         .size(74.dp)

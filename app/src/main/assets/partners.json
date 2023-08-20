@@ -1,272 +1,362 @@
 [
   {
-    "homepageUrl": "https://www.digdir.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/digidir.png",
-    "name": "Digitaliseringsdirektoratet"
+    "logoUrl": "https://2023.javazone.no/logos/aboveit.svg",
+    "name": "Aboveit",
+    "homepageUrl": "https://www.aboveit.no/"
   },
   {
-    "homepageUrl": "https://www.systek.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/systek.svg",
-    "name": "Systek"
+    "logoUrl": "https://2023.javazone.no/logos/accenture.svg",
+    "name": "Accenture",
+    "homepageUrl": "https://www.accenture.com/no-en"
   },
   {
-    "homepageUrl": "https://www.storebrand.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/storebrand.png",
-    "name": "Storebrand"
+    "logoUrl": "https://2023.javazone.no/logos/apotek1.svg",
+    "name": "Apotek 1 Gruppen",
+    "homepageUrl": "https://www.apotek1.no/om-apotek1"
   },
   {
-    "homepageUrl": "https://www.dfindconsulting.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/dfind.svg",
-    "name": "Dfind Consulting"
+    "logoUrl": "https://2023.javazone.no/logos/arktekk.svg",
+    "name": "Arktekk",
+    "homepageUrl": "https://arktekk.no/"
   },
   {
-    "homepageUrl": "https://www.ssb.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/ssb.png",
-    "name": "SSB"
+    "logoUrl": "https://2023.javazone.no/logos/bankid.svg",
+    "name": "BankIdBankAxept",
+    "homepageUrl": "https://bidbax.no"
   },
   {
-    "homepageUrl": "https://www.redhat.com/en",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/redhat.svg",
-    "name": "Redhat"
+    "logoUrl": "https://2023.javazone.no/logos/bekk.svg",
+    "name": "Bekk Consulting AS",
+    "homepageUrl": "https://www.bekk.no/"
   },
   {
-    "homepageUrl": "https://techpros.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/techpros-v2.png",
-    "name": "TECHPROS"
+    "logoUrl": "https://2023.javazone.no/logos/bouvet.svg",
+    "name": "Bouvet Norge AS",
+    "homepageUrl": "https://www.bouvet.no/"
   },
   {
-    "homepageUrl": "https://cognite.com",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/cognite.svg",
-    "name": "Cognite"
+    "logoUrl": "https://2023.javazone.no/logos/buypass.svg",
+    "name": "Buypass AS",
+    "homepageUrl": "https://www.buypass.no/"
   },
   {
-    "homepageUrl": "https://www.knowit.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/knowit.svg",
-    "name": "Knowit Objectnet AS"
+    "logoUrl": "https://2023.javazone.no/logos/capgemini.svg",
+    "name": "Capgemini AS",
+    "homepageUrl": "https://www.capgemini.com/no-no/"
   },
   {
-    "homepageUrl": "https://www.soprasteria.no/om-sopra-steria",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/soprasteria.svg",
-    "name": "Sopra Steria"
+    "logoUrl": "https://2023.javazone.no/logos/capra.svg",
+    "name": "Capra",
+    "homepageUrl": "https://www.capraconsulting.no/"
   },
   {
-    "homepageUrl": "https://www.accenture.com/no-en",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/accenture.svg",
-    "name": "Accenture AS"
+    "logoUrl": "https://2023.javazone.no/logos/cegal.svg",
+    "name": "Cegal",
+    "homepageUrl": "https://www.cegal.com/no/"
   },
   {
-    "homepageUrl": "https://www.nav.no/no/Person",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/nav.svg",
-    "name": "NAV"
+    "logoUrl": "https://2023.javazone.no/logos/cloudberries.svg",
+    "name": "Cloudberries AS",
+    "homepageUrl": "https://www.cloudberries.no/"
   },
   {
-    "homepageUrl": "https://www.miles.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/miles.svg",
-    "name": "Miles"
+    "logoUrl": "https://2023.javazone.no/logos/computas.svg",
+    "name": "Computas AS",
+    "homepageUrl": "https://computas.com/"
   },
   {
-    "homepageUrl": "https://www.itera.com/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/itera.svg",
-    "name": "Itera"
+    "logoUrl": "https://2023.javazone.no/logos/dfindconsulting.svg",
+    "name": "Dfind Consulting",
+    "homepageUrl": "https://www.dfindconsulting.no."
   },
   {
-    "homepageUrl": "https://www.computas.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/computas.svg",
-    "name": "Computas"
+    "logoUrl": "https://2023.javazone.no/logos/digdir.svg",
+    "name": "Digi0taliseringsdirektoratet",
+    "homepageUrl": "https://www.digdir.no/"
   },
   {
-    "homepageUrl": "https://www.kantega.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/kantega.png",
-    "name": "Kantega AS"
+    "logoUrl": "https://2023.javazone.no/logos/dnb.svg",
+    "name": "DNB",
+    "homepageUrl": "https://www.dnb.no/"
   },
   {
-    "homepageUrl": "https://www.fremtind.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/fremtind.svg",
-    "name": "Fremtind Forsikring AS"
+    "logoUrl": "https://2023.javazone.no/logos/eika.svg",
+    "name": "Eika",
+    "homepageUrl": "https://www.eika.no/"
   },
   {
-    "homepageUrl": "https://www.variant.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/variant.svg",
-    "name": "Variant"
+    "logoUrl": "https://2023.javazone.no/logos/elastic.svg",
+    "name": "Elastic",
+    "homepageUrl": "https://www.elastic.co/"
   },
   {
-    "homepageUrl": "https://www.finn.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/finn.svg",
-    "name": "FINN.no"
+    "logoUrl": "https://2023.javazone.no/logos/embriq.svg",
+    "name": "Embriq AS",
+    "homepageUrl": "https://embriq.no/"
   },
   {
-    "homepageUrl": "https://schibsted.com/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/schibsted.png",
-    "name": "Schibsted"
+    "logoUrl": "https://2023.javazone.no/logos/enonic.svg",
+    "name": "Enonic",
+    "homepageUrl": "https://enonic.com"
   },
   {
-    "homepageUrl": "https://www.dnb.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/dnb.svg",
-    "name": "DNB"
+    "logoUrl": "https://2023.javazone.no/logos/entur.svg",
+    "name": "Entur AS",
+    "homepageUrl": "https://om.entur.no/om-entur/"
   },
   {
-    "homepageUrl": "https://www.visma.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/visma.svg",
-    "name": "Visma Consulting"
+    "logoUrl": "https://2023.javazone.no/logos/fink.svg",
+    "name": "Fink AS",
+    "homepageUrl": "https://bok.fink.no"
   },
   {
-    "homepageUrl": "https://www.tietoevry.com/no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/tietoevry.svg",
-    "name": "TietoEVRY AS"
+    "logoUrl": "https://2023.javazone.no/logos/finn.svg",
+    "name": "FINN.no",
+    "homepageUrl": "https://www.finn.no/"
   },
   {
-    "homepageUrl": "https://www.dips.com/no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/dips.svg",
-    "name": "DIPS AS"
+    "logoUrl": "https://2023.javazone.no/logos/fremtind.svg",
+    "name": "Fremtind Forsikring AS",
+    "homepageUrl": "https://www.fremtind.no/"
   },
   {
-    "homepageUrl": "https://www.vegvesen.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2020/logos/vegvesen.svg",
-    "name": "Statens vegvesen"
+    "logoUrl": "https://2023.javazone.no/logos/gjensidige.svg",
+    "name": "Gjensidige",
+    "homepageUrl": "https://www.gjensidige.no/"
   },
   {
-    "homepageUrl": "https://www.statnett.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/statnett.svg",
-    "name": "Statnett SF"
+    "logoUrl": "https://2023.javazone.no/logos/google.svg",
+    "name": "Google",
+    "homepageUrl": "https://www.google.com/"
   },
   {
-    "homepageUrl": "https://www.jpro.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/jpro.svg",
-    "name": "JProfessionals AS"
+    "logoUrl": "https://2023.javazone.no/logos/inmeta.svg",
+    "name": "Inmeta Consulting AS",
+    "homepageUrl": "https://inmeta.no/"
   },
   {
-    "homepageUrl": "https://www.sparebank1.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/sparebank1.svg",
-    "name": "SpareBank 1 Banksamarbeidet"
+    "logoUrl": "https://2023.javazone.no/logos/itera.svg",
+    "name": "Itera",
+    "homepageUrl": "https://www.itera.com/no/"
   },
   {
-    "homepageUrl": "https://www.vipps.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/vipps.svg",
-    "name": "Vipps AS"
+    "logoUrl": "https://2023.javazone.no/logos/iver.svg",
+    "name": "Iver",
+    "homepageUrl": "https://www.iver.com/"
   },
   {
-    "homepageUrl": "https://scienta.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/scienta.svg",
-    "name": "Scienta"
+    "logoUrl": "https://2023.javazone.no/logos/jpro.svg",
+    "name": "JProfessionals AS",
+    "homepageUrl": "https://jpro.no/"
   },
   {
-    "homepageUrl": "https://enso.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/enso.svg",
-    "name": "Konsulentselskapet Enso AS"
+    "logoUrl": "https://2023.javazone.no/logos/kantega.svg",
+    "name": "Kantega AS",
+    "homepageUrl": "https://kantega.no/"
   },
   {
-    "homepageUrl": "https://www.kodemaker.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/kodemaker.svg",
-    "name": "Kodemaker"
+    "logoUrl": "https://2023.javazone.no/logos/knowit.svg",
+    "name": "Knowit AS",
+    "homepageUrl": "https://www.knowit.no/"
   },
   {
-    "homepageUrl": "https://scelto.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/scelto.svg",
-    "name": "Scelto AS"
+    "logoUrl": "https://2023.javazone.no/logos/kodemaker.svg",
+    "name": "Kodemaker",
+    "homepageUrl": "https://www.kodemaker.no/"
   },
   {
-    "homepageUrl": "https://www.tripletex.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/tripletex.svg",
-    "name": "Tripletex"
+    "logoUrl": "https://2023.javazone.no/logos/enso.svg",
+    "name": "Konsulentselskapet Ensō AS",
+    "homepageUrl": "https://www.enso.no/"
   },
   {
-    "homepageUrl": "https://www.politiet.no/en/om/organisasjonen/andre/police-ict-services/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/politiet.svg",
-    "name": "Politiets IKT-tjenester"
+    "logoUrl": "https://2023.javazone.no/logos/kosli.svg",
+    "name": "Kosli",
+    "homepageUrl": "https://www.kosli.com/"
   },
   {
-    "homepageUrl": "https://www.oslo.kommune.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/oslo_kommune.svg",
-    "name": "Oslo Origo"
+    "logoUrl": "https://2023.javazone.no/logos/kraftlauget.svg",
+    "name": "Kraftlauget",
+    "homepageUrl": "https://kraftlauget.no/"
   },
   {
-    "homepageUrl": "https://www.webstep.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/webstep.svg",
-    "name": "Webstep AS"
+    "logoUrl": "https://2023.javazone.no/logos/mastercard.svg",
+    "name": "Mastercard",
+    "homepageUrl": "https://www.mastercard.no/no-no.html"
   },
   {
-    "homepageUrl": "https://bouvet.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/bouvet.svg",
-    "name": "Bouvet Norge AS"
+    "logoUrl": "https://2023.javazone.no/logos/miles.svg",
+    "name": "Miles",
+    "homepageUrl": "https://www.miles.no/"
   },
   {
-    "homepageUrl": "https://www.sonat.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/sonat.svg",
-    "name": "Sonat Consulting Oslo"
+    "logoUrl": "https://2023.javazone.no/logos/nav.svg",
+    "name": "NAV IT",
+    "homepageUrl": "https://www.detsombetyrnoe.no/"
   },
   {
-    "homepageUrl": "https://www.gjensidige.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/gjensidige.svg",
-    "name": "Gjensidige Forsikring"
+    "logoUrl": "https://2023.javazone.no/logos/netcompany.svg",
+    "name": "Netcompany",
+    "homepageUrl": "https://www.netcompany.com/no/"
   },
   {
-    "homepageUrl": "https://www.skatteetaten.no/person/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/skatteetaten.svg",
-    "name": "Skatteetaten"
+    "logoUrl": "https://2023.javazone.no/logos/orangebusiness.svg",
+    "name": "Orange Business Services AS",
+    "homepageUrl": "https://www.orange-business.com/"
   },
   {
-    "homepageUrl": "https://www.toll.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/toll.svg",
-    "name": "Tolletaten"
+    "logoUrl": "https://2023.javazone.no/logos/oslo.svg",
+    "name": "Oslo Origo",
+    "homepageUrl": "https://www.oslo.kommune.no/etater-foretak-og-ombud/oslo-origo/#gref"
   },
   {
-    "homepageUrl": "https://microsoft.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/microsoft.svg",
-    "name": "Microsoft"
+    "logoUrl": "https://2023.javazone.no/logos/politietpit.svg",
+    "name": "Politiets IT-enhet",
+    "homepageUrl": "https://www.politiet.no/om-politiet/organisasjonen/sarorganene/pit/"
   },
   {
-    "homepageUrl": "https://uptimeconsulting.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/uptime.svg",
-    "name": "Uptime Consulting"
+    "logoUrl": "https://2023.javazone.no/logos/postenbring.svg",
+    "name": "Posten Norge AS",
+    "homepageUrl": "https://www.postennorge.no/"
   },
   {
-    "homepageUrl": "https://cgi.com/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/cgi.svg",
-    "name": "CGI"
+    "logoUrl": "https://2023.javazone.no/logos/protector.svg",
+    "name": "Protector Forsikring",
+    "homepageUrl": "https://protectorforsikring.no/"
   },
   {
-    "homepageUrl": "https://eika.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/eika.svg",
-    "name": "Eika Gruppen AS"
+    "logoUrl": "https://2023.javazone.no/logos/redhat.svg",
+    "name": "Red Hat",
+    "homepageUrl": "https://www.redhat.com/en"
   },
   {
-    "homepageUrl": "https://www.capgemini.com/no-no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/capgemini.svg",
-    "name": "Capgemini Norge AS"
+    "logoUrl": "https://2023.javazone.no/logos/rubberduck.svg",
+    "name": "Rubberduck Dev AS",
+    "homepageUrl": "https://www.rubberduck.no/"
   },
   {
-    "homepageUrl": "https://experis.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/experis.png",
-    "name": "Experis"
+    "logoUrl": "https://2023.javazone.no/logos/ruter.svg",
+    "name": "Ruter",
+    "homepageUrl": "https://ruter.no/"
   },
   {
-    "homepageUrl": "https://www.postennorge.no/",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2022/logos/postenbring.svg",
-    "name": "Posten Norge"
+    "logoUrl": "https://2023.javazone.no/logos/safetywing.svg",
+    "name": "SafetyWing",
+    "homepageUrl": "https://safetywing.com/"
   },
   {
-    "homepageUrl": "https://embriq.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/embriq.svg",
-    "name": "EmbriQ"
+    "logoUrl": "https://2023.javazone.no/logos/scelto.svg",
+    "name": "Scelto AS",
+    "homepageUrl": "https://scelto.no/"
   },
   {
-    "homepageUrl": "https://bekk.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/bekk.svg",
-    "name": "Bekk Consulting AS"
+    "logoUrl": "https://2023.javazone.no/logos/schibsted.svg",
+    "name": "Schibsted",
+    "homepageUrl": "https://schibsted.com/"
   },
   {
-    "homepageUrl": "https://cloudberries.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/cloudberries.svg",
-    "name": "Cloudberries"
+    "logoUrl": "https://2023.javazone.no/logos/scienta.svg",
+    "name": "Scienta ",
+    "homepageUrl": "https://careers.scienta.no/"
   },
   {
-    "homepageUrl": "https://ruter.no",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/ruter.svg",
-    "name": "Ruter"
+    "logoUrl": "https://2023.javazone.no/logos/skatteetaten.svg",
+    "name": "Skatteetaten",
+    "homepageUrl": "https://www.skatteetaten.no/jobb/"
   },
   {
-    "homepageUrl": "https://mastercard.com",
-    "logoUrl": "https://d3o108dy577i1m.cloudfront.net/2019/logos/mastercard.svg",
-    "name": "Mastercard Payment Services Norway AS"
+    "logoUrl": "https://2023.javazone.no/logos/soprasteria.svg",
+    "name": "Sopra Steria AS",
+    "homepageUrl": "https://www.soprasteria.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/sparebank1.svg",
+    "name": "SpareBank 1 Utvikling",
+    "homepageUrl": "https://sparebank1.dev/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/ssb.svg",
+    "name": "SSB - Statistisk Sentralbyrå",
+    "homepageUrl": "https://www.ssb.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/statensvegvesen.svg",
+    "name": "Statens Vegvesen",
+    "homepageUrl": "https://www.vegvesen.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/statnett.svg",
+    "name": "Statnett SF",
+    "homepageUrl": "https://www.statnett.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/storebrand.svg",
+    "name": "Storebrand",
+    "homepageUrl": "https://www.storebrand.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/systek.svg",
+    "name": "Systek",
+    "homepageUrl": "https://www.systek.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/telenor.svg",
+    "name": "Telenor Norge",
+    "homepageUrl": "https://www.telenor.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/tietoevry.svg",
+    "name": "Tietoevry",
+    "homepageUrl": "https://www.tietoevry.com/no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/tolletaten.svg",
+    "name": "Tolletaten",
+    "homepageUrl": "https://www.toll.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/tomra.svg",
+    "name": "TOMRA",
+    "homepageUrl": "https://www.tomra.com/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/tripletex.svg",
+    "name": "Tripletex AS",
+    "homepageUrl": "https://www.tripletex.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/twoday.svg",
+    "name": "Twoday AS",
+    "homepageUrl": "https://www.twoday.no"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/uptime.svg",
+    "name": "Uptime Consulting AS",
+    "homepageUrl": "https://www.uptimeconsulting.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/variant.svg",
+    "name": "Variant Norge AS",
+    "homepageUrl": "https://www.variant.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/vivende.svg",
+    "name": "Vivende AS",
+    "homepageUrl": "https://www.vivende.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/atea.svg",
+    "name": "Atea",
+    "homepageUrl": "https://atea.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/webstep.svg",
+    "name": "Webstep AS",
+    "homepageUrl": "https://www.webstep.no/"
+  },
+  {
+    "logoUrl": "https://2023.javazone.no/logos/yne.svg",
+    "name": "Yne",
+    "homepageUrl": "https://yne.no/"
   }
 ]
