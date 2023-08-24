@@ -1,9 +1,11 @@
 package no.javazone.scheduler.ui.partners
 
 import android.content.Intent
+import androidx.compose.ui.graphics.Color
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,11 +62,12 @@ fun PartnersContent(
     imageLoader: ImageLoader
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp)
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        modifier = Modifier.background(Color.LightGray)
     ) {
         items(partners) { partner ->
             Card(
-                modifier = Modifier.padding(5.dp)
+                modifier = Modifier.padding(4.dp)
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(partner.logoUrl,
@@ -73,6 +76,7 @@ fun PartnersContent(
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
                     contentDescription = partner.name,
                     modifier = Modifier
+                        .padding(3.dp)
                         .size(74.dp)
                         .clickable(enabled = partner.homepageUrl.isNotEmpty()) {
                             forwardToWeb(partner.homepageUrl)
