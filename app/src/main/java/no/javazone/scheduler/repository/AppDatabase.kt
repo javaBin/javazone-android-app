@@ -41,7 +41,7 @@ abstract class AppDatabase : RoomDatabase() {
             callback: Callback = object : RoomDatabase.Callback() {}
         ): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, APP_PREFERENCE_FILE)
-                .fallbackToDestructiveMigrationFrom(2, 3)
+                .fallbackToDestructiveMigrationFrom(1, 2, 3, 4)
                 .addCallback(callback)
                 .build()
         }
