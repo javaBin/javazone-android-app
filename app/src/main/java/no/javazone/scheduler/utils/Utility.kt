@@ -41,7 +41,8 @@ val sampleTalks = listOf(
         ),
         format = ConferenceFormat.PRESENTATION,
         room = ConferenceRoom.create("Room 1"),
-        scheduled = true
+        scheduled = true,
+        registrationLink = null
     ),
     ConferenceTalk(
         "19F59B3A-2DF9-499B-940E-D6CA20E00840",
@@ -63,7 +64,8 @@ val sampleTalks = listOf(
         ),
         format = ConferenceFormat.PRESENTATION,
         room = ConferenceRoom.create("Room 1"),
-        scheduled = false
+        scheduled = false,
+        registrationLink = null
     ),
     ConferenceTalk(
         "19F59B3A-2DF9-499B-940E-D6CA20E00840",
@@ -83,8 +85,9 @@ val sampleTalks = listOf(
                 twitter = null
             )
         ),
-        format = ConferenceFormat.PRESENTATION,
+        format = ConferenceFormat.WORKSHOP,
         room = ConferenceRoom.create("Room 1"),
-        scheduled = false
+        scheduled = false,
+        registrationLink = "http://example.com"
     )
 )

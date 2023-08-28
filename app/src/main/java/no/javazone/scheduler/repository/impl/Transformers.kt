@@ -37,7 +37,8 @@ fun toConferenceTalk(): (RoomWithTalk) -> ConferenceTalk = {
         startTime = it.talkWithSpeakers.talk.startTime,
         endTime = it.talkWithSpeakers.talk.endTime,
         speakers = it.talkWithSpeakers.speakers.map(toConferenceSpeaker()).toSet(),
-        scheduled = false
+        scheduled = false,
+        registrationLink = it.talkWithSpeakers.talk.registrationLink
     )
 }
 
@@ -63,7 +64,9 @@ fun ConferenceTalk.toConferenceEntity(room: RoomEntity, sessionSlot: TimeSlotEnt
         room = room.roomId,
         sessionSlot = sessionSlot.timeSlotId,
         startTime = this.startTime,
-        endTime = this.endTime
+        endTime = this.endTime,
+        registrationLink = this.registrationLink
+
     )
 
 fun ConferenceSpeaker.toConferenceEntity(): SpeakerEntity =

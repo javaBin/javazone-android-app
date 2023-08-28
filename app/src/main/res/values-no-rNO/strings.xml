@@ -14,4 +14,6 @@
     <string name="workshop">workshop</string>
     <string name="presentation">presentasjon</string>
     <string name="lightning_talk">lyntale</string>
+    <string name="registration_required">Forhåndspåmelding!</string>
+    <string name="preregistration">Påmelding på javazone.no</string>
 </resources>

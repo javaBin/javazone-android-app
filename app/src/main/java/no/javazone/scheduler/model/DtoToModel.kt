@@ -150,7 +150,8 @@ private fun SessionDto.toModel(): ConferenceTalk? {
             speakers = speakers.map(toConferenceSpeaker()).toSet(),
             video = video,
             format = format.toConferenceFormat(),
-            room = ConferenceRoom.create(room)
+            room = ConferenceRoom.create(room),
+            registrationLink = registerLoc
         )
     } catch (ex: Exception) {
         Log.e(LOG_TAG, "Unknown format: $format")

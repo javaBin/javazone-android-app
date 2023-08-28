@@ -1,25 +1,32 @@
 package no.javazone.scheduler.ui.sessions
 
+import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
@@ -109,6 +116,27 @@ private fun DetailsContent(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
+                val context = LocalContext.current
+                if(session.registrationLink!=null){
+                    Text(text = stringResource(R.string.registration_required), style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    TextButton(
+                        onClick = {
+
+                            val intent =
+                                Intent(Intent.ACTION_VIEW, Uri.parse(session.registrationLink))
+                            context.startActivity(intent)
+                        },
+                        content = {
+                            Text(text = stringResource(R.string.preregistration), style = MaterialTheme.typography.titleMedium)
+                        }
+
+
+                    )
+                    //text = session.registrationLink, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
                 Text(text = stringResource(R.string.description), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = session.summary, style = MaterialTheme.typography.bodyMedium)
