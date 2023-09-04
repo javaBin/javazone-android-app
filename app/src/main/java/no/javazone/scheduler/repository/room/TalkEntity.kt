@@ -54,6 +54,6 @@ data class TalkEntity(
     val startTime: OffsetDateTime,
     @ColumnInfo(name = "end_time")
     val endTime: OffsetDateTime,
-    @ColumnInfo(name = "registration_link")
+    @ColumnInfo(name = "registration_url")
     val registrationLink: String?
 )

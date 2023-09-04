@@ -14,8 +14,8 @@ android {
         applicationId "no.javazone.scheduler"
         minSdkVersion 33
         targetSdkVersion 33
-        versionCode 16
-        versionName "2023.1.6"
+        versionCode 17
+        versionName "2023.1.7"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {

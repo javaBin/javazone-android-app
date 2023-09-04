@@ -2,6 +2,7 @@ package no.javazone.scheduler.repository
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
 import no.javazone.scheduler.repository.room.*
 import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
 
@@ -16,18 +17,31 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 4, to = 5),
         AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7)
+        AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 4, to = 8, spec = AppDatabase.Migrate7To8::class),
+        AutoMigration(from = 5, to = 8, spec = AppDatabase.Migrate7To8::class),
+        AutoMigration(from = 6, to = 8, spec = AppDatabase.Migrate7To8::class),
+        AutoMigration(from = 7, to = 8, spec = AppDatabase.Migrate7To8::class),
     ]
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
+
+    @DeleteColumn(
+        tableName = "talks",
+        columnName = "registration_link"
+    )
+
+    class Migrate7To8 : AutoMigrationSpec {
+
+    }
 
     abstract fun sessionDao(): ConferenceDao
 
@@ -52,3 +66,4 @@ abstract class AppDatabase : RoomDatabase() {
 
     }
 }
+
