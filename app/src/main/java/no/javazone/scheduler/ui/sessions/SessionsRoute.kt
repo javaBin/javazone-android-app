@@ -133,7 +133,7 @@ private fun AllSessionsScreen(
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
             ){
-                if (selectedDay == conferenceDays.sortedBy { it.date }.first().date) {
+                if (!conferenceDays.isNullOrEmpty() && selectedDay == conferenceDays.sortedBy { it.date }.first().date) {
                     Text("Workshops require registration ahead of time")
                 } else {
 

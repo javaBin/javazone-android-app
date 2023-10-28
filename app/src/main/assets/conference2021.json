@@ -1,1 +1,9 @@
-{"conferenceUrl":"https://sleepingpill.javazone.no/public/allSessions/javazone_2021","conferenceName":"JavaZone 2021","conferenceDates":["08.12.2021","09.12.2021"],"workshopDate":"07.12.2021"}
+{
+  "conferenceUrl": "https://sleepingpill.javazone.no/public/allSessions/javazone_2021",
+  "conferenceName": "JavaZone 2021",
+  "conferenceDates": [
+    "08.12.2021",
+    "09.12.2021"
+  ],
+  "workshopDate": "07.12.2021"
+}
