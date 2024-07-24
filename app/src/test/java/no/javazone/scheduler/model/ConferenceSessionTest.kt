@@ -37,7 +37,8 @@ class ConferenceSessionTest {
             summary = "",
             speakers = setOf(ConferenceSpeaker(name = "test", bio = "test")),
             format = ConferenceFormat.LIGHTNING_TALK,
-            room = ConferenceRoom.DEFAULT
+            room = ConferenceRoom.DEFAULT,
+            registrationLink = null
         )
         val talk2 = ConferenceTalk(
             id = UUID.randomUUID().toString(),
@@ -51,7 +52,8 @@ class ConferenceSessionTest {
             summary = "",
             speakers = setOf(ConferenceSpeaker(name = "test", bio = "test")),
             format = ConferenceFormat.LIGHTNING_TALK,
-            room = ConferenceRoom.DEFAULT
+            room = ConferenceRoom.DEFAULT,
+            registrationLink = null
         )
 
         val result =

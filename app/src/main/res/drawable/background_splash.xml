@@ -12,6 +12,6 @@
         >
         <bitmap
             android:gravity="fill"
-            android:src="@drawable/jz_circus"/>
+            android:src="@drawable/jz24_splash"/>
     </item>
 </layer-list>

@@ -57,12 +57,13 @@ class ConferenceRepositoryImpl private constructor(
                 }
         },
         fetch = {
-            val conference = (getConference().first {
-                it.data != Conference.NULL_INSTANCE
-            }.data)
+            //val conference = (getConference().first {
+            //    it.data != Conference.NULL_INSTANCE
+            //}.data)
 
-            Log.d(LOG_TAG, "fetching sessions from ${conference.conferenceUrl}")
-            api.fetchSessions(conference.conferenceUrl)
+            //Log.d(LOG_TAG, "fetching sessions from ${conference.conferenceUrl}")
+            //api.fetchSessions(conference.conferenceUrl)
+            api.fetchSessions("https://sleepingpill.javazone.no/public/allSessions/javazone_2024")
         },
         saveFetchResult = saveToDb,
         shouldFetch = {
