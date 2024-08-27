@@ -3,6 +3,9 @@ package no.javazone.scheduler.ui.partners
 import android.content.Intent
 import androidx.compose.ui.graphics.Color
 import android.net.Uri
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +24,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
@@ -61,30 +65,14 @@ fun PartnersContent(
     partners: List<Partner>,
     imageLoader: ImageLoader
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
-        modifier = Modifier.background(Color.LightGray)
-    ) {
-        items(partners) { partner ->
-            Card(
-                modifier = Modifier.padding(4.dp)
-            ) {
-                Image(
-                    painter = rememberAsyncImagePainter(partner.logoUrl,
-                        imageLoader = imageLoader,
-                    ),
-                    colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
-                    contentDescription = partner.name,
-                    modifier = Modifier
-                        .padding(3.dp)
-                        .size(74.dp)
-                        .clickable(enabled = partner.homepageUrl.isNotEmpty()) {
-                            forwardToWeb(partner.homepageUrl)
-                        },
-                )
-            }
+
+    AndroidView(factory = { context ->
+        WebView(context).apply {
+            webViewClient = WebViewClient()
+            settings.javaScriptEnabled = true
+            loadUrl("https://2024.javazone.no/app-partners")
         }
-    }
+    })
 }
 
 @ExperimentalCoilApi
