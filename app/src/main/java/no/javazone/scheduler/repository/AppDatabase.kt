@@ -17,7 +17,7 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -29,6 +29,7 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         AutoMigration(from = 5, to = 8, spec = AppDatabase.Migrate7To8::class),
         AutoMigration(from = 6, to = 8, spec = AppDatabase.Migrate7To8::class),
         AutoMigration(from = 7, to = 8, spec = AppDatabase.Migrate7To8::class),
+        AutoMigration(from = 8, to = 9, spec = AppDatabase.Migrate7To8::class),
     ]
 )
 @TypeConverters(Converters::class)
@@ -59,7 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
             callback: Callback = object : RoomDatabase.Callback() {}
         ): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, APP_PREFERENCE_FILE)
-                .fallbackToDestructiveMigrationFrom(1, 2, 3, 4, 5)
+                .fallbackToDestructiveMigrationFrom(1, 2, 3, 4, 5, 6 , 7, 8 )
                 .addCallback(callback)
                 .build()
         }

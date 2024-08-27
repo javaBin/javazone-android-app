@@ -9,13 +9,13 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "no.javazone.scheduler"
-        minSdkVersion 33
-        targetSdkVersion 33
-        versionCode 18
-        versionName "2023.1.8"
+        minSdkVersion 34
+        targetSdkVersion 34
+        versionCode 20
+        versionName "2024.1.2"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -121,6 +121,7 @@ dependencies {
     // http-client
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion"
+
 
     // v31 splash screen - later
     // implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
