@@ -2,6 +2,7 @@ package no.javazone.scheduler.ui.theme
 
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.Locale
 
 
 val SessionTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
@@ -10,4 +11,4 @@ val SessionDateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(For
 
 val SessionDateTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
-val SessionDayFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE")
+val SessionDayFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH)

@@ -17,9 +17,12 @@ import no.javazone.scheduler.utils.Resource
 import no.javazone.scheduler.utils.WORKSHOP_DAY
 import java.time.LocalDate
 
+
 class ConferenceListViewModel(
     private val repository: ConferenceRepository
 ) : ViewModel() {
+
+    val isLoading: Boolean = false
 
     val conference: StateFlow<Resource<Conference>> = repository.getConference()
         .stateIn(

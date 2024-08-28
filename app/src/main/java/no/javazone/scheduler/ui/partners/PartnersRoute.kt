@@ -68,8 +68,18 @@ fun PartnersContent(
 
     AndroidView(factory = { context ->
         WebView(context).apply {
-            webViewClient = WebViewClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView, url: String) {
+                    view.loadUrl(
+                        "javascript:(function() { " +
+                                "document.body.style.backgroundColor = 'transparent'; " +
+                                "document.body.innerHTML = document.body.innerHTML.replace('Partners in 2024', '');"+
+                                "})()"
+                    )
+                }
+            }
             settings.javaScriptEnabled = true
+
             loadUrl("https://2024.javazone.no/app-partners")
         }
     })
