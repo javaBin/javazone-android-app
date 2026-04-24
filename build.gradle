@@ -9,7 +9,6 @@ buildscript {
         // (Kotlin 2.x+), the Compose compiler is bundled with the Kotlin toolchain and
         // composeOptions.kotlinCompilerExtensionVersion is ignored.
         composeVersion = '1.10.6'
-        constraintLayoutVersion = '2.1.1'
         coreKtxVersion = '1.18.0'
         coroutinesVersion = '1.10.2'
         // 2.x supports desugaring of Java 17–21 APIs (LocalDate, streams, etc.) and
@@ -30,10 +29,7 @@ buildscript {
         roboeletricVersion = "4.16.1"
         roomVersion = '2.8.4'
         truthVersion = "1.4.5"
-        uiToolingVersion = "1.0.5"
         windowVersion = '1.5.1'
-        workVersion = '2.7.0'
-        viewPagerVersion = "1.0.0"
     }
     repositories {
         google()
