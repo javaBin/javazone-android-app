@@ -18,7 +18,7 @@ retention need.
 | Launcher label (`app_name`) | `JavaZone` (year-agnostic, no change) |
 | Initial versionCode / versionName | `1` / `2026.1.0` |
 | Play account | Java Brukerforening i Norge (Account ID `5064436998460465164`) |
-| Keystore storage | javaBin shared LastPass vault |
+| Keystore storage | javaBin shared password vault |
 
 ---
 
@@ -28,7 +28,8 @@ Before starting, confirm you have:
 
 - [ ] Access to the **javaBin Google Play Console** (ask Øyvind to add you as a developer
       under Users and permissions if not).
-- [ ] Access to the **javaBin shared LastPass vault** for storing the keystore.
+- [ ] Access to the **javaBin shared password vault** for storing the keystore (ask
+      Øyvind which vault and how to get an invite).
 - [ ] A working local build:
   - JDK 25 (the Gradle toolchain will download this automatically if missing — no manual
     install needed, but `JAVA_HOME` should not point at something incompatible).
@@ -79,7 +80,7 @@ keytool -genkey -v \
 
 You'll be prompted for:
 
-- **Keystore password** (8+ chars, store in LastPass — see step 2b).
+- **Keystore password** (8+ chars, store in the shared vault — see step 2b).
 - **Key password** (you can press Enter to reuse the keystore password — common practice and
   fine for upload keys).
 
@@ -93,9 +94,9 @@ keytool -list -v -keystore javazone-2026-upload.jks -alias upload
 
 Note the printed **SHA1** and **SHA256** fingerprints — you'll need them in step 3.
 
-#### 2b. Upload to LastPass
+#### 2b. Upload to the shared vault
 
-- [ ] In the javaBin shared LastPass vault, create a new **Secure Note** entry:
+- [ ] In the javaBin shared password vault, create a new **Secure Note** entry:
   - **Name**: `JavaZone 2026 Android upload key`
   - **Notes**: include keystore password, key password, alias (`upload`), and the SHA-1
     fingerprint for cross-reference.
@@ -105,8 +106,8 @@ Note the printed **SHA1** and **SHA256** fingerprints — you'll need them in st
       temporarily; it must never end up in `git status`.
 - [ ] Delete any temporary copy from `~/Downloads` or wherever you initially generated it.
 
-**Verify**: The keystore is in LastPass + at one local path outside the repo, and nowhere
-else.
+**Verify**: The keystore is in the shared vault + at one local path outside the repo, and
+nowhere else.
 
 ### 3. Wire up signing in `app/build.gradle`
 
@@ -151,9 +152,9 @@ In `~/.gradle/gradle.properties` (create if it doesn't exist), add:
 
 ```properties
 JAVAZONE_KEYSTORE_PATH=/Users/<you>/.android/javazone-2026-upload.jks
-JAVAZONE_KEYSTORE_PASSWORD=<from LastPass>
+JAVAZONE_KEYSTORE_PASSWORD=<from shared vault>
 JAVAZONE_KEY_ALIAS=upload
-JAVAZONE_KEY_PASSWORD=<from LastPass>
+JAVAZONE_KEY_PASSWORD=<from shared vault>
 ```
 
 **This file is in your home directory, not the repo, and must stay there.** Do not copy
@@ -316,8 +317,8 @@ your `~/.gradle/gradle.properties` points at the JavaZone 2026 keystore, not an 
 
 ### "Keystore was tampered with, or password was incorrect"
 
-The keystore password in `~/.gradle/gradle.properties` doesn't match. Re-fetch from
-LastPass.
+The keystore password in `~/.gradle/gradle.properties` doesn't match. Re-fetch from the
+shared vault.
 
 ### Release build succeeds but is unsigned
 
