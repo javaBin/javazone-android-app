@@ -18,4 +18,63 @@
     <string name="registration_required">Preregistration required!</string>
     <string name="preregistration">Register on javazone.no</string>
     <string name="search_hint">Search title, speaker, keyword</string>
+    <string name="open_in_google_maps">Open in Google Maps</string>
+
+    <!-- Info screen – header -->
+    <string name="info_conference_name" translatable="false">JavaZone 2025</string>
+
+    <!-- Info screen – Venue card -->
+    <string name="info_venue">Venue</string>
+    <string name="info_venue_name" translatable="false">NOVA Spektrum</string>
+    <string name="info_venue_address" translatable="false">Messeveien 6, 2004 Lillestrøm</string>
+    <string name="info_venue_description">Just a short train ride (10–12 minutes) from Oslo Central Station and only 15 minutes from Oslo Airport Gardermoen.</string>
+
+    <!-- Info screen – Getting There card -->
+    <string name="info_getting_there">How to get There</string>
+    <string name="info_train_label">Train (Vy)</string>
+    <string name="info_train_description">11 min from Oslo S · 12 min from Oslo Airport. Take R-trains (RE11, R12, R14 etc.). Use the Ruter app to plan.</string>
+    <string name="info_flytoget_label">Airport Express (Flytoget)</string>
+    <string name="info_flytoget_description">12 min from Oslo Airport to Lillestrøm.</string>
+    <string name="info_bus_label">Bus</string>
+    <string name="info_bus_description">Lillestrøm bus terminal is an 8-min walk to NOVA Spektrum.</string>
+
+    <!-- Info screen – Parking card -->
+    <string name="info_parking">Parking</string>
+    <string name="info_parking_spaces">2,200 spaces in front of the venue (paid 24/7)</string>
+    <string name="info_parking_payment">Pay with Autopay, card or mobile</string>
+    <string name="info_parking_small_vehicles">Vehicles &lt; 3,500 kg</string>
+    <string name="info_parking_rate_small">NOK 72/h · max NOK 420/24h</string>
+    <string name="info_parking_large_vehicles">Vehicles &gt; 3,500 kg</string>
+    <string name="info_parking_rate_large">NOK 144/h · max NOK 840/24h</string>
+    <string name="info_parking_disabled">Disabled parking</string>
+    <string name="info_parking_disabled_location">Fields C &amp; F (paid)</string>
+    <string name="info_ev_charging">EV Charging</string>
+    <string name="info_ev_charging_description">10 charging stations in field A (paid)</string>
+
+    <!-- Info screen – Workshop Venue card -->
+    <string name="info_workshop_venue">Workshop Venue</string>
+    <string name="info_workshop_times" translatable="false">08:30–17:45</string>
+    <string name="info_workshop_venue_name" translatable="false">Rebel Oslo</string>
+    <string name="info_workshop_venue_address" translatable="false">Universitetsgata 2, Oslo</string>
+    <string name="info_workshop_directions">A few minutes\' walk from Nationaltheatret station.</string>
+
+    <!-- Info screen – Accessibility card -->
+    <string name="info_accessibility">Accessibility</string>
+    <string name="info_accessibility_description">NOVA Spektrum is wheelchair accessible. A limited number of wheelchairs are available.</string>
+    <string name="info_accessibility_email" translatable="false">javazone@macsimum.no</string>
+
+    <!-- Info screen – Wi-Fi card -->
+    <string name="info_wifi">Wi-Fi</string>
+    <string name="info_wifi_ssid_label" translatable="false">SSID</string>
+    <string name="info_wifi_ssid_value" translatable="false">JavaZone</string>
+
+    <!-- Info screen – JavaZone / javaBin / App cards -->
+    <string name="info_javazone_section" translatable="false">JavaZone</string>
+    <string name="info_code_of_conduct">Code of Conduct</string>
+    <string name="info_javabin_section" translatable="false">javaBin</string>
+    <string name="info_javabin_website">javaBin Website</string>
+    <string name="info_terms_and_conditions">Terms and Conditions</string>
+    <string name="info_about_app">About the App</string>
+    <string name="info_open_source_licences">Open Source Licences</string>
+    <string name="info_github" translatable="false">GitHub</string>
 </resources>

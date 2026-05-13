@@ -3,6 +3,8 @@ package no.javazone.scheduler.ui
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -18,6 +20,8 @@ import no.javazone.scheduler.ui.schedules.MyScheduleRoute
 import no.javazone.scheduler.ui.sessions.DetailsRoute
 import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.LOG_TAG
+import no.javazone.scheduler.utils.formatDateRange
+import no.javazone.scheduler.utils.formatWorkshopDate
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -52,7 +56,12 @@ fun JavaZoneNavGraph(
             )
         }
         composable(route = InfoScreen.route) {
-            InfoRoute()
+            val conference by viewModel.conference.collectAsState()
+            InfoRoute(
+                conferenceName = conference.data.name,
+                conferenceDates = conference.data.days.formatDateRange(),
+                workshopDate = conference.data.days.formatWorkshopDate()
+            )
         }
         composable(route = PartnerScreen.route) {
             PartnersRoute(appContainer)

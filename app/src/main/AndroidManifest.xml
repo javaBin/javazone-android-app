@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module dist:instant="true" />
 
@@ -29,10 +30,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme" />
+            android:name="com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme" />
         <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:name="com.google.android.gms.oss.licenses.v2.OssLicensesActivity"
             android:theme="@style/AppTheme" />
     </application>
 
