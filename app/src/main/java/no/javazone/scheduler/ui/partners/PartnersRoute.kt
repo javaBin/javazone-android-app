@@ -1,10 +1,8 @@
 package no.javazone.scheduler.ui.partners
 
 import android.content.Intent
-import androidx.compose.ui.graphics.Color
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -12,26 +10,29 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberAsyncImagePainter
-import coil.imageLoader
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.imageLoader
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.model.Partner
 import no.javazone.scheduler.viewmodels.PartnersViewModel
 
-@ExperimentalCoilApi
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PartnersRoute(
     appContainer: AppContainer
@@ -45,7 +46,7 @@ fun PartnersRoute(
 
     PartnersContent(
         forwardToWeb = { url ->
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             context.startActivity(intent)
         },
         imageLoader = appContainer.imageLoader,
@@ -53,7 +54,6 @@ fun PartnersRoute(
     )
 }
 
-@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
 fun PartnersContent(
@@ -69,10 +69,10 @@ fun PartnersContent(
             Card(
                 modifier = Modifier.padding(4.dp)
             ) {
-                Image(
-                    painter = rememberAsyncImagePainter(partner.logoUrl,
-                        imageLoader = imageLoader,
-                    ),
+                AsyncImage(
+                    model = partner.logoUrl,
+                    imageLoader = imageLoader,
+                    error = rememberVectorPainter(Icons.Filled.BrokenImage),
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }),
                     contentDescription = partner.name,
                     modifier = Modifier
@@ -87,7 +87,6 @@ fun PartnersContent(
     }
 }
 
-@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
 @Preview

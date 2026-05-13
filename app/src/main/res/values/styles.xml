@@ -8,12 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@drawable/background_splash</item>
-
-        <item name="android:windowActivityTransitions">true</item>
+    <style name="SplashScreenTheme" parent="Theme.SplashScreen">
+        <!-- Background colour shown behind the icon -->
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <!-- Centred icon shown on the splash screen -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/jz_circus</item>
+        <!-- Theme to apply once the splash screen dismisses -->
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 </resources>

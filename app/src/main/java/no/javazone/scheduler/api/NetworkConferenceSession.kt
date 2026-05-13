@@ -24,7 +24,7 @@ class NetworkConferenceSession(
     override suspend fun fetchConference(): Conference =
         withContext(dispatchers.io) {
             val conference = client.getConference()
-            Log.d(LOG_TAG, "Retrieve ${conference.conferenceName} conference")
+            Log.d(LOG_TAG, "Retrieved ${conference.conferenceName} conference")
             conference.toModel()
         }
 

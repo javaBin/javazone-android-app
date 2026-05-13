@@ -2,7 +2,8 @@ package no.javazone.scheduler.api
 
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.runTest
 import no.javazone.scheduler.dto.ConferenceDto
 import no.javazone.scheduler.dto.SessionDto
 import no.javazone.scheduler.dto.SessionsDto
@@ -17,15 +18,21 @@ import org.robolectric.RobolectricTestRunner
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
 class NetworkConferenceSessionTest {
     private lateinit var api: ConferenceSessionApi
 
+    private lateinit var testDispatchers: TestDispatchersProvider
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val scheduler = TestCoroutineScheduler()
+
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
+        testDispatchers = TestDispatchersProvider(scheduler)
         api = NetworkConferenceSession.getInstance(
             client = object : NetworkClient {
                 override suspend fun getConference(): ConferenceDto =
@@ -69,21 +76,20 @@ class NetworkConferenceSessionTest {
                         )
                     )
             },
-            dispatchers = TestDispatchersProvider
+            dispatchers = testDispatchers
         )
-
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `fetching conferencesessions should work`() = runBlockingTest {
+    fun `fetching conferencesessions should work`() = runTest(scheduler) {
         val result = api.fetchSessions("")
         Truth.assertThat(result).isNotEmpty()
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `fetching conference should work`() = runBlockingTest {
+    fun `fetching conference should work`() = runTest(scheduler) {
         val result = api.fetchConference()
         Truth.assertThat(result.days).isNotEmpty()
     }

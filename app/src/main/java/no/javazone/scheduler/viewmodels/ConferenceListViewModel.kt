@@ -4,8 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceSession
@@ -47,11 +46,15 @@ class ConferenceListViewModel(
 
     private var _detailsArg: Pair<String, String> = "" to ""
 
-    val isReady: LiveData<Boolean> = sessions
+    val isReady: StateFlow<Boolean> = sessions
         .map {
             it.data.isNotEmpty()
         }
-        .asLiveData()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
 
     private var _selectedDay: MutableState<LocalDate> = mutableStateOf(WORKSHOP_DAY)
 
@@ -104,26 +107,13 @@ class ConferenceListViewModel(
         mySchedule: List<String>
     ): Map<LocalDate, List<ConferenceTalk>> =
         sessions
-            .map { session ->
-                session.copy(
-                    talks = session.talks.mapNotNull { talk ->
-                        if (mySchedule.contains(talk.id)) {
-                            talk.copy(scheduled = true)
-                        } else {
-                            null
-                        }
-                    }
-                )
+            .flatMap { session ->
+                session.talks
+                    .filter { mySchedule.contains(it.id) }
+                    .map { it.copy(scheduled = true) }
             }
-            .flatMap {
-                it.talks
-            }
-            .sortedBy {
-                it.slotTime
-            }
-            .groupBy {
-                it.slotTime.toLocalDate()
-            }
+            .sortedBy { it.slotTime }
+            .groupBy { it.slotTime.toLocalDate() }
 
     fun addOrRemoveSchedule(talkId: String) {
         viewModelScope.launch {

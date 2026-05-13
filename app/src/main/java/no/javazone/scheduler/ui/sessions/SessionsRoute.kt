@@ -7,8 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -49,8 +49,6 @@ fun SessionsRoute(
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
             navigateToDetail = { talkId ->
-                //navController.navigate(deepLink= "detail_session/${talk.id}"
-                //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
                 val newRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$talkId"
                 Log.d(LOG_TAG, "Navigating to $newRoute")
                 viewModel.updateDetailsArg(talkId, route)
@@ -107,7 +105,7 @@ private fun AllSessionsScreen(
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
     Surface() {
-        Column (modifier = Modifier.fillMaxWidth()){
+        Column (modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
@@ -118,12 +116,12 @@ private fun AllSessionsScreen(
                     .forEach {
                         Column(modifier = Modifier
                             .padding(start = 4.dp, end = 4.dp)
-                        ){
-                        ConferenceChip(
-                            label = SessionDayFormat.format(it.date),
-                            selected = it.date == selectedDay,
-                            onExecute = { navigateToDay(it.date) }
-                        )
+                        ) {
+                            ConferenceChip(
+                                label = SessionDayFormat.format(it.date),
+                                selected = it.date == selectedDay,
+                                onExecute = { navigateToDay(it.date) }
+                            )
                         }
                     }
             }
@@ -135,19 +133,14 @@ private fun AllSessionsScreen(
             ){
                 if (!conferenceDays.isNullOrEmpty() && selectedDay == conferenceDays.sortedBy { it.date }.first().date) {
                     Text("Workshops require registration ahead of time")
-                } else {
-
                 }
             }
-
 
             LazyColumn {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
-
                         Surface(
                             tonalElevation = 10.dp,
-
                         ) {
                             Row(
                                 modifier = Modifier
@@ -168,12 +161,9 @@ private fun AllSessionsScreen(
                     }
 
                     items(session.talks) { talk ->
-                        Surface(
-                        ) {
+                        Surface {
                             Row(
                                 modifier = Modifier
-                                    //.padding(1.dp)
-                                    //.border(width = 2.dp, color = MaterialTheme.colors.onSecondary)
                                     .fillMaxWidth()
                                     .clickable(onClick = {
                                         Log.w("SessionviewDebug", "Session is ${talk.id}")
@@ -229,7 +219,7 @@ private fun AllSessionsScreen(
                                     )
                                 }
                             }
-                            Divider()
+                            HorizontalDivider()
                         }
                     }
                 }

@@ -6,7 +6,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.time.LocalDate
 
 const val SESSIONS_FILENAME = "sessions.json"
-const val CONFERENCE_FILENAME = "conference2019.json"
+const val CONFERENCE_FILENAME = "conference.json"
 const val PARTNERS_FILENAME = "partners.json"
 const val LOG_TAG = "JavaZone"
 const val APP_PREFERENCE_FILE = "javazone"
@@ -15,12 +15,12 @@ const val JAVAZONE_DATE_PATTERN = "dd.MM.yyyy"
 
 val APPLICATION_JSON: MediaType = "application/json".toMediaType()
 
-
-val WORKSHOP_DAY: LocalDate = LocalDate.of(2021, 12, 7)
-val FIRST_CONFERENCE_DAY: LocalDate = LocalDate.of(2021, 12, 8)
+val WORKSHOP_DAY: LocalDate = LocalDate.of(2019, 9, 10)
+val FIRST_CONFERENCE_DAY: LocalDate = LocalDate.of(2019, 9, 11)
+val LAST_CONFERENCE_DAY: LocalDate = LocalDate.of(2019, 9, 12)
 
 val DEFAULT_CONFERENCE_DAYS = listOf(
     WORKSHOP_DAY,
     FIRST_CONFERENCE_DAY,
-    LocalDate.of(2021, 12, 9),
+    LAST_CONFERENCE_DAY,
 )

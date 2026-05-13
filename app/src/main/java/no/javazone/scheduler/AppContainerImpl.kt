@@ -2,8 +2,9 @@ package no.javazone.scheduler
 
 import android.content.Context
 import android.net.ConnectivityManager
-import coil.ImageLoader
-import coil.decode.SvgDecoder
+import coil3.ImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.svg.SvgDecoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import no.javazone.scheduler.api.AssetConferenceSession
 import no.javazone.scheduler.api.NetworkClient
@@ -64,6 +65,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     override val imageLoader: ImageLoader by lazy {
         ImageLoader.Builder(applicationContext)
             .components {
+                add(OkHttpNetworkFetcherFactory())
                 add(SvgDecoder.Factory())
             }
             .build()

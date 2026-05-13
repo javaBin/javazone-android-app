@@ -15,7 +15,6 @@ class DtoToConferenceTest {
     @Before
     internal fun setUp() {
         val jsonStringBuffer = String(Files.readAllBytes(path.resolve("sessions.json")))
-
         dto = Json.decodeFromString(SessionsDto.serializer(), jsonStringBuffer)
     }
 
@@ -28,12 +27,18 @@ class DtoToConferenceTest {
         val result = dto.toModel()
 
         assertThat(result).isNotEmpty()
-        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.WORKSHOP }).hasSize(workshops)
-        assertThat(result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.PRESENTATION }).hasSize(presentations)
-        assertThat(result.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }.flatMap { it.talks }).hasSize(lightnings)
-
-        val result2 = result.filter { it.talks.size == 1 }.filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }
-        assertThat(result2).isNotEmpty()
+        assertThat(result
+            .filter { it.talks.size == 1 }
+            .filter { it.talks.first().format == ConferenceFormat.WORKSHOP })
+            .hasSize(workshops)
+        assertThat(result
+            .filter { it.talks.size == 1 }
+            .filter { it.talks.first().format == ConferenceFormat.PRESENTATION })
+            .hasSize(presentations)
+        assertThat(result
+            .filter { it.talks.first().format == ConferenceFormat.LIGHTNING_TALK }
+            .flatMap { it.talks })
+            .hasSize(lightnings)
     }
 
     @Test

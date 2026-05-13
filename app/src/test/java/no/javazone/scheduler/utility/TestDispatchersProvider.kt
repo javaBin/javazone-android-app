@@ -2,17 +2,19 @@ package no.javazone.scheduler.utility
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import no.javazone.scheduler.utils.DispatchersProvider
 
-@ExperimentalCoroutinesApi
-object TestDispatchersProvider : DispatchersProvider {
-    override val default: CoroutineDispatcher
-        get() = TestCoroutineDispatcher()
-    override val io: CoroutineDispatcher
-        get() = TestCoroutineDispatcher()
-    override val main: CoroutineDispatcher
-        get() = TestCoroutineDispatcher()
-    override val unconfined: CoroutineDispatcher
-        get() = TestCoroutineDispatcher()
+@OptIn(ExperimentalCoroutinesApi::class)
+class TestDispatchersProvider(
+    val scheduler: TestCoroutineScheduler
+) : DispatchersProvider {
+
+    private val dispatcher = StandardTestDispatcher(scheduler)
+
+    override val main: CoroutineDispatcher = dispatcher
+    override val io: CoroutineDispatcher = dispatcher
+    override val default: CoroutineDispatcher = dispatcher
+    override val unconfined: CoroutineDispatcher = dispatcher
 }

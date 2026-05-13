@@ -1,29 +1,20 @@
 apply plugin: "com.android.application"
-
-apply plugin: "kotlin-android"
-
-apply plugin: 'kotlin-kapt'
-
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'kotlinx-serialization'
-
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
-    compileSdk 33
+    compileSdkVersion 36
+    buildToolsVersion '36.1.0'
     defaultConfig {
         applicationId "no.javazone.scheduler"
-        minSdkVersion 33
-        targetSdkVersion 33
+        minSdkVersion 36
+        targetSdkVersion 36
         versionCode 18
         versionName "2023.1.8"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation":
-                                      "$projectDir/schemas".toString()]
-            }
-        }
         resourceConfigurations += ['en', 'no']
     }
     buildFeatures {
@@ -36,42 +27,68 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
-    compileOptions {
-        // Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
-        // Sets Java compatibility to Java 8
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion rootProject.composeCompilerVersion
+
+    java {
+        toolchain {
+            // Use JDK 25 to compile. The JDK version controls which JDK APIs and language
+            // features are available in source, but does NOT set the class-file format.
+            languageVersion = JavaLanguageVersion.of(25)
+        }
     }
 
-    // For Kotlin projects
-    kotlinOptions {
-        jvmTarget = "11"
-        freeCompilerArgs += ['-opt-in=kotlin.RequiresOptIn', '-Xjvm-default=all']
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        // Keep bytecode at Java 21. Android uses ART (DEX), not the JVM, so targeting
+        // bytecode > 21 buys nothing and breaks the Compose Preview renderer, which
+        // runs on the IDE's embedded JDK and can only load class files up to major
+        // version 65 (Java 21). Java 25 class files have major version 69.
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
+
+    // composeOptions.kotlinCompilerExtensionVersion is obsolete when the
+    // org.jetbrains.kotlin.plugin.compose plugin is applied (Kotlin 2.x+).
+    // The Compose compiler is now bundled with the Kotlin toolchain.
+
+    // kotlinOptions{} was provided by the kotlin-android plugin; AGP 9 built-in
+    // Kotlin support uses kotlin { compilerOptions { } } instead.
+    kotlin {
+        compilerOptions {
+            // Must match targetCompatibility. Setting this to JVM_25 would emit class
+            // files with major version 69, crashing the Compose Preview renderer on JDK 21.
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+            freeCompilerArgs.addAll(['-opt-in=kotlin.RequiresOptIn', '-jvm-default=no-compatibility'])
+        }
+    }
+
     packagingOptions {
         resources {
             pickFirsts += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
         }
     }
+
     testOptions {
         unitTests.includeAndroidResources = true
     }
     namespace 'no.javazone.scheduler'
 }
 
+// Pass Room's schema export directory to the KSP processor.
+// The room {} DSL block requires the separate androidx.room Gradle plugin;
+// a plain ksp {} argument achieves the same with no extra dependency.
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.5.0'
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarLibVersion"
 
-    // kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    // kotlin — stdlib-jdk7/jdk8 are merged into kotlin-stdlib since Kotlin 1.8;
+    // listing them explicitly causes a deprecation warning in Kotlin 2.x.
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion"
 
@@ -79,9 +96,8 @@ dependencies {
     implementation "androidx.compose.runtime:runtime:$composeVersion"
     implementation "androidx.compose.ui:ui:$composeVersion"
     implementation "androidx.compose.foundation:foundation-layout:$composeVersion"
-    implementation "androidx.compose.material:material:$composeVersion"
     implementation "androidx.compose.material3:material3:$material3Version"
-    implementation "androidx.compose.material:material-icons-extended:$composeVersion"
+    implementation "androidx.compose.material:material-icons-extended:1.7.8"
     implementation "androidx.compose.foundation:foundation:$composeVersion"
     implementation "androidx.compose.animation:animation:$composeVersion"
     implementation "androidx.compose.ui:ui-tooling:$composeVersion"
@@ -89,10 +105,6 @@ dependencies {
 
     // google support libraries for android compose
     implementation "com.google.android.material:material:$googleMaterialversion"
-
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.activity:activity-ktx:$activityVersion"
@@ -110,20 +122,21 @@ dependencies {
     implementation "androidx.window:window:$windowVersion"
 
     // Image compose component
-    implementation "io.coil-kt:coil-compose:$coilVersion"
-    implementation "io.coil-kt:coil-svg:$coilVersion"
+    implementation "io.coil-kt.coil3:coil-compose:$coilVersion"
+    implementation "io.coil-kt.coil3:coil-network-okhttp:$coilVersion"
+    implementation "io.coil-kt.coil3:coil-svg:$coilVersion"
 
     // database
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
+    ksp "androidx.room:room-compiler:$roomVersion"
 
     // http-client
     implementation "com.squareup.retrofit2:retrofit:$retroFit2Version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retroFitKotlinSerializationVersion"
 
-    // v31 splash screen - later
-    // implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
+    // Splash screen API (replaces the custom SplashScreenActivity)
+    implementation "androidx.core:core-splashscreen:1.2.0"
 
     // unittesting
     testImplementation "com.google.truth:truth:$truthVersion"
@@ -133,8 +146,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$roboeletricVersion"
 
     // instrumented test
-    androidTestImplementation "androidx.test:runner:1.5.2"
-    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "androidx.test:runner:1.7.0"
+    androidTestImplementation "androidx.test:rules:1.7.0"
     androidTestImplementation "org.robolectric:robolectric:$roboeletricVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "com.google.truth:truth:$truthVersion"

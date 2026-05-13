@@ -20,11 +20,15 @@ data class SessionDto(
     val conferenceId: String,
     val startTimeZulu: String? = null,
     val endTimeZulu: String? = null,
-    val speakers: List<SpeakerDto>)
+    val startTime: String? = null,
+    val endTime: String? = null,
+    val speakers: List<SpeakerDto>
+)
 
 @Serializable
 data class SpeakerDto(
     val twitter: String? = null,
     val pictureUrl: String? = null,
     val name: String,
-    val bio: String)
+    val bio: String
+)
