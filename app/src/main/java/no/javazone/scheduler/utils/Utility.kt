@@ -56,7 +56,7 @@ val sampleTalks = listOf(
         title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         startTime = OffsetDateTime.now().minusHours(1),
         endTime = OffsetDateTime.now().plusHours(1),
-        length = 120,
+        length = 45,
         intendedAudience = "Beginner",
         language = "Latin",
         video = "https://vimeo.com/253989945",
@@ -72,14 +72,15 @@ val sampleTalks = listOf(
         format = ConferenceFormat.PRESENTATION,
         room = ConferenceRoom.create("Room 1"),
         scheduled = true,
-        registrationLink = null
+        registrationLink = null,
+        suggestedKeywords = listOf("Kotlin", "Android", "Jetpack Compose")
     ),
     ConferenceTalk(
         "19F59B3A-2DF9-499B-940E-D6CA20E00840",
         title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         startTime = OffsetDateTime.now().plusHours(1),
         endTime = OffsetDateTime.now().plusHours(3),
-        length = 120,
+        length = 60,
         intendedAudience = "Beginner",
         language = "Latin",
         video = "https://vimeo.com/253989945",
@@ -95,7 +96,8 @@ val sampleTalks = listOf(
         format = ConferenceFormat.PRESENTATION,
         room = ConferenceRoom.create("Room 1"),
         scheduled = false,
-        registrationLink = null
+        registrationLink = null,
+        suggestedKeywords = listOf("Java", "JVM", "Core")
     ),
     ConferenceTalk(
         "19F59B3A-2DF9-499B-940E-D6CA20E00840",
@@ -118,6 +120,7 @@ val sampleTalks = listOf(
         format = ConferenceFormat.WORKSHOP,
         room = ConferenceRoom.create("Room 1"),
         scheduled = false,
-        registrationLink = "http://example.com"
+        registrationLink = "http://example.com",
+        suggestedKeywords = listOf("Java", "Spring Boot", "Microservices")
     )
 )
