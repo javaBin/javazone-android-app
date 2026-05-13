@@ -17,4 +17,5 @@
     <string name="lightning_talk">lightning-talk</string>
     <string name="registration_required">Preregistration required!</string>
     <string name="preregistration">Register on javazone.no</string>
+    <string name="search_hint">Search title, speaker, keyword</string>
 </resources>

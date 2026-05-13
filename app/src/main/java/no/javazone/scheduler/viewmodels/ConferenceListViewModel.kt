@@ -64,6 +64,10 @@ class ConferenceListViewModel(
 
     val selectedFormat: State<ConferenceFormat?> = _selectedFormat
 
+    private var _searchQuery: MutableState<String> = mutableStateOf("")
+
+    val searchQuery: State<String> = _searchQuery
+
 
     init {
         viewModelScope.launch {
@@ -85,7 +89,8 @@ class ConferenceListViewModel(
         sessions: List<ConferenceSession>,
         selectedDay: LocalDate?,
         selectedFormat: ConferenceFormat?,
-        mySchedule: List<String>
+        mySchedule: List<String>,
+        searchQuery: String = ""
     ): List<ConferenceSession> =
         sessions
             .filter {
@@ -94,6 +99,12 @@ class ConferenceListViewModel(
             .mapNotNull { session ->
                 val filteredTalks = session.talks
                     .filter { talk -> selectedFormat == null || talk.format == selectedFormat }
+                    .filter { talk ->
+                        if (searchQuery.isBlank()) true
+                        else talk.title.contains(searchQuery, ignoreCase = true)
+                            || talk.speakers.any { it.name.contains(searchQuery, ignoreCase = true) }
+                            || talk.summary.contains(searchQuery, ignoreCase = true)
+                    }
                 if (filteredTalks.isEmpty()) {
                     null
                 } else {
@@ -158,6 +169,10 @@ class ConferenceListViewModel(
             }
             else -> {}
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     /**
