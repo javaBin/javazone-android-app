@@ -45,7 +45,7 @@ fun ConferenceChip(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (selected) MaterialTheme.colorScheme.inverseOnSurface else Color.White,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
             )
         }
     }
