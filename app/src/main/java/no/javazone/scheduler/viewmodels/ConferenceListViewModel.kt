@@ -7,10 +7,10 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.flow.*import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
+import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.ConferenceRepository
-import no.javazone.scheduler.utils.DEFAULT_CONFERENCE_DAYS
 import no.javazone.scheduler.utils.LoadingResource
 import no.javazone.scheduler.utils.Resource
 import no.javazone.scheduler.utils.WORKSHOP_DAY
@@ -56,9 +56,13 @@ class ConferenceListViewModel(
             initialValue = false
         )
 
-    private var _selectedDay: MutableState<LocalDate> = mutableStateOf(WORKSHOP_DAY)
+    private var _selectedDay: MutableState<LocalDate?> = mutableStateOf(WORKSHOP_DAY)
 
-    val selectedDay: State<LocalDate> = _selectedDay
+    val selectedDay: State<LocalDate?> = _selectedDay
+
+    private var _selectedFormat: MutableState<ConferenceFormat?> = mutableStateOf(null)
+
+    val selectedFormat: State<ConferenceFormat?> = _selectedFormat
 
 
     init {
@@ -71,32 +75,38 @@ class ConferenceListViewModel(
         }
     }
 
-    fun getDefaultDate(): LocalDate {
+    fun getDefaultDate(): LocalDate? {
         val today: LocalDate = LocalDate.now()
-        val first: LocalDate =
-            conferenceDays.map { it.date }.minOrNull() ?: DEFAULT_CONFERENCE_DAYS.first()
-        return if (today.isBefore(first) || today.isAfter(first)) first else today
+        val conferenceDateSet = conferenceDays.map { it.date }.toSet()
+        return if (conferenceDateSet.contains(today)) today else null
     }
 
     fun updateSessionsWithMySchedule(
         sessions: List<ConferenceSession>,
-        selectedDay: LocalDate,
+        selectedDay: LocalDate?,
+        selectedFormat: ConferenceFormat?,
         mySchedule: List<String>
     ): List<ConferenceSession> =
         sessions
             .filter {
-                it.time.toLocalDate() == selectedDay
+                selectedDay == null || it.time.toLocalDate() == selectedDay
             }
-            .map { session ->
-                session.copy(
-                    talks = session.talks.map { talk ->
-                        if (mySchedule.contains(talk.id)) {
-                            talk.copy(scheduled = true)
-                        } else {
-                            talk
+            .mapNotNull { session ->
+                val filteredTalks = session.talks
+                    .filter { talk -> selectedFormat == null || talk.format == selectedFormat }
+                if (filteredTalks.isEmpty()) {
+                    null
+                } else {
+                    session.copy(
+                        talks = filteredTalks.map { talk ->
+                            if (mySchedule.contains(talk.id)) {
+                                talk.copy(scheduled = true)
+                            } else {
+                                talk
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
             .sortedBy {
                 it.time
@@ -127,8 +137,27 @@ class ConferenceListViewModel(
 
     fun getDetailsArg(): Pair<String, String> = _detailsArg
 
-    fun updateSelectedDay(select: LocalDate) {
+    fun updateSelectedDay(select: LocalDate?) {
         _selectedDay.value = select
+    }
+
+    fun updateSelectedFormat(format: ConferenceFormat?) {
+        _selectedFormat.value = format
+        val workshopDay = conferenceDays.find { it.label == "workshop" }?.date
+        when (format) {
+            ConferenceFormat.WORKSHOP -> {
+                _selectedDay.value = workshopDay
+            }
+            ConferenceFormat.PRESENTATION,
+            ConferenceFormat.LIGHTNING_TALK -> {
+                if (_selectedDay.value == null || _selectedDay.value == workshopDay) {
+                    _selectedDay.value = conferenceDays
+                        .filter { it.label != "workshop" }
+                        .minByOrNull { it.date }?.date
+                }
+            }
+            else -> {}
+        }
     }
 
     /**
