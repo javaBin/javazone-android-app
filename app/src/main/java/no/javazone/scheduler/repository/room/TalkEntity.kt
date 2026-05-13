@@ -55,5 +55,7 @@ data class TalkEntity(
     @ColumnInfo(name = "end_time")
     val endTime: OffsetDateTime,
     @ColumnInfo(name = "registration_url")
-    val registrationLink: String?
+    val registrationLink: String?,
+    @ColumnInfo(name = "suggested_keywords", defaultValue = "")
+    val suggestedKeywords: String = ""
 )

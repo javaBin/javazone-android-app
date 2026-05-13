@@ -16,7 +16,8 @@ data class ConferenceTalk(
     val endTime: OffsetDateTime,
     val speakers: Set<ConferenceSpeaker>,
     val scheduled: Boolean = false,
-    val registrationLink: String?
+    val registrationLink: String?,
+    val suggestedKeywords: List<String> = emptyList()
 ) : Comparable<ConferenceTalk> {
     var slotTime: OffsetDateTime = startTime
 

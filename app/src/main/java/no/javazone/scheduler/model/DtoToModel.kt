@@ -151,7 +151,12 @@ private fun SessionDto.toModel(): ConferenceTalk? {
             video = video,
             format = format.toConferenceFormat(),
             room = ConferenceRoom.create(room),
-            registrationLink = registerLoc
+            registrationLink = registerLoc,
+            suggestedKeywords = suggestedKeywords
+                ?.split(",")
+                ?.map { it.trim() }
+                ?.filter { it.isNotEmpty() }
+                ?: emptyList()
         )
     } catch (ex: Exception) {
         Log.e(LOG_TAG, "Unknown format: $format")
