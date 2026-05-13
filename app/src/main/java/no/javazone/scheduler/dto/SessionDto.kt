@@ -13,15 +13,17 @@ data class SessionDto(
     val length: Int,
     val language: String,
     val sessionId: String,
+    val id: String? = null,
     val video: String? = null,
     val abstract: String,
     val title: String,
     val room: String? = null,
-    val conferenceId: String,
+    val conferenceId: String? = null,
     val startTimeZulu: String? = null,
     val endTimeZulu: String? = null,
     val startTime: String? = null,
     val endTime: String? = null,
+    val suggestedKeywords: String? = null,
     val speakers: List<SpeakerDto>
 )
 
