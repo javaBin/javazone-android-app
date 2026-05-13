@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -63,11 +65,12 @@ fun PartnersContent(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
-        modifier = Modifier.background(Color.LightGray)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
         items(partners) { partner ->
             Card(
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 AsyncImage(
                     model = partner.logoUrl,
