@@ -3,15 +3,19 @@ package no.javazone.scheduler.ui.schedules
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -70,17 +75,13 @@ private fun MyScheduleScreen(
     conferenceTalks: Map<LocalDate, List<ConferenceTalk>>
 ) {
     Surface {
-        LazyColumn {
+        LazyColumn(
+            contentPadding = PaddingValues(top = 4.dp, bottom = 16.dp)
+        ) {
             conferenceTalks.forEach { (slot, talks) ->
                 stickyHeader {
-                    Surface(
-                        tonalElevation = 10.dp,
-
-                        ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
+                    Surface(tonalElevation = 10.dp) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
                             Column(
                                 modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                             ) {
@@ -94,58 +95,86 @@ private fun MyScheduleScreen(
                 }
 
                 items(talks) { talk ->
-                    Surface {
+                    Card(
+                        onClick = { navigateToDetail(talk.id) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable(onClick = {
-                                    navigateToDetail(talk.id)
-                                })
-
+                                .padding(start = 16.dp, top = 14.dp, bottom = 14.dp, end = 4.dp),
+                            verticalAlignment = Alignment.Top
                         ) {
+                            // Time / Room / Format metadata column
                             Column(
                                 modifier = Modifier
-                                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                                    .width(100.dp)
+                                    .width(90.dp)
+                                    .padding(end = 8.dp)
                             ) {
                                 Text(
                                     text = talk.startTime.toLocalString(SessionTimeFormat) +
-                                            " - " +
+                                            " – " +
                                             talk.endTime.toLocalString(SessionTimeFormat),
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
-                                Text(
-                                    text = talk.room.name,
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                                Text(
-                                    text = stringResource(id = talk.format.label),
-                                    style = MaterialTheme.typography.labelMedium
-                                )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Surface(
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text(
+                                        text = talk.room.name,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        maxLines = 1
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Surface(
+                                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text(
+                                        text = stringResource(id = talk.format.label),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        maxLines = 1
+                                    )
+                                }
                             }
+                            // Title and speakers column
                             Column(
-                                Modifier
+                                modifier = Modifier
                                     .weight(1f)
-                                    .padding(top = 16.dp, bottom = 16.dp),
+                                    .padding(end = 4.dp)
                             ) {
                                 Text(
-                                    modifier = Modifier
-                                        .align(alignment = Alignment.CenterHorizontally)
-                                        .fillMaxWidth(),
                                     text = talk.title,
-                                    style = MaterialTheme.typography.bodyMedium
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.SemiBold
                                 )
-                                Text(
-                                    text = talk.speakers.joinToString { it.name },
-                                    style = MaterialTheme.typography.labelMedium
-                                )
+                                if (talk.speakers.isNotEmpty()) {
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = talk.speakers.joinToString { it.name },
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                             }
-                            IconButton(onClick = { }) {
-                                MyScheduleButton(
-                                    isScheduled = talk.scheduled,
-                                    onClick = { onToggleSchedule(talk.id) }
-                                )
-                            }
+                            // Bookmark toggle
+                            MyScheduleButton(
+                                isScheduled = talk.scheduled,
+                                onClick = { onToggleSchedule(talk.id) }
+                            )
                         }
                     }
                 }
@@ -158,9 +187,7 @@ private fun MyScheduleScreen(
 @Preview
 fun MyScheduleScreenLightPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
     val sessions = talks
-        .groupBy {
-            it.slotTime.toLocalDate()
-        }
+        .groupBy { it.slotTime.toLocalDate() }
         .toMap()
 
     MyScheduleScreen(
@@ -174,9 +201,7 @@ fun MyScheduleScreenLightPreview(@PreviewParameter(SampleTalksProvider::class) t
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 fun MyScheduleScreenDarkPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
     val sessions = talks
-        .groupBy {
-            it.slotTime.toLocalDate()
-        }
+        .groupBy { it.slotTime.toLocalDate() }
         .toMap()
 
     JavaZoneTheme(useDarkTheme = true) {
