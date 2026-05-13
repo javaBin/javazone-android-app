@@ -16,4 +16,5 @@
     <string name="lightning_talk">lyntale</string>
     <string name="registration_required">Forhåndspåmelding!</string>
     <string name="preregistration">Påmelding på javazone.no</string>
+    <string name="search_hint">Søk tittel, foredragsholder, nøkkelord</string>
 </resources>

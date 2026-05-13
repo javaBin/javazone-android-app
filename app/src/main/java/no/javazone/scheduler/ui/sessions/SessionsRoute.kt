@@ -7,9 +7,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +24,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceSession
@@ -47,6 +56,7 @@ fun SessionsRoute(
     val mySchedule = viewModel.mySchedule.collectAsState().value
     val selectedDay = viewModel.selectedDay.value
     val selectedFormat = viewModel.selectedFormat.value
+    val searchQuery = viewModel.searchQuery.value
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
@@ -62,15 +72,20 @@ fun SessionsRoute(
             navigateToFormat = { format ->
                 viewModel.updateSelectedFormat(format)
             },
+            onSearchQueryChange = { query ->
+                viewModel.updateSearchQuery(query)
+            },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,
                 selectedDay,
                 selectedFormat,
-                mySchedule
+                mySchedule,
+                searchQuery
             ),
             conferenceDays = conferenceDays,
             selectedDay = selectedDay,
-            selectedFormat = selectedFormat
+            selectedFormat = selectedFormat,
+            searchQuery = searchQuery
         )
     }
 
@@ -106,20 +121,22 @@ private fun AllSessionsScreen(
     navigateToDetail: (String) -> Unit,
     navigateToDay: (LocalDate?) -> Unit,
     navigateToFormat: (ConferenceFormat?) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
     conferenceSessions: List<ConferenceSession>,
     conferenceDays: List<ConferenceDate>,
     selectedDay: LocalDate?,
-    selectedFormat: ConferenceFormat?
+    selectedFormat: ConferenceFormat?,
+    searchQuery: String
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()) {
+            // Conference Days Filter
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
-
             ) {
                 Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
                     ConferenceChip(
@@ -128,20 +145,20 @@ private fun AllSessionsScreen(
                         onExecute = { navigateToDay(null) }
                     )
                 }
-                conferenceDays.sortedBy { it.date }
-                    .forEach {
-                        Column(modifier = Modifier
-                            .padding(start = 4.dp, end = 4.dp)
-                        ) {
-                            ConferenceChip(
-                                label = SessionDayFormat.format(it.date),
-                                selected = it.date == selectedDay,
-                                onExecute = { navigateToDay(it.date) }
-                            )
-                        }
+                conferenceDays.sortedBy { it.date }.forEach {
+                    Column(modifier = Modifier
+                        .padding(start = 4.dp, end = 4.dp)
+                    ) {
+                        ConferenceChip(
+                            label = SessionDayFormat.format(it.date),
+                            selected = it.date == selectedDay,
+                            onExecute = { navigateToDay(it.date) }
+                        )
                     }
+                }
             }
 
+            // Conference Format Filter
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
@@ -165,6 +182,36 @@ private fun AllSessionsScreen(
                 }
             }
 
+            // Search Field
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = onSearchQueryChange,
+                placeholder = { Text(stringResource(R.string.search_hint)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { onSearchQueryChange("") }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Clear search"
+                            )
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(18.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            )
+
+            // Workshop Info Text
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
@@ -175,6 +222,7 @@ private fun AllSessionsScreen(
                 }
             }
 
+            // Sessions
             LazyColumn {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
@@ -277,12 +325,14 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
         navigateToDetail = {},
         navigateToDay = {},
         navigateToFormat = {},
+        onSearchQueryChange = {},
         conferenceSessions = sessions,
         conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
             ConferenceDate(it, "day ${i++}")
         },
         selectedDay = FIRST_CONFERENCE_DAY,
-        selectedFormat = null
+        selectedFormat = null,
+        searchQuery = ""
     )
 }
 
@@ -297,12 +347,14 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
             navigateToDetail = {},
             navigateToDay = {},
             navigateToFormat = {},
+            onSearchQueryChange = {},
             conferenceSessions = sessions,
             conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
                 ConferenceDate(it, "day ${i++}")
             },
             selectedDay = FIRST_CONFERENCE_DAY,
-            selectedFormat = null
+            selectedFormat = null,
+            searchQuery = ""
         )
     }
 }
