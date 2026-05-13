@@ -9,10 +9,14 @@
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.SplashScreen">
-        <!-- Background colour shown behind the icon -->
+        <!-- Full-screen background -->
         <item name="windowSplashScreenBackground">@color/background</item>
-        <!-- Centred icon shown on the splash screen -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/jz_circus</item>
+        <!-- JavaZone icon in the circular centre slot, inset so the full image clears the circular clip -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_center_icon</item>
+        <!-- Match the icon background circle to the splash background -->
+        <item name="windowSplashScreenIconBackgroundColor">@color/background</item>
+        <!-- Ocean image shown uncropped at the bottom (API 31+, minSdk 36 so always active) -->
+        <item name="android:windowSplashScreenBrandingImage">@drawable/splash_branding</item>
         <!-- Theme to apply once the splash screen dismisses -->
         <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>

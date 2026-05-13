@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- gravity="fill" makes the bitmap scale to exactly the bounds the system
+     assigns for the branding image slot (full-width × slot height), so the
+     ocean image fills the area completely without being clipped. -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/jz26_ocean"
+    android:gravity="fill" />

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Wraps jz26_icon_48x48 with enough inset so the full square image sits
+     inside the circular clip the Splash Screen API applies to the centre icon.
+     A square of side s fits in a circle of diameter d when s ≤ d / √2 ≈ 0.707 d.
+     18 % inset → effective side = 240 × 0.64 = 153.6 dp; corner radius ≈ 108.5 dp < 120 dp ✓ -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/jz26_icon_400x400"
+    android:inset="18%" />
