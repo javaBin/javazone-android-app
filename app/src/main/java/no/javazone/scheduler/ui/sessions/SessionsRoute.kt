@@ -38,6 +38,7 @@ import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceLanguage
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.ConferenceChip
+import no.javazone.scheduler.ui.components.SessionSectionHeader
 import no.javazone.scheduler.ui.components.DetailsScreen
 import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
@@ -274,26 +275,7 @@ private fun AllSessionsScreen(
             ) {
                 conferenceSessions.forEach { session ->
                     stickyHeader {
-                        Surface(
-                            tonalElevation = 10.dp,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(start = 10.dp, end = 10.dp)
-                                        .weight(1f)
-                                ) {
-                                    Text(
-                                        session.time.toLocalString(SessionTimeFormat),
-                                        style = MaterialTheme.typography.headlineSmall
-                                    )
-                                }
-                            }
-                        }
+                        SessionSectionHeader(text = session.time.toLocalString(SessionTimeFormat))
                     }
 
                     items(session.talks) { talk ->
