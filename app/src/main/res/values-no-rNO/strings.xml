@@ -17,4 +17,51 @@
     <string name="registration_required">Forhåndspåmelding!</string>
     <string name="preregistration">Påmelding på javazone.no</string>
     <string name="search_hint">Søk tittel, foredragsholder, nøkkelord</string>
+    <string name="open_in_google_maps">Åpne i Google Maps</string>
+
+    <!-- Info screen – header -->
+
+    <!-- Info screen – Venue card -->
+    <string name="info_venue">Sted</string>
+    <string name="info_venue_description">Bare en kort togtur (10–12 minutter) fra Oslo sentralstasjon og kun 15 minutter fra Oslo Lufthavn Gardermoen.</string>
+
+    <!-- Info screen – Getting There card -->
+    <string name="info_getting_there">Hvordan komme deg dit</string>
+    <string name="info_train_label">Tog (Vy)</string>
+    <string name="info_train_description">11 min fra Oslo S · 12 min fra Oslo Lufthavn. Ta R-tog (RE11, R12, R14 osv.). Bruk Ruter-appen til å planlegge.</string>
+    <string name="info_flytoget_label">Flytoget</string>
+    <string name="info_flytoget_description">12 min fra Oslo Lufthavn til Lillestrøm.</string>
+    <string name="info_bus_label">Buss</string>
+    <string name="info_bus_description">Lillestrøm bussterminal er 8 minutters gange fra NOVA Spektrum.</string>
+
+    <!-- Info screen – Parking card -->
+    <string name="info_parking">Parkering</string>
+    <string name="info_parking_spaces">2 200 plasser foran inngangspartiet (betalt 24/7)</string>
+    <string name="info_parking_payment">Betal med Autopay, kort eller mobil</string>
+    <string name="info_parking_small_vehicles">Kjøretøy under 3 500 kg</string>
+    <string name="info_parking_rate_small">72 kr/t · maks 420 kr/24t</string>
+    <string name="info_parking_large_vehicles">Kjøretøy over 3 500 kg</string>
+    <string name="info_parking_rate_large">144 kr/t · maks 840 kr/24t</string>
+    <string name="info_parking_disabled">HC-parkering</string>
+    <string name="info_parking_disabled_location">Felt C og F (betalt)</string>
+    <string name="info_ev_charging">Elbillading</string>
+    <string name="info_ev_charging_description">10 ladestasjoner i felt A (betalt)</string>
+
+    <!-- Info screen – Workshop Venue card -->
+    <string name="info_workshop_venue">Workshop-lokale</string>
+    <string name="info_workshop_directions">Noen minutters gange fra Nationaltheatret stasjon.</string>
+
+    <!-- Info screen – Accessibility card -->
+    <string name="info_accessibility">Tilgjengelighet</string>
+    <string name="info_accessibility_description">NOVA Spektrum er rullestolvennlig. Et begrenset antall rullestoler er tilgjengelig.</string>
+
+    <!-- Info screen – Wi-Fi card -->
+    <string name="info_wifi">Wi-Fi</string>
+
+    <!-- Info screen – JavaZone / javaBin / App cards -->
+    <string name="info_code_of_conduct">Atferdsregler</string>
+    <string name="info_javabin_website">javaBin nettside</string>
+    <string name="info_terms_and_conditions">Vilkår og betingelser</string>
+    <string name="info_about_app">Om appen</string>
+    <string name="info_open_source_licences">Lisenser for åpen kildekode</string>
 </resources>

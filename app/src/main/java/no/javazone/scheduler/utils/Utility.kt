@@ -1,5 +1,6 @@
 package no.javazone.scheduler.utils
 
+import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceRoom
 import no.javazone.scheduler.model.ConferenceSpeaker
@@ -17,6 +18,35 @@ fun String.toJzLocalDate(): LocalDate =
 fun OffsetDateTime.toLocalString(formatter: DateTimeFormatter): String {
     val zoned = this.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
     return zoned.format(formatter)
+}
+
+/**
+ * Formats all conference days (workshop + conference) as a compact date range.
+ * Same-month example : "2–4 September 2025"
+ * Cross-month example : "31 Aug – 2 Sep 2025"
+ * Returns an empty string while data is still loading.
+ */
+fun List<ConferenceDate>.formatDateRange(): String {
+    if (isEmpty()) return ""
+    val sorted = sortedBy { it.date }
+    val first = sorted.first().date
+    val last = sorted.last().date
+    return if (first.month == last.month && first.year == last.year) {
+        val month = first.format(DateTimeFormatter.ofPattern("MMMM"))
+        "${first.dayOfMonth}–${last.dayOfMonth} $month ${first.year}"
+    } else {
+        val fmt = DateTimeFormatter.ofPattern("d MMM")
+        "${first.format(fmt)} – ${last.format(fmt)} ${last.year}"
+    }
+}
+
+/**
+ * Finds the workshop day (label == "workshop") and formats it as
+ * "Tuesday, 2 September 2025". Returns an empty string while loading.
+ */
+fun List<ConferenceDate>.formatWorkshopDate(): String {
+    val workshop = firstOrNull { it.label == "workshop" } ?: return ""
+    return workshop.date.format(DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy"))
 }
 
 

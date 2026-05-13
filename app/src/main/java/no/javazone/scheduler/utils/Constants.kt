@@ -12,6 +12,10 @@ const val LOG_TAG = "JavaZone"
 const val APP_PREFERENCE_FILE = "javazone"
 const val JAVAZONE_BASE_URL = "https://sleepingpill.javazone.no/"
 const val JAVAZONE_DATE_PATTERN = "dd.MM.yyyy"
+const val PREVIEW_CONFERENCE_NAME = "JavaZone 2026"
+const val PREVIEW_CONFERENCE_DATES = "2–4 September 2026"
+const val PREVIEW_WORKSHOP_DATE = "Tuesday, 2 September 2026"
+const val CONFERENCE_LOCATION = "Oslo, Norway"
 
 val APPLICATION_JSON: MediaType = "application/json".toMediaType()
 
