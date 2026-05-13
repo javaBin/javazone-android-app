@@ -30,18 +30,6 @@ fun ConferenceApp(
         Surface {
             Scaffold(
                 topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                text = stringResource(id = ConferenceScreen.currentScreen(currentRoute).label),
-                                style = JavaZoneTypography.titleLarge
-                            )
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            titleContentColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    )
                 },
                 bottomBar = {
                     ConferenceTabRow(
