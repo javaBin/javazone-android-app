@@ -5,10 +5,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,7 +27,7 @@ fun ConferenceChip(
     onExecute: () -> Unit
 ) {
     Surface(
-        elevation = 8.dp,
+        shadowElevation = 8.dp,
         shape = JavaZoneShapes.large,
         color = if (selected) MaterialTheme.colorScheme.inverseSurface else MaterialTheme.colorScheme.outline
     ) {
@@ -38,7 +38,7 @@ fun ConferenceChip(
                     onExecute()
                 },
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = true)
+                indication = ripple(bounded = true)
             )
         ) {
             Text(

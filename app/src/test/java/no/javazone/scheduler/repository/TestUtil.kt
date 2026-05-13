@@ -32,7 +32,8 @@ object TestUtil {
             room = room.roomId,
             sessionSlot = timeSlot.timeSlotId,
             startTime = timeSlot.startTime,
-            endTime = timeSlot.endTime
+            endTime = timeSlot.endTime,
+            registrationLink = ""
         )
 
     fun createSpeaker(name: String): SpeakerEntity =

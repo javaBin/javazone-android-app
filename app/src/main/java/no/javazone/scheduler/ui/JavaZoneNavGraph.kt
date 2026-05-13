@@ -10,7 +10,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import coil.annotation.ExperimentalCoilApi
 import no.javazone.scheduler.AppContainer
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.info.InfoRoute
@@ -21,8 +20,7 @@ import no.javazone.scheduler.ui.sessions.SessionsRoute
 import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
 
-@ExperimentalCoilApi
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JavaZoneNavGraph(
     appContainer: AppContainer,
@@ -39,18 +37,14 @@ fun JavaZoneNavGraph(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        composable(
-            route = SessionsScreen.route
-        ) {
+        composable(route = SessionsScreen.route) {
             SessionsRoute(
                 navController = navController,
                 route = JavaZoneDestinations.SESSIONS_ROUTE,
                 viewModel = viewModel
             )
         }
-        composable(
-            route = MyScheduleScreen.route
-        ) {
+        composable(route = MyScheduleScreen.route) {
             MyScheduleRoute(
                 navController = navController,
                 route = JavaZoneDestinations.MY_SCHEDULE_ROUTE,

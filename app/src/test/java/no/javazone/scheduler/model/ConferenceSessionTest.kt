@@ -18,13 +18,14 @@ class ConferenceSessionTest {
                 talks = emptyList()
             )
             fail("no talks should throw exception")
-        } catch (ignore: IllegalStateException) {
+        } catch (ignore: IllegalArgumentException) {
         }
     }
 
     @Test
     fun `session slot is based on talks start and endtime`() {
         val startTime = OffsetDateTime.of(LocalDate.now(), LocalTime.NOON, ZoneOffset.UTC)
+
         val talk1 = ConferenceTalk(
             id = UUID.randomUUID().toString(),
             title = "test1",
@@ -37,7 +38,9 @@ class ConferenceSessionTest {
             summary = "",
             speakers = setOf(ConferenceSpeaker(name = "test", bio = "test")),
             format = ConferenceFormat.LIGHTNING_TALK,
-            room = ConferenceRoom.DEFAULT
+            room = ConferenceRoom.DEFAULT,
+            scheduled = true,
+            registrationLink = ""
         )
         val talk2 = ConferenceTalk(
             id = UUID.randomUUID().toString(),
@@ -51,7 +54,9 @@ class ConferenceSessionTest {
             summary = "",
             speakers = setOf(ConferenceSpeaker(name = "test", bio = "test")),
             format = ConferenceFormat.LIGHTNING_TALK,
-            room = ConferenceRoom.DEFAULT
+            room = ConferenceRoom.DEFAULT,
+            scheduled = true,
+            registrationLink = ""
         )
 
         val result =

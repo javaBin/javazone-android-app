@@ -7,6 +7,8 @@ data class ConferenceSession(
     val talks: List<ConferenceTalk>
 ) {
     init {
+        require(talks.isNotEmpty()) { "ConferenceSession must contain at least one talk" }
+
         talks.forEach {
             it.slotTime = time
         }

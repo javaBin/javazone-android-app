@@ -4,10 +4,15 @@ import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.net.Uri
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Launch
+import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.filled.WifiLock
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -73,23 +78,23 @@ fun InfoContent(
                 title = "JavaZone",
                 contents = listOf(
                     Triple(Icons.Filled.WifiLock, "WI-FI SSID: JavaZone", {}),
-                    Triple(Icons.Filled.Launch, "Code of conduct", onCodeOfConductClick)
+                    Triple(Icons.AutoMirrored.Filled.Launch, "Code of conduct", onCodeOfConductClick)
                 )
             )
             Spacer(modifier = Modifier.padding(5.dp))
             InfoContentSection(
                 title = "javaBin",
                 contents = listOf(
-                    Triple(Icons.Filled.Launch, "javaBin", onJavaBinClick),
-                    Triple(Icons.Filled.Launch, "Terms and Condition", onPolicyClick)
+                    Triple(Icons.AutoMirrored.Filled.Launch, "javaBin", onJavaBinClick),
+                    Triple(Icons.AutoMirrored.Filled.Launch, "Terms and Condition", onPolicyClick)
                 )
             )
             Spacer(modifier = Modifier.padding(5.dp))
             InfoContentSection(
                 title = "",
                 contents = listOf(
-                    Triple(Icons.Filled.Launch, "Open source licences", onLicenseDisplay),
-                    Triple(Icons.Filled.Launch, "github", onGithubClick)
+                    Triple(Icons.AutoMirrored.Filled.Launch, "Open source licences", onLicenseDisplay),
+                    Triple(Icons.AutoMirrored.Filled.Launch, "github", onGithubClick)
                 )
             )
         }

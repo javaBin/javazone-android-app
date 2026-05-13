@@ -4,10 +4,14 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.IconButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,8 +52,6 @@ fun MyScheduleRoute(
         onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
         navigateToDetail = { talkId ->
             Log.w("SessionviewDebug", "Session is $talkId")
-            //navController.navigate(deepLink= "detail_session/${talk.id}"
-            //navController.navigate(deepLink= Uri.parse("android-app://androidx.navigation/detail_session/${talk.id}"))
             viewModel.updateDetailsArg(talkId, route)
             DetailsScreen.navigateTo(navController, talkId)()
         },
@@ -92,8 +94,7 @@ private fun MyScheduleScreen(
                 }
 
                 items(talks) { talk ->
-                    Surface(
-                    ) {
+                    Surface {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()

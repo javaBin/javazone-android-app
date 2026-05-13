@@ -7,10 +7,8 @@ import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,10 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
+import coil3.compose.AsyncImage
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.ConferenceScreen
@@ -39,7 +35,6 @@ import no.javazone.scheduler.utils.LOG_TAG
 import no.javazone.scheduler.utils.sampleTalks
 import no.javazone.scheduler.utils.toLocalString
 import no.javazone.scheduler.viewmodels.ConferenceListViewModel
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -85,7 +80,7 @@ private fun DetailsContent(
                     .align(alignment = Alignment.Start)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = null,
                     modifier = Modifier.clickable {
                         onBackClick()
@@ -154,8 +149,8 @@ private fun DetailsContent(
 
                         Column {
                             if (speaker.avatarUrl != null) {
-                                Image(
-                                    painter = rememberAsyncImagePainter(speaker.avatarUrl),
+                                AsyncImage(
+                                    model = speaker.avatarUrl,
                                     contentDescription = speaker.name,
                                     modifier = Modifier.size(74.dp)
                                 )
