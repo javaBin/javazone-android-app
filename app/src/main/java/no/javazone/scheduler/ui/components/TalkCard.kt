@@ -101,25 +101,25 @@ fun TalkCard(
                 MetadataBadge(
                     icon = Icons.Filled.MeetingRoom,
                     label = talk.room.name,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 MetadataBadge(
                     icon = Icons.Filled.Schedule,
                     label = "${talk.length} min",
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 MetadataBadge(
                     icon = Icons.Filled.Category,
                     label = stringResource(id = talk.format.label),
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 MetadataBadge(
                     icon = Icons.Filled.Language,
                     label = talk.language,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
@@ -134,7 +134,7 @@ fun TalkCard(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = talk.title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold
             )
             // Row 3: Speakers
