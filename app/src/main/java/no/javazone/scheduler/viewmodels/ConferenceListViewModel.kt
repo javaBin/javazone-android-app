@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.*import kotlinx.coroutines.launch
 import no.javazone.scheduler.model.Conference
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
+import no.javazone.scheduler.model.ConferenceLanguage
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.repository.ConferenceRepository
@@ -64,6 +65,10 @@ class ConferenceListViewModel(
 
     val selectedFormat: State<ConferenceFormat?> = _selectedFormat
 
+    private var _selectedLanguage: MutableState<ConferenceLanguage?> = mutableStateOf(null)
+
+    val selectedLanguage: State<ConferenceLanguage?> = _selectedLanguage
+
     private var _searchQuery: MutableState<String> = mutableStateOf("")
 
     val searchQuery: State<String> = _searchQuery
@@ -87,6 +92,7 @@ class ConferenceListViewModel(
 
     fun updateSessionsWithMySchedule(
         sessions: List<ConferenceSession>,
+        selectedLanguage: ConferenceLanguage? = null,
         selectedDay: LocalDate?,
         selectedFormat: ConferenceFormat?,
         mySchedule: List<String>,
@@ -99,6 +105,10 @@ class ConferenceListViewModel(
             .mapNotNull { session ->
                 val filteredTalks = session.talks
                     .filter { talk -> selectedFormat == null || talk.format == selectedFormat }
+                    .filter { talk ->
+                        selectedLanguage == null ||
+                            talk.language.equals(selectedLanguage.apiValue, ignoreCase = true)
+                    }
                     .filter { talk ->
                         if (searchQuery.isBlank()) true
                         else talk.title.contains(searchQuery, ignoreCase = true)
@@ -173,6 +183,10 @@ class ConferenceListViewModel(
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    fun updateSelectedLanguage(language: ConferenceLanguage?) {
+        _selectedLanguage.value = language
     }
 
     /**
