@@ -10,41 +10,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceLanguage
 import no.javazone.scheduler.model.ConferenceSession
-import no.javazone.scheduler.ui.components.ConferenceChip
+import no.javazone.scheduler.ui.components.SessionFilter
 import no.javazone.scheduler.ui.components.SessionSectionHeader
 import no.javazone.scheduler.ui.components.DetailsScreen
 import no.javazone.scheduler.ui.components.FullScreenLoading
 import no.javazone.scheduler.ui.components.JavaZoneDestinations
 import no.javazone.scheduler.ui.components.TalkCard
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
-import no.javazone.scheduler.ui.theme.SessionDayFormat
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.DEFAULT_CONFERENCE_DAYS
 import no.javazone.scheduler.utils.ErrorResource
@@ -155,107 +142,16 @@ private fun AllSessionsScreen(
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()) {
-            // Language Filter
-            Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
-            ) {
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
-                    ConferenceChip(
-                        label = "All",
-                        selected = selectedLanguage == null,
-                        onExecute = { navigateToLanguage(null) }
-                    )
-                }
-                ConferenceLanguage.entries.forEach { language ->
-                    Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
-                        ConferenceChip(
-                            label = stringResource(id = language.label),
-                            selected = language == selectedLanguage,
-                            onExecute = { navigateToLanguage(language) }
-                        )
-                    }
-                }
-            }
-
-            // Conference Days Filter
-            Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(start = 5.dp, bottom = 10.dp)
-            ) {
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
-                    ConferenceChip(
-                        label = "All",
-                        selected = selectedDay == null,
-                        onExecute = { navigateToDay(null) }
-                    )
-                }
-                conferenceDays.sortedBy { it.date }.forEach {
-                    Column(modifier = Modifier
-                        .padding(start = 4.dp, end = 4.dp)
-                    ) {
-                        ConferenceChip(
-                            label = SessionDayFormat.format(it.date),
-                            selected = it.date == selectedDay,
-                            onExecute = { navigateToDay(it.date) }
-                        )
-                    }
-                }
-            }
-
-            // Conference Format Filter
-            Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .padding(start = 5.dp, bottom = 10.dp)
-            ) {
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
-                    ConferenceChip(
-                        label = "All",
-                        selected = selectedFormat == null,
-                        onExecute = { navigateToFormat(null) }
-                    )
-                }
-                ConferenceFormat.entries.forEach { format ->
-                    Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
-                        ConferenceChip(
-                            label = stringResource(id = format.label),
-                            selected = format == selectedFormat,
-                            onExecute = { navigateToFormat(format) }
-                        )
-                    }
-                }
-            }
-
-            // Search Field
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = onSearchQueryChange,
-                placeholder = { Text(stringResource(R.string.search_hint)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = null
-                    )
-                },
-                trailingIcon = {
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(onClick = { onSearchQueryChange("") }) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = "Clear search"
-                            )
-                        }
-                    }
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(18.dp),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            SessionFilter(
+                selectedLanguage = selectedLanguage,
+                onLanguageSelected = navigateToLanguage,
+                conferenceDays = conferenceDays,
+                selectedDay = selectedDay,
+                onDaySelected = navigateToDay,
+                selectedFormat = selectedFormat,
+                onFormatSelected = navigateToFormat,
+                searchQuery = searchQuery,
+                onSearchQueryChange = onSearchQueryChange
             )
 
             // Workshop Info Text
