@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import no.javazone.scheduler.model.ConferenceDate
+import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.*
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
@@ -45,6 +46,7 @@ fun SessionsRoute(
     val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
     val selectedDay = viewModel.selectedDay.value
+    val selectedFormat = viewModel.selectedFormat.value
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
@@ -57,13 +59,18 @@ fun SessionsRoute(
             navigateToDay = { selectDay ->
                 viewModel.updateSelectedDay(selectDay)
             },
+            navigateToFormat = { format ->
+                viewModel.updateSelectedFormat(format)
+            },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,
                 selectedDay,
+                selectedFormat,
                 mySchedule
             ),
             conferenceDays = conferenceDays,
-            selectedDay = selectedDay
+            selectedDay = selectedDay,
+            selectedFormat = selectedFormat
         )
     }
 
@@ -97,10 +104,12 @@ fun SessionsRoute(
 private fun AllSessionsScreen(
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
-    navigateToDay: (LocalDate) -> Unit,
+    navigateToDay: (LocalDate?) -> Unit,
+    navigateToFormat: (ConferenceFormat?) -> Unit,
     conferenceSessions: List<ConferenceSession>,
     conferenceDays: List<ConferenceDate>,
-    selectedDay: LocalDate
+    selectedDay: LocalDate?,
+    selectedFormat: ConferenceFormat?
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
@@ -112,6 +121,13 @@ private fun AllSessionsScreen(
                     .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
 
             ) {
+                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                    ConferenceChip(
+                        label = "All",
+                        selected = selectedDay == null,
+                        onExecute = { navigateToDay(null) }
+                    )
+                }
                 conferenceDays.sortedBy { it.date }
                     .forEach {
                         Column(modifier = Modifier
@@ -129,9 +145,32 @@ private fun AllSessionsScreen(
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
+                    .padding(start = 5.dp, bottom = 10.dp)
+            ) {
+                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                    ConferenceChip(
+                        label = "All",
+                        selected = selectedFormat == null,
+                        onExecute = { navigateToFormat(null) }
+                    )
+                }
+                ConferenceFormat.values().forEach { format ->
+                    Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                        ConferenceChip(
+                            label = stringResource(id = format.label),
+                            selected = format == selectedFormat,
+                            onExecute = { navigateToFormat(format) }
+                        )
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
                     .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
             ){
-                if (!conferenceDays.isNullOrEmpty() && selectedDay == conferenceDays.sortedBy { it.date }.first().date) {
+                if (!conferenceDays.isNullOrEmpty() && selectedDay != null && selectedDay == conferenceDays.sortedBy { it.date }.first().date) {
                     Text("Workshops require registration ahead of time")
                 }
             }
@@ -153,7 +192,7 @@ private fun AllSessionsScreen(
                                 ) {
                                     Text(
                                         session.time.toLocalString(SessionTimeFormat),
-                                        style = MaterialTheme.typography.headlineMedium
+                                        style = MaterialTheme.typography.headlineSmall
                                     )
                                 }
                             }
@@ -237,11 +276,13 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
         onToggleSchedule = { },
         navigateToDetail = {},
         navigateToDay = {},
+        navigateToFormat = {},
         conferenceSessions = sessions,
         conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
             ConferenceDate(it, "day ${i++}")
         },
-        selectedDay = FIRST_CONFERENCE_DAY
+        selectedDay = FIRST_CONFERENCE_DAY,
+        selectedFormat = null
     )
 }
 
@@ -255,11 +296,13 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
             onToggleSchedule = { },
             navigateToDetail = {},
             navigateToDay = {},
+            navigateToFormat = {},
             conferenceSessions = sessions,
             conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
                 ConferenceDate(it, "day ${i++}")
             },
-            selectedDay = FIRST_CONFERENCE_DAY
+            selectedDay = FIRST_CONFERENCE_DAY,
+            selectedFormat = null
         )
     }
 }

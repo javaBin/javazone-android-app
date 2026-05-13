@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-val SessionTimeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+val SessionTimeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 val SessionDateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
