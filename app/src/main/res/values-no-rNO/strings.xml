@@ -14,6 +14,8 @@
     <string name="workshop">workshop</string>
     <string name="presentation">presentasjon</string>
     <string name="lightning_talk">lyntale</string>
+    <string name="language_english">Engelsk</string>
+    <string name="language_norwegian">Norsk</string>
     <string name="registration_required">Forhåndspåmelding!</string>
     <string name="preregistration">Påmelding på javazone.no</string>
     <string name="search_hint">Søk tittel, foredragsholder, nøkkelord</string>

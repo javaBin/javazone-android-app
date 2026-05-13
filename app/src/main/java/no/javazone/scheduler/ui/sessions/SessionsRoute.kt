@@ -35,6 +35,7 @@ import androidx.navigation.NavHostController
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
+import no.javazone.scheduler.model.ConferenceLanguage
 import no.javazone.scheduler.model.ConferenceSession
 import no.javazone.scheduler.ui.components.ConferenceChip
 import no.javazone.scheduler.ui.components.DetailsScreen
@@ -67,6 +68,7 @@ fun SessionsRoute(
     val resource = viewModel.sessions.collectAsState().value
     val conferenceDays = viewModel.conferenceDays
     val mySchedule = viewModel.mySchedule.collectAsState().value
+    val selectedLanguage = viewModel.selectedLanguage.value
     val selectedDay = viewModel.selectedDay.value
     val selectedFormat = viewModel.selectedFormat.value
     val searchQuery = viewModel.searchQuery.value
@@ -79,6 +81,9 @@ fun SessionsRoute(
                 viewModel.updateDetailsArg(talkId, route)
                 DetailsScreen.navigateTo(navController, talkId)()
             },
+            navigateToLanguage = { language ->
+                viewModel.updateSelectedLanguage(language)
+            },
             navigateToDay = { selectDay ->
                 viewModel.updateSelectedDay(selectDay)
             },
@@ -90,12 +95,14 @@ fun SessionsRoute(
             },
             conferenceSessions = viewModel.updateSessionsWithMySchedule(
                 resource.data,
+                selectedLanguage,
                 selectedDay,
                 selectedFormat,
                 mySchedule,
                 searchQuery
             ),
             conferenceDays = conferenceDays,
+            selectedLanguage = selectedLanguage,
             selectedDay = selectedDay,
             selectedFormat = selectedFormat,
             searchQuery = searchQuery
@@ -132,11 +139,13 @@ fun SessionsRoute(
 private fun AllSessionsScreen(
     onToggleSchedule: (String) -> Unit,
     navigateToDetail: (String) -> Unit,
+    navigateToLanguage: (ConferenceLanguage?) -> Unit,
     navigateToDay: (LocalDate?) -> Unit,
     navigateToFormat: (ConferenceFormat?) -> Unit,
     onSearchQueryChange: (String) -> Unit,
     conferenceSessions: List<ConferenceSession>,
     conferenceDays: List<ConferenceDate>,
+    selectedLanguage: ConferenceLanguage?,
     selectedDay: LocalDate?,
     selectedFormat: ConferenceFormat?,
     searchQuery: String
@@ -145,11 +154,35 @@ private fun AllSessionsScreen(
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()) {
-            // Conference Days Filter
+            // Language Filter
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
+            ) {
+                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                    ConferenceChip(
+                        label = "All",
+                        selected = selectedLanguage == null,
+                        onExecute = { navigateToLanguage(null) }
+                    )
+                }
+                ConferenceLanguage.entries.forEach { language ->
+                    Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                        ConferenceChip(
+                            label = stringResource(id = language.label),
+                            selected = language == selectedLanguage,
+                            onExecute = { navigateToLanguage(language) }
+                        )
+                    }
+                }
+            }
+
+            // Conference Days Filter
+            Row(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .padding(start = 5.dp, bottom = 10.dp)
             ) {
                 Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
                     ConferenceChip(
@@ -284,6 +317,7 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
     AllSessionsScreen(
         onToggleSchedule = { },
         navigateToDetail = {},
+        navigateToLanguage = {},
         navigateToDay = {},
         navigateToFormat = {},
         onSearchQueryChange = {},
@@ -291,6 +325,7 @@ fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class
         conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
             ConferenceDate(it, "day ${i++}")
         },
+        selectedLanguage = null,
         selectedDay = FIRST_CONFERENCE_DAY,
         selectedFormat = null,
         searchQuery = ""
@@ -306,6 +341,7 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
         AllSessionsScreen(
             onToggleSchedule = { },
             navigateToDetail = {},
+            navigateToLanguage = {},
             navigateToDay = {},
             navigateToFormat = {},
             onSearchQueryChange = {},
@@ -313,6 +349,7 @@ fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class)
             conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
                 ConferenceDate(it, "day ${i++}")
             },
+            selectedLanguage = null,
             selectedDay = FIRST_CONFERENCE_DAY,
             selectedFormat = null,
             searchQuery = ""
