@@ -457,24 +457,26 @@ fun LinkItem(label: String, onClick: () -> Unit) {
 }
 
 @Composable
-@Preview
+@Preview(name = "Light Theme", showBackground = true)
 fun InfoContentLightPreview() {
-    InfoContent(
-        conferenceName = PREVIEW_CONFERENCE_NAME,
-        conferenceDates = PREVIEW_CONFERENCE_DATES,
-        workshopDate = PREVIEW_WORKSHOP_DATE,
-        onCodeOfConductClick = {},
-        onLicenseDisplay = {},
-        onGithubClick = {},
-        onJavaBinClick = {},
-        onPolicyClick = {},
-        onMapsClick = {},
-        onAccessibilityEmailClick = {}
-    )
+    JavaZoneTheme(useDarkTheme = false) {
+        InfoContent(
+            conferenceName = PREVIEW_CONFERENCE_NAME,
+            conferenceDates = PREVIEW_CONFERENCE_DATES,
+            workshopDate = PREVIEW_WORKSHOP_DATE,
+            onCodeOfConductClick = {},
+            onLicenseDisplay = {},
+            onGithubClick = {},
+            onJavaBinClick = {},
+            onPolicyClick = {},
+            onMapsClick = {},
+            onAccessibilityEmailClick = {}
+        )
+    }
 }
 
 @Composable
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Dark Theme", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun InfoContentDarkPreview() {
     JavaZoneTheme(useDarkTheme = true) {
         InfoContent(

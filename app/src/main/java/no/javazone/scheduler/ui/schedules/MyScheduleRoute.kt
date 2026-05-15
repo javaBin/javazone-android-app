@@ -81,21 +81,23 @@ private fun MyScheduleScreen(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(name = "Light Theme", showBackground = true)
 fun MyScheduleScreenLightPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
     val sessions = talks
         .groupBy { it.slotTime.toLocalDate() }
         .toMap()
 
-    MyScheduleScreen(
-        onToggleSchedule = {},
-        navigateToDetail = {},
-        conferenceTalks = sessions
-    )
+    JavaZoneTheme(useDarkTheme = false) {
+        MyScheduleScreen(
+            onToggleSchedule = {},
+            navigateToDetail = {},
+            conferenceTalks = sessions
+        )
+    }
 }
 
 @Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Dark Theme", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun MyScheduleScreenDarkPreview(@PreviewParameter(SampleTalksProvider::class) talks: List<ConferenceTalk>) {
     val sessions = talks
         .groupBy { it.slotTime.toLocalDate() }
