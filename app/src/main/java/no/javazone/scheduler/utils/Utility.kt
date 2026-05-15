@@ -5,6 +5,7 @@ import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceRoom
 import no.javazone.scheduler.model.ConferenceSpeaker
 import no.javazone.scheduler.model.ConferenceTalk
+import no.javazone.scheduler.model.Partner
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -49,6 +50,48 @@ fun List<ConferenceDate>.formatWorkshopDate(): String {
     return workshop.date.format(DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy"))
 }
 
+val samplePartners = listOf(
+    Partner(
+        name = "Foo Inc",
+        homepageUrl = "https://wwww.vg.no",
+        logoUrl = "https://d3o108dy577i1m.cloudfront.net/2019/logos/systek.svg"
+    ),
+    Partner(
+        name = "Bar Inc",
+        homepageUrl = "https://www.nettavisen.no",
+        logoUrl = "https://d3o108dy577i1m.cloudfront.net/2020/logos/storebrand.png"
+    ),
+    Partner(
+        name = "Foo Inc",
+        homepageUrl = "https://wwww.vg.no",
+        logoUrl = ""
+    ),
+    Partner(
+        name = "Bar Inc",
+        homepageUrl = "https://www.nettavisen.no",
+        logoUrl = ""
+    ),
+    Partner(
+        name = "Foo Inc",
+        homepageUrl = "https://wwww.vg.no",
+        logoUrl = ""
+    ),
+    Partner(
+        name = "Bar Inc",
+        homepageUrl = "https://www.nettavisen.no",
+        logoUrl = ""
+    ),
+    Partner(
+        name = "Foo Inc",
+        homepageUrl = "https://wwww.vg.no",
+        logoUrl = ""
+    ),
+    Partner(
+        name = "Bar Inc",
+        homepageUrl = "https://www.nettavisen.no",
+        logoUrl = ""
+    ),
+)
 
 val sampleTalks = listOf(
     ConferenceTalk(
