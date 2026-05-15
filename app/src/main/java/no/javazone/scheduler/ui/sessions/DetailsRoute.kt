@@ -29,6 +29,7 @@ import coil3.compose.AsyncImage
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.ConferenceScreen
+import no.javazone.scheduler.ui.components.MyScheduleButton
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.LOG_TAG
@@ -52,8 +53,12 @@ fun DetailsRoute(
         .find { it.id == talkId }
         ?: return
 
+    val mySchedule = viewModel.mySchedule.collectAsState().value
+
     DetailsContent(
         session = session,
+        isScheduled = mySchedule.contains(session.id),
+        onScheduleToggle = { viewModel.addOrRemoveSchedule(session.id) },
         onBackClick = ConferenceScreen.currentScreen(fromRoute).navigateTo(navController)
     )
 }
@@ -61,6 +66,8 @@ fun DetailsRoute(
 @Composable
 private fun DetailsContent(
     session: ConferenceTalk,
+    isScheduled: Boolean,
+    onScheduleToggle: () -> Unit,
     onBackClick: () -> Unit
 ) {
 
@@ -76,8 +83,9 @@ private fun DetailsContent(
                 .padding(10.dp)
         ) {
             Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.Start)
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -85,6 +93,10 @@ private fun DetailsContent(
                     modifier = Modifier.clickable {
                         onBackClick()
                     }
+                )
+                MyScheduleButton(
+                    isScheduled = isScheduled,
+                    onClick = onScheduleToggle
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -198,16 +210,18 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
 }
 
 @Composable
-@Preview(name = "Light Theme")
+@Preview(name = "Light Theme", showBackground = true)
 fun DetailsContentLightPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
-    DetailsContent(session = session, onBackClick = {})
+    JavaZoneTheme(useDarkTheme = false) {
+        DetailsContent(session = session, isScheduled = false, onScheduleToggle = {}, onBackClick = {})
+    }
 }
 
 @Composable
-@Preview(name = "Dark Theme", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Dark Theme", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun DetailsContentDarkPreview(@PreviewParameter(SampleTalkProvider::class) session: ConferenceTalk) {
     JavaZoneTheme(useDarkTheme = true) {
-        DetailsContent(session = session, onBackClick = {})
+        DetailsContent(session = session, isScheduled = true, onScheduleToggle = {}, onBackClick = {})
     }
 }
 
