@@ -20,9 +20,7 @@ fun ConferenceApp(
 ) {
 
     JavaZoneTheme {
-
         val navController = rememberNavController()
-
         val navBackStackEntry =
             navController.currentBackStackEntryFlow.collectAsState(null).value
         val currentRoute = navBackStackEntry?.destination?.route ?: SessionsScreen.route

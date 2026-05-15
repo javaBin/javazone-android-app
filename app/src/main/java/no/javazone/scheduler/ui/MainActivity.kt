@@ -2,7 +2,6 @@ package no.javazone.scheduler.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -25,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         // Keep the splash screen visible until the initial sessions data has loaded.
         splashScreen.setKeepOnScreenCondition { !viewModel.isReady.value }
