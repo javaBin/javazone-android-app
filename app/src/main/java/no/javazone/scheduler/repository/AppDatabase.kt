@@ -17,7 +17,7 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         TalkEntity::class,
         TalkSpeakerCrossRef::class
     ],
-    version = 9,
+    version = 11,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -30,6 +30,8 @@ import no.javazone.scheduler.utils.APP_PREFERENCE_FILE
         AutoMigration(from = 6, to = 8, spec = AppDatabase.Migrate7To8::class),
         AutoMigration(from = 7, to = 8, spec = AppDatabase.Migrate7To8::class),
         AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 10, to = 11, spec = AppDatabase.Migrate10To11::class),
     ]
 )
 @TypeConverters(Converters::class)
@@ -39,10 +41,13 @@ abstract class AppDatabase : RoomDatabase() {
         tableName = "talks",
         columnName = "registration_link"
     )
+    class Migrate7To8 : AutoMigrationSpec
 
-    class Migrate7To8 : AutoMigrationSpec {
-
-    }
+    @DeleteColumn(
+        tableName = "speakers",
+        columnName = "avatar_url"
+    )
+    class Migrate10To11 : AutoMigrationSpec
 
     abstract fun sessionDao(): ConferenceDao
 

@@ -108,8 +108,9 @@ val sampleTalks = listOf(
             ConferenceSpeaker(
                 name = "Navn Nevnes",
                 bio = "Mauris pharetra faucibus lorem, id aliquet est egestas eget. In posuere eros nibh, porta iaculis risus laoreet vitae. Quisque vulputate tincidunt mauris in pretium. Phasellus congue sodales rhoncus. Nullam fringilla nisi sapien. Fusce eget ex leo. Fusce non augue augue. Aliquam dictum mattis auctor.",
-                avatarUrl = "https://www.gravatar.com/avatar/333a3587d4c6757b04c86b47fbafc64a?d=mp",
-                twitter = "javabin"
+                twitter = "javabin",
+                bluesky = "javabin.bsky.social",
+                linkedin = "https://www.linkedin.com/company/javabin/"
             )
         ),
         format = ConferenceFormat.PRESENTATION,
@@ -132,8 +133,9 @@ val sampleTalks = listOf(
             ConferenceSpeaker(
                 name = "Navn Nevnes",
                 bio = "Mauris pharetra faucibus lorem, id aliquet est egestas eget. In posuere eros nibh, porta iaculis risus laoreet vitae. Quisque vulputate tincidunt mauris in pretium. Phasellus congue sodales rhoncus. Nullam fringilla nisi sapien. Fusce eget ex leo. Fusce non augue augue. Aliquam dictum mattis auctor.",
-                avatarUrl = "https://www.gravatar.com/avatar/333a3587d4c6757b04c86b47fbafc64a?d=mp",
-                twitter = "javabin"
+                twitter = "javabin",
+                bluesky = null,
+                linkedin = "https://www.linkedin.com/company/javabin/"
             )
         ),
         format = ConferenceFormat.PRESENTATION,
@@ -156,7 +158,6 @@ val sampleTalks = listOf(
             ConferenceSpeaker(
                 name = "Navn Nevnes",
                 bio = "Mauris pharetra faucibus lorem, id aliquet est egestas eget. In posuere eros nibh, porta iaculis risus laoreet vitae. Quisque vulputate tincidunt mauris in pretium. Phasellus congue sodales rhoncus. Nullam fringilla nisi sapien. Fusce eget ex leo. Fusce non augue augue. Aliquam dictum mattis auctor.",
-                avatarUrl = null,
                 twitter = null
             )
         ),

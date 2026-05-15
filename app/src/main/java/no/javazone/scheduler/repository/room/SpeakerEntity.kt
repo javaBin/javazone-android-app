@@ -17,6 +17,8 @@ data class SpeakerEntity(
     val bio: String,
     @ColumnInfo(name = "twitter")
     val twitter: String? = null,
-    @ColumnInfo(name = "avatar_url")
-    val avatarUrl: String? = null
+    @ColumnInfo(name = "bluesky")
+    val bluesky: String? = null,
+    @ColumnInfo(name = "linkedin")
+    val linkedin: String? = null
 )

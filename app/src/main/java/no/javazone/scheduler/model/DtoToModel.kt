@@ -181,8 +181,9 @@ private fun toConferenceSpeaker(): (SpeakerDto) -> ConferenceSpeaker = {
     ConferenceSpeaker(
         name = it.name,
         bio = it.bio,
-        avatarUrl = it.pictureUrl,
-        twitter = it.twitter
+        twitter = it.twitter,
+        bluesky = it.bluesky,
+        linkedin = it.linkedin
     )
 }
 

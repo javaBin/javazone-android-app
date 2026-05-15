@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.core.net.toUri
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,7 +26,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil3.compose.AsyncImage
 import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.components.ConferenceScreen
@@ -70,12 +70,10 @@ private fun DetailsContent(
     onScheduleToggle: () -> Unit,
     onBackClick: () -> Unit
 ) {
-
     val scrollState = rememberScrollState()
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -99,7 +97,9 @@ private fun DetailsContent(
                     onClick = onScheduleToggle
                 )
             }
+
             Spacer(modifier = Modifier.height(10.dp))
+
             Row(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
@@ -122,68 +122,67 @@ private fun DetailsContent(
             Column(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
+                    .padding(top = 8.dp)
             ) {
                 val context = LocalContext.current
-                if(session.registrationLink!=null){
+                if (session.registrationLink!=null) {
                     Text(text = stringResource(R.string.registration_required), style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(10.dp))
                     TextButton(
                         onClick = {
 
-                            val intent =
-                                Intent(Intent.ACTION_VIEW, Uri.parse(session.registrationLink))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(session.registrationLink))
                             context.startActivity(intent)
                         },
                         content = {
                             Text(text = stringResource(R.string.preregistration), style = MaterialTheme.typography.titleMedium)
                         }
-
-
                     )
-                    //text = session.registrationLink, style = MaterialTheme.typography.bodyMedium)
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
                 Text(text = stringResource(R.string.description), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Text(text = session.summary, style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(text = stringResource(id = R.string.intended_audience), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Text(text = session.intendedAudience, style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(text = stringResource(id = R.string.speakers), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(10.dp))
+
                 for (speaker in session.speakers) {
                     Row {
-
-                        Column {
-                            if (speaker.avatarUrl != null) {
-                                AsyncImage(
-                                    model = speaker.avatarUrl,
-                                    contentDescription = speaker.name,
-                                    modifier = Modifier.size(74.dp)
-                                )
-                            } else {
-                                Image(
-                                    imageVector = Icons.Filled.Person,
-                                    contentDescription = speaker.name,
-                                    modifier = Modifier.size(74.dp)
-                                )
-                            }
-                        }
+                        Image(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = speaker.name,
+                            modifier = Modifier.size(74.dp)
+                        )
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
-
                             Text(text = speaker.name, style = MaterialTheme.typography.titleMedium)
                             Spacer(modifier = Modifier.height(10.dp))
                             speaker.twitter?.let { twitter ->
-                                Text(
-                                    text = "Twitter: $twitter",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
+                                val handle = twitter.removePrefix("@")
+                                val twitterBaseUrl = stringResource(R.string.social_twitter_base_url)
+                                SocialLink(stringResource(R.string.social_twitter), "@$handle", "$twitterBaseUrl$handle")
+                            }
+                            speaker.bluesky?.let { bluesky ->
+                                val handle = bluesky.removePrefix("@")
+                                val profile = if ('.' in handle) handle else "$handle.bsky.social"
+                                val blueskyBaseUrl = stringResource(R.string.social_bluesky_base_url)
+                                SocialLink(stringResource(R.string.social_bluesky), "@$handle", "$blueskyBaseUrl$profile")
+                            }
+                            speaker.linkedin?.let { linkedin ->
+                                val linkedinBaseUrl = stringResource(R.string.social_linkedin_base_url)
+                                val url = if (linkedin.startsWith("http")) linkedin else "$linkedinBaseUrl$linkedin"
+                                val handle = url.trimEnd('/').substringAfterLast('/')
+                                SocialLink(stringResource(R.string.social_linkedin), handle, url)
                             }
                         }
                     }
@@ -207,6 +206,18 @@ private fun sessionRoomAndTimeslot(session: ConferenceTalk): String {
             session.room.name +
             "\n" +
             stringResource(id = session.format.label)
+}
+
+@Composable
+private fun SocialLink(label: String, displayText: String, url: String) {
+    val context = LocalContext.current
+    Text(
+        text = "$label: $displayText",
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.clickable {
+            context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+        }
+    )
 }
 
 @Composable

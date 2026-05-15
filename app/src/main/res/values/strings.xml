@@ -79,4 +79,12 @@
     <string name="info_about_app">About the App</string>
     <string name="info_open_source_licences">Open Source Licences</string>
     <string name="info_github" translatable="false">GitHub</string>
+
+    <!-- Speaker social links – brand names, not translated -->
+    <string name="social_twitter" translatable="false">Twitter</string>
+    <string name="social_bluesky" translatable="false">Bluesky</string>
+    <string name="social_linkedin" translatable="false">LinkedIn</string>
+    <string name="social_twitter_base_url" translatable="false">https://twitter.com/</string>
+    <string name="social_bluesky_base_url" translatable="false">https://bsky.app/profile/</string>
+    <string name="social_linkedin_base_url" translatable="false">https://www.linkedin.com/in/</string>
 </resources>
