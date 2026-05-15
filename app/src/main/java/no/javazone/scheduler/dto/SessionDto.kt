@@ -30,7 +30,8 @@ data class SessionDto(
 @Serializable
 data class SpeakerDto(
     val twitter: String? = null,
-    val pictureUrl: String? = null,
+    val bluesky: String? = null,
+    val linkedin: String? = null,
     val name: String,
     val bio: String
 )

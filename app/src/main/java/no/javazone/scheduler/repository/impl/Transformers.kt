@@ -51,7 +51,8 @@ fun toConferenceSpeaker(): (SpeakerEntity) -> ConferenceSpeaker = {
         name = it.name,
         bio = it.bio,
         twitter = it.twitter,
-        avatarUrl = it.avatarUrl
+        bluesky = it.bluesky,
+        linkedin = it.linkedin
     )
 }
 
@@ -78,7 +79,8 @@ fun ConferenceSpeaker.toConferenceEntity(): SpeakerEntity =
         name = this.name,
         bio = this.bio,
         twitter = if (this.twitter.isNullOrEmpty()) null else this.twitter,
-        avatarUrl = this.avatarUrl
+        bluesky = if (this.bluesky.isNullOrEmpty()) null else this.bluesky,
+        linkedin = if (this.linkedin.isNullOrEmpty()) null else this.linkedin
     )
 
 fun Conference.toEntity(): ConferenceEntity =

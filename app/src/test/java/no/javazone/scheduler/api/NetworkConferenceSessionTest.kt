@@ -68,8 +68,7 @@ class NetworkConferenceSessionTest {
                                 speakers = listOf(
                                     SpeakerDto(
                                         name = "Test Testersen",
-                                        bio = "blasdjasdad",
-                                        pictureUrl = ""
+                                        bio = "blasdjasdad"
                                     )
                                 )
                             )
