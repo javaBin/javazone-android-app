@@ -188,30 +188,32 @@ private fun AllSessionsScreen(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(name = "Light Theme", showBackground = true)
 fun AllSessionsScreenLightPreview(@PreviewParameter(SampleSessionProvider::class) sessions: List<ConferenceSession>) {
 
     var i = 0
-    AllSessionsScreen(
-        onToggleSchedule = { },
-        navigateToDetail = {},
-        navigateToLanguage = {},
-        navigateToDay = {},
-        navigateToFormat = {},
-        onSearchQueryChange = {},
-        conferenceSessions = sessions,
-        conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
-            ConferenceDate(it, "day ${i++}")
-        },
-        selectedLanguage = null,
-        selectedDay = FIRST_CONFERENCE_DAY,
-        selectedFormat = null,
-        searchQuery = ""
-    )
+    JavaZoneTheme(useDarkTheme = false) {
+        AllSessionsScreen(
+            onToggleSchedule = { },
+            navigateToDetail = {},
+            navigateToLanguage = {},
+            navigateToDay = {},
+            navigateToFormat = {},
+            onSearchQueryChange = {},
+            conferenceSessions = sessions,
+            conferenceDays = DEFAULT_CONFERENCE_DAYS.map {
+                ConferenceDate(it, "day ${i++}")
+            },
+            selectedLanguage = null,
+            selectedDay = FIRST_CONFERENCE_DAY,
+            selectedFormat = null,
+            searchQuery = ""
+        )
+    }
 }
 
 @Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Dark Theme", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun AllSessionsScreenDarkPreview(@PreviewParameter(SampleSessionProvider::class) sessions: List<ConferenceSession>) {
 
     var i = 0
