@@ -92,6 +92,16 @@ fun InfoRoute(conferenceName: String, conferenceDates: String, workshopDate: Str
                 Intent(Intent.ACTION_VIEW, "https://www.java.no/".toUri())
             )
         },
+        onTwitterJavaZoneClick = {
+            context.startActivity(
+                Intent(Intent.ACTION_VIEW, "https://twitter.com/javazone".toUri())
+            )
+        },
+        onBlueskyJavaZoneClick = {
+            context.startActivity(
+                Intent(Intent.ACTION_VIEW, "https://bsky.app/profile/javazone.bsky.social".toUri())
+            )
+        },
         onPolicyClick = {
             context.startActivity(
                 Intent(Intent.ACTION_VIEW, "https://www.java.no/policy.html#".toUri())
@@ -126,6 +136,8 @@ fun InfoContent(
     onLicenseDisplay: () -> Unit,
     onGithubClick: () -> Unit,
     onJavaBinClick: () -> Unit,
+    onTwitterJavaZoneClick: () -> Unit,
+    onBlueskyJavaZoneClick: () -> Unit,
     onPolicyClick: () -> Unit,
     onMapsClick: () -> Unit,
     onAccessibilityEmailClick: () -> Unit
@@ -339,6 +351,10 @@ fun InfoContent(
                 InfoCard(title = stringResource(R.string.info_javabin_section), icon = Icons.Outlined.Groups) {
                     LinkItem(label = stringResource(R.string.info_javabin_website), onClick = onJavaBinClick)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    LinkItem(label = stringResource(R.string.info_twitter_javazone), onClick = onTwitterJavaZoneClick)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    LinkItem(label = stringResource(R.string.info_bluesky_javazone), onClick = onBlueskyJavaZoneClick)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                     LinkItem(label = stringResource(R.string.info_terms_and_conditions), onClick = onPolicyClick)
                 }
             }
@@ -468,6 +484,8 @@ fun InfoContentLightPreview() {
             onLicenseDisplay = {},
             onGithubClick = {},
             onJavaBinClick = {},
+            onTwitterJavaZoneClick = {},
+            onBlueskyJavaZoneClick = {},
             onPolicyClick = {},
             onMapsClick = {},
             onAccessibilityEmailClick = {}
@@ -487,6 +505,8 @@ fun InfoContentDarkPreview() {
             onLicenseDisplay = {},
             onGithubClick = {},
             onJavaBinClick = {},
+            onTwitterJavaZoneClick = {},
+            onBlueskyJavaZoneClick = {},
             onPolicyClick = {},
             onMapsClick = {},
             onAccessibilityEmailClick = {}

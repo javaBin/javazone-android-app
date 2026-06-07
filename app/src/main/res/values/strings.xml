@@ -75,6 +75,8 @@
     <string name="info_code_of_conduct">Code of Conduct</string>
     <string name="info_javabin_section" translatable="false">javaBin</string>
     <string name="info_javabin_website">javaBin Website</string>
+    <string name="info_twitter_javazone" translatable="false">Twitter @javazone</string>
+    <string name="info_bluesky_javazone" translatable="false">Bluesky javazone.bsky.social</string>
     <string name="info_terms_and_conditions">Terms and Conditions</string>
     <string name="info_about_app">About the App</string>
     <string name="info_open_source_licences">Open Source Licences</string>
