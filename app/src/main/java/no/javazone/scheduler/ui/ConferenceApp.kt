@@ -46,7 +46,7 @@ fun ConferenceApp(
                     appContainer = appContainer,
                     modifier = Modifier.padding(innerPadding),
                     navController = navController,
-                    startDestination = currentRoute
+                    startDestination = SessionsScreen.route
                 )
             }
         }
