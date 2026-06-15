@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -93,7 +95,8 @@ fun SessionsRoute(
             selectedLanguage = selectedLanguage,
             selectedDay = selectedDay,
             selectedFormat = selectedFormat,
-            searchQuery = searchQuery
+            searchQuery = searchQuery,
+            listState = viewModel.sessionsListState
         )
     }
 
@@ -136,7 +139,8 @@ private fun AllSessionsScreen(
     selectedLanguage: ConferenceLanguage?,
     selectedDay: LocalDate?,
     selectedFormat: ConferenceFormat?,
-    searchQuery: String
+    searchQuery: String,
+    listState: LazyListState = rememberLazyListState()
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
@@ -167,6 +171,7 @@ private fun AllSessionsScreen(
 
             // Sessions
             LazyColumn(
+                state = listState,
                 contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp)
             ) {
                 conferenceSessions.forEach { session ->

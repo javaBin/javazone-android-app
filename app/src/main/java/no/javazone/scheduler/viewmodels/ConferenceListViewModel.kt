@@ -1,5 +1,6 @@
 package no.javazone.scheduler.viewmodels
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +73,13 @@ class ConferenceListViewModel(
     private var _searchQuery: MutableState<String> = mutableStateOf("")
 
     val searchQuery: State<String> = _searchQuery
+
+    /**
+     * Scroll position of the sessions list. Hoisted into the ViewModel so it survives
+     * navigation to the session detail screen (and back), preserving the user's place
+     * in the list instead of jumping back to the top.
+     */
+    val sessionsListState: LazyListState = LazyListState()
 
 
     init {
