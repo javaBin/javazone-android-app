@@ -6,6 +6,14 @@ See **`IMPROVEMENTS.md`** for the full bug/improvement backlog.
 
 ---
 
+## RULES
+
+> **MUST follow — non-negotiable.**
+
+1. **Always run `./gradlew clean` after every Gradle build.** This project builds inside a Docker container as `root`. Any Gradle invocation that compiles or assembles (`assembleDebug`, `bundleRelease`, `installDebug`, `test`, `connectedAndroidTest`, `compile*`, etc.) creates a `build/` directory owned by `root`. If it is left behind, the host/outside user cannot build (permission denied on the root-owned `build/` directory). Running `./gradlew clean` immediately afterwards deletes the Gradle build directory and prevents these permission/ownership problems. Chain it directly, e.g. `./gradlew assembleDebug && ./gradlew clean`.
+
+---
+
 ## Identity
 
 | Key | Value |
