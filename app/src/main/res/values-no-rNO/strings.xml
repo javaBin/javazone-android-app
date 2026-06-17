@@ -21,6 +21,9 @@
     <string name="search_hint">Søk tittel, foredragsholder, nøkkelord</string>
     <string name="open_in_google_maps">Åpne i Google Maps</string>
 
+    <!-- Sessions screen – filter section -->
+    <string name="filters">Filtre</string>
+
     <!-- Info screen – header -->
 
     <!-- Info screen – Venue card -->

@@ -22,6 +22,9 @@
     <string name="search_hint">Search title, speaker, keyword</string>
     <string name="open_in_google_maps">Open in Google Maps</string>
 
+    <!-- Sessions screen – filter section -->
+    <string name="filters">Filters</string>
+
     <!-- Info screen – header -->
     <string name="info_conference_name" translatable="false">JavaZone 2025</string>
 

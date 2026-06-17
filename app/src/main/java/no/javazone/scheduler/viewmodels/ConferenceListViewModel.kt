@@ -74,6 +74,11 @@ class ConferenceListViewModel(
 
     val searchQuery: State<String> = _searchQuery
 
+    private var _showFilters: MutableState<Boolean> = mutableStateOf(false)
+
+    /** Whether the session filter section (language/day/format/search) is visible. */
+    val showFilters: State<Boolean> = _showFilters
+
     /**
      * Scroll position of the sessions list. Hoisted into the ViewModel so it survives
      * navigation to the session detail screen (and back), preserving the user's place
@@ -195,6 +200,10 @@ class ConferenceListViewModel(
 
     fun updateSelectedLanguage(language: ConferenceLanguage?) {
         _selectedLanguage.value = language
+    }
+
+    fun toggleFilters() {
+        _showFilters.value = !_showFilters.value
     }
 
     /**
