@@ -51,7 +51,7 @@ fun SessionFilter(
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(start = 5.dp, bottom = 10.dp, top = 10.dp)
         ) {
-            Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+            Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                 ConferenceChip(
                     label = "All",
                     selected = selectedLanguage == null,
@@ -59,7 +59,7 @@ fun SessionFilter(
                 )
             }
             ConferenceLanguage.entries.forEach { language ->
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                     ConferenceChip(
                         label = stringResource(id = language.label),
                         selected = language == selectedLanguage,
@@ -75,7 +75,7 @@ fun SessionFilter(
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(start = 5.dp, bottom = 10.dp)
         ) {
-            Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+            Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                 ConferenceChip(
                     label = "All",
                     selected = selectedDay == null,
@@ -83,7 +83,7 @@ fun SessionFilter(
                 )
             }
             conferenceDays.sortedBy { it.date }.forEach {
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                     ConferenceChip(
                         label = SessionDayFormat.format(it.date),
                         selected = it.date == selectedDay,
@@ -99,7 +99,7 @@ fun SessionFilter(
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(start = 5.dp, bottom = 10.dp)
         ) {
-            Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+            Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                 ConferenceChip(
                     label = "All",
                     selected = selectedFormat == null,
@@ -107,7 +107,7 @@ fun SessionFilter(
                 )
             }
             ConferenceFormat.entries.forEach { format ->
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
                     ConferenceChip(
                         label = stringResource(id = format.label),
                         selected = format == selectedFormat,

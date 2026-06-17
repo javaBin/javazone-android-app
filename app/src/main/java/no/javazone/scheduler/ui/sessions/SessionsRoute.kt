@@ -2,6 +2,7 @@ package no.javazone.scheduler.ui.sessions
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,17 +13,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import no.javazone.scheduler.R
 import no.javazone.scheduler.model.ConferenceDate
 import no.javazone.scheduler.model.ConferenceFormat
 import no.javazone.scheduler.model.ConferenceLanguage
@@ -62,6 +69,7 @@ fun SessionsRoute(
     val selectedDay = viewModel.selectedDay.value
     val selectedFormat = viewModel.selectedFormat.value
     val searchQuery = viewModel.searchQuery.value
+    val showFilters = viewModel.showFilters.value
     val toAllSessionScreen = @Composable {
         AllSessionsScreen(
             onToggleSchedule = { talkId -> viewModel.addOrRemoveSchedule(talkId) },
@@ -96,6 +104,8 @@ fun SessionsRoute(
             selectedDay = selectedDay,
             selectedFormat = selectedFormat,
             searchQuery = searchQuery,
+            showFilters = showFilters,
+            onToggleFilters = { viewModel.toggleFilters() },
             listState = viewModel.sessionsListState
         )
     }
@@ -140,23 +150,46 @@ private fun AllSessionsScreen(
     selectedDay: LocalDate?,
     selectedFormat: ConferenceFormat?,
     searchQuery: String,
+    showFilters: Boolean = true,
+    onToggleFilters: () -> Unit = {},
     listState: LazyListState = rememberLazyListState()
 ) {
     Log.d(LOG_TAG, "Number of sessions ${conferenceSessions.size}")
 
     Surface() {
         Column (modifier = Modifier.fillMaxWidth()) {
-            SessionFilter(
-                selectedLanguage = selectedLanguage,
-                onLanguageSelected = navigateToLanguage,
-                conferenceDays = conferenceDays,
-                selectedDay = selectedDay,
-                onDaySelected = navigateToDay,
-                selectedFormat = selectedFormat,
-                onFormatSelected = navigateToFormat,
-                searchQuery = searchQuery,
-                onSearchQueryChange = onSearchQueryChange
-            )
+            // Toggle button to show/hide the filter section
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 4.dp)
+            ) {
+                FilterChip(
+                    selected = showFilters,
+                    onClick = onToggleFilters,
+                    label = { Text(stringResource(R.string.filters)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.FilterList,
+                            contentDescription = null
+                        )
+                    }
+                )
+            }
+
+            AnimatedVisibility(visible = showFilters) {
+                SessionFilter(
+                    selectedLanguage = selectedLanguage,
+                    onLanguageSelected = navigateToLanguage,
+                    conferenceDays = conferenceDays,
+                    selectedDay = selectedDay,
+                    onDaySelected = navigateToDay,
+                    selectedFormat = selectedFormat,
+                    onFormatSelected = navigateToFormat,
+                    searchQuery = searchQuery,
+                    onSearchQueryChange = onSearchQueryChange
+                )
+            }
 
             // Workshop Info Text
             Row(
