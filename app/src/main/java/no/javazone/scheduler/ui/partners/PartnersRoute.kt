@@ -20,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -48,6 +49,9 @@ fun PartnersRoute(
     )
 
     val partners = viewModel.partners.collectAsState().value
+    // Shuffle partners on each fresh load of the route (and once when data arrives),
+    // keeping the order stable across recompositions/scrolling via remember.
+    val shuffledPartners = remember(partners) { partners.shuffled() }
     val context = LocalContext.current
 
     PartnersContent(
@@ -56,7 +60,7 @@ fun PartnersRoute(
             context.startActivity(intent)
         },
         imageLoader = appContainer.imageLoader,
-        partners = partners
+        partners = shuffledPartners
     )
 }
 
