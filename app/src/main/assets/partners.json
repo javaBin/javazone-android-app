@@ -5,12 +5,12 @@
     "homepageUrl": "https://www.digdir.no/"
   },
   {
-    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/321x.svg",
-    "name": "Tretoen AS",
-    "homepageUrl": "https://www.tretoen.no/"
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/321-wh.svg",
+    "name": "321",
+    "homepageUrl": "https://www.321.no/"
   },
   {
-    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/vend.svg",
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/vend_logo.svg",
     "name": "Vend Marketplaces AS",
     "homepageUrl": "https://www.vend.com/"
   },
@@ -60,7 +60,7 @@
     "homepageUrl": "https://www.scienta.no/"
   },
   {
-    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/vaadin.svg",
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/vaadin_v2.svg",
     "name": "Vaadin Oy",
     "homepageUrl": "https://vaadin.com/"
   },
@@ -120,9 +120,9 @@
     "homepageUrl": "https://www.webstep.no/"
   },
   {
-    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/tietoevry.svg",
-    "name": "TIETOEVRY FINTECH NORWAY AS",
-    "homepageUrl": "https://www.tietoevry.com/"
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/tietobanktech.svg",
+    "name": "Tietoevry Banktech",
+    "homepageUrl": "https://www.tieto.com/en/banktech"
   },
   {
     "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/fremtind.svg",
@@ -210,11 +210,6 @@
     "homepageUrl": "https://www.embriq.no/"
   },
   {
-    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/randstad-digital.svg",
-    "name": "Randstad Digital AS",
-    "homepageUrl": "https://www.randstaddigital.com/"
-  },
-  {
     "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/nav.svg",
     "name": "NAV",
     "homepageUrl": "https://www.nav.no/"
@@ -228,5 +223,40 @@
     "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/GE.svg",
     "name": "GE VERNOVA",
     "homepageUrl": "https://www.gevernova.com"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/redhat.svg",
+    "name": "Red Hat",
+    "homepageUrl": "https://www.redhat.com/"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/tetdigital.svg",
+    "name": "TET Digital AS",
+    "homepageUrl": "https://tetdigital.no/"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/unleash.svg",
+    "name": "Unleash",
+    "homepageUrl": "https://www.unleash.run"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/uptime_logo.svg",
+    "name": "Uptime Consulting",
+    "homepageUrl": "https://www.uptimeconsulting.no/"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/aiven.svg",
+    "name": "Aiven",
+    "homepageUrl": "https://aiven.io/"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/CGI_logo.svg",
+    "name": "CGI",
+    "homepageUrl": "https://www.cgi.com/no/nb"
+  },
+  {
+    "logoUrl": "https://raw.githubusercontent.com/javaBin/2026.javazone.no/main/public/partners/eclipse.svg",
+    "name": "Eclipse Foundation",
+    "homepageUrl": "https://jakarta.ee/"
   }
 ]
