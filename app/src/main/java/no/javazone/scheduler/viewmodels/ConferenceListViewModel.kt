@@ -86,6 +86,12 @@ class ConferenceListViewModel(
      */
     val sessionsListState: LazyListState = LazyListState()
 
+    /**
+     * Scroll position of the My Schedule list. Hoisted (like [sessionsListState]) so it
+     * survives navigation to the talk detail screen and back, preserving the user's place.
+     */
+    val myScheduleListState: LazyListState = LazyListState()
+
 
     init {
         viewModelScope.launch {
@@ -172,10 +178,14 @@ class ConferenceListViewModel(
     fun getDetailsArg(): Pair<String, String> = _detailsArg
 
     fun updateSelectedDay(select: LocalDate?) {
-        _selectedDay.value = select
+        if (_selectedDay.value != select) {
+            _selectedDay.value = select
+            scrollSessionsToTop()
+        }
     }
 
     fun updateSelectedFormat(format: ConferenceFormat?) {
+        val changed = _selectedFormat.value != format
         _selectedFormat.value = format
         val workshopDay = conferenceDays.find { it.label == "workshop" }?.date
         when (format) {
@@ -192,19 +202,38 @@ class ConferenceListViewModel(
             }
             else -> {}
         }
+        if (changed) scrollSessionsToTop()
     }
 
     fun updateSearchQuery(query: String) {
-        _searchQuery.value = query
+        if (_searchQuery.value != query) {
+            _searchQuery.value = query
+            scrollSessionsToTop()
+        }
     }
 
     fun updateSelectedLanguage(language: ConferenceLanguage?) {
-        _selectedLanguage.value = language
+        if (_selectedLanguage.value != language) {
+            _selectedLanguage.value = language
+            scrollSessionsToTop()
+        }
+    }
+
+    /**
+     * Jump the sessions list back to the top (without animation) after a filter change,
+     * so switching day/format/language/search shows the start of the new result set
+     * instead of leaving the list at the previous scroll offset. Called only from the
+     * filter-update methods above — not on return from the detail screen — so the
+     * hoisted [sessionsListState] still preserves the user's place across navigation.
+     */
+    private fun scrollSessionsToTop() {
+        sessionsListState.requestScrollToItem(0)
     }
 
     fun toggleFilters() {
         _showFilters.value = !_showFilters.value
     }
+
 
     /**
      * Factory for HomeViewModel that takes PostsRepository as a dependency

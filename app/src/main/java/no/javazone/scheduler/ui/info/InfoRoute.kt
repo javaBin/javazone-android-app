@@ -3,8 +3,13 @@ package no.javazone.scheduler.ui.info
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.core.net.toUri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -29,7 +34,9 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.EvStation
 import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.LocalParking
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Train
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiLock
@@ -38,19 +45,35 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import no.javazone.scheduler.R
 import no.javazone.scheduler.ui.theme.DarkOceanColors
@@ -142,6 +165,8 @@ fun InfoContent(
     onMapsClick: () -> Unit,
     onAccessibilityEmailClick: () -> Unit
 ) {
+    var showVenueMap by remember { mutableStateOf(false) }
+
     Surface(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
@@ -193,6 +218,27 @@ fun InfoContent(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.open_in_google_maps))
                     }
+                }
+            }
+
+            item {
+                InfoCard(title = stringResource(R.string.info_venue_map), icon = Icons.Filled.Map) {
+                    Image(
+                        painter = painterResource(R.drawable.venue_map),
+                        contentDescription = stringResource(R.string.info_venue_map_content_description),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1037f / 786f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { showVenueMap = true }
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.info_venue_map_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
 
@@ -367,6 +413,90 @@ fun InfoContent(
                 }
             }
         }
+
+        if (showVenueMap) {
+            VenueMapDialog(onDismiss = { showVenueMap = false })
+        }
+    }
+}
+
+/**
+ * Full-screen, pinch-to-zoom / pan view of the venue map. Double-tap toggles between
+ * fit and 2.5× zoom. Dismissed via the close button, a back press, or tapping outside.
+ */
+@Composable
+private fun VenueMapDialog(onDismiss: () -> Unit) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Black.copy(alpha = 0.92f)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                ZoomableImage(
+                    contentDescription = stringResource(R.string.info_venue_map_content_description),
+                    modifier = Modifier.fillMaxSize()
+                )
+                IconButton(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.close),
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ZoomableImage(contentDescription: String, modifier: Modifier = Modifier) {
+    var scale by remember { mutableFloatStateOf(1f) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+
+    Box(
+        modifier = modifier
+            .clipToBounds()
+            .pointerInput(Unit) {
+                detectTransformGestures { _, pan, zoom, _ ->
+                    scale = (scale * zoom).coerceIn(1f, 5f)
+                    // Only allow panning while zoomed in; reset to centre at 1x.
+                    offset = if (scale > 1f) offset + pan else Offset.Zero
+                }
+            }
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onDoubleTap = {
+                        if (scale > 1f) {
+                            scale = 1f
+                            offset = Offset.Zero
+                        } else {
+                            scale = 2.5f
+                        }
+                    }
+                )
+            }
+    ) {
+        Image(
+            painter = painterResource(R.drawable.venue_map),
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    translationX = offset.x
+                    translationY = offset.y
+                }
+        )
     }
 }
 

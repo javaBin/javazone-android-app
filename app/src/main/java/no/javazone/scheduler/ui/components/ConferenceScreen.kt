@@ -20,6 +20,14 @@ sealed interface ConferenceScreen {
     fun navigateTo(navController: NavHostController): () -> Unit = {
         Log.d(LOG_TAG, "Changing screen to $route")
         navController.navigate(route) {
+            // Pop up to the start destination and save its state so switching
+            // bottom-nav tabs doesn't build up a back stack. This MUST be applied
+            // uniformly to every tab: if some tabs pop-up-with-saveState and others
+            // don't, navigating (back) to the start destination becomes a silent
+            // no-op once another tab has been visited.
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
             // Avoid multiple copies of the same destination when
             // reselecting the same item
             launchSingleTop = true
@@ -64,42 +72,12 @@ object SessionsScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Filled.CalendarToday
     override val route: String = JavaZoneDestinations.SESSIONS_ROUTE
     override val label: Int = R.string.sessions
-
-    override fun navigateTo(navController: NavHostController): () -> Unit = {
-        val argRoute = JavaZoneDestinations.SESSIONS_ROUTE
-        Log.d(LOG_TAG, "Changing screen to $argRoute")
-        navController.navigate(argRoute) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
-            launchSingleTop = true
-            // Restore state when reselecting a previously selected item
-            restoreState = true
-        }
-    }
 }
 
 object MyScheduleScreen : ConferenceScreen {
     override val icon: ImageVector = Icons.Outlined.Person
     override val route: String = JavaZoneDestinations.MY_SCHEDULE_ROUTE
     override val label: Int = R.string.my_schedule
-
-    override fun navigateTo(navController: NavHostController, arg: String): () -> Unit = {
-        val argRoute = JavaZoneDestinations.MY_SCHEDULE_ROUTE
-        Log.d(LOG_TAG, "Changing screen to $argRoute")
-        navController.navigate(argRoute) {
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
-            launchSingleTop = true
-            // Restore state when reselecting a previously selected item
-            restoreState = true
-        }
-    }
 }
 
 object InfoScreen : ConferenceScreen {
@@ -123,17 +101,12 @@ object DetailsScreen : ConferenceScreen {
         val argRoute = "${JavaZoneDestinations.DETAILS_ROUTE}/$arg"
         Log.d(LOG_TAG, "Changing screen to $argRoute")
         navController.navigate(argRoute) {
-            // Pop up to the start destination of the graph to
-            // avoid building up a large stack of destinations
-            // on the back stack as users select items
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            // Avoid multiple copies of the same destination when
-            // reselecting the same item
+            // A talk detail is a leaf screen pushed on top of whichever tab opened it
+            // (Sessions or My Schedule). Do NOT pop up to the start destination here:
+            // popping would drop the originating tab from the back stack, so Back (and
+            // the derived fromRoute) would always return to Sessions instead of the tab
+            // the user came from. launchSingleTop guards against a duplicate on double tap.
             launchSingleTop = true
-            // Restore state when reselecting a previously selected item
-            restoreState = true
         }
     }
 }

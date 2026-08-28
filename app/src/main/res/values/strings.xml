@@ -25,6 +25,9 @@
     <!-- Sessions screen – filter section -->
     <string name="filters">Filters</string>
 
+    <!-- My Schedule screen -->
+    <string name="jump_to_now">Jump to now</string>
+
     <!-- Info screen – header -->
     <string name="info_conference_name" translatable="false">JavaZone 2025</string>
 
@@ -33,6 +36,12 @@
     <string name="info_venue_name" translatable="false">NOVA Spektrum</string>
     <string name="info_venue_address" translatable="false">Messeveien 6, 2004 Lillestrøm</string>
     <string name="info_venue_description">Just a short train ride (10–12 minutes) from Oslo Central Station and only 15 minutes from Oslo Airport Gardermoen.</string>
+
+    <!-- Info screen – Venue map card -->
+    <string name="info_venue_map">Venue map</string>
+    <string name="info_venue_map_hint">Tap to enlarge</string>
+    <string name="info_venue_map_content_description">Map of the venue layout</string>
+    <string name="close">Close</string>
 
     <!-- Info screen – Getting There card -->
     <string name="info_getting_there">How to get There</string>
