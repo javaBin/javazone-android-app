@@ -24,11 +24,20 @@
     <!-- Sessions screen – filter section -->
     <string name="filters">Filtre</string>
 
+    <!-- My Schedule screen -->
+    <string name="jump_to_now">Gå til nå</string>
+
     <!-- Info screen – header -->
 
     <!-- Info screen – Venue card -->
     <string name="info_venue">Sted</string>
     <string name="info_venue_description">Bare en kort togtur (10–12 minutter) fra Oslo sentralstasjon og kun 15 minutter fra Oslo Lufthavn Gardermoen.</string>
+
+    <!-- Info screen – Venue map card -->
+    <string name="info_venue_map">Kart over lokalet</string>
+    <string name="info_venue_map_hint">Trykk for å forstørre</string>
+    <string name="info_venue_map_content_description">Kart over lokalets planløsning</string>
+    <string name="close">Lukk</string>
 
     <!-- Info screen – Getting There card -->
     <string name="info_getting_there">Hvordan komme deg dit</string>

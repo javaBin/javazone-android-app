@@ -15,10 +15,10 @@ import androidx.compose.ui.unit.dp
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
 
 @Composable
-fun SessionSectionHeader(text: String) {
+fun SessionSectionHeader(text: String, modifier: Modifier = Modifier) {
     Surface(
         tonalElevation = 10.dp,
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = modifier.padding(vertical = 8.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(
