@@ -59,7 +59,14 @@ fun DetailsRoute(
         session = session,
         isScheduled = mySchedule.contains(session.id),
         onScheduleToggle = { viewModel.addOrRemoveSchedule(session.id) },
-        onBackClick = ConferenceScreen.currentScreen(fromRoute).navigateTo(navController)
+        // Pop the detail off the back stack, returning to whichever tab opened it
+        // (Sessions or My Schedule) — same behaviour as the system back button.
+        // Falls back to the originating tab if there is nothing to pop (e.g. deep link).
+        onBackClick = {
+            if (!navController.popBackStack()) {
+                ConferenceScreen.currentScreen(fromRoute).navigateTo(navController)()
+            }
+        }
     )
 }
 
