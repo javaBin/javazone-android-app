@@ -27,11 +27,6 @@ private val DEFAULT_FIRST_END_TIME = OffsetDateTime.of(
     ZoneOffset.UTC
 )
 
-/**
- * Max number of minutes break between lightning talks
- */
-private const val LIGHTNING_BREAKS = 11L
-
 fun ConferenceDto.toModel(): Conference =
     Conference(
         name = this.conferenceName,
@@ -70,9 +65,15 @@ private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<ConferenceSe
         }
     }
 
-    val mergedLighting = mergeLightningTalks(lightning)
+    // The real time-slot grid per day, defined by the non-lightning sessions:
+    // presentations/workshops start on the conference grid (e.g. 09:00, 10:20, 11:40, …).
+    val slotStartsByDay: Map<LocalDate, List<OffsetDateTime>> = sessions
+        .map { it.time }
+        .groupBy { it.toLocalDate() }
+        .mapValues { (_, times) -> times.distinct().sorted() }
 
-    sessions.addAll(mergedLighting)
+    sessions.addAll(groupLightningTalksBySlot(lightning, slotStartsByDay))
+
     val sorted = sessions.sortedWith { o1, o2 ->
         var ret = o1.time.compareTo(o2.time)
         if (ret == 0) {
@@ -85,47 +86,37 @@ private fun convertDtoSessions(sessionsDto: List<SessionDto>): List<ConferenceSe
     return sorted
 }
 
-fun mergeLightningTalks(talks: MutableList<ConferenceTalk>): List<ConferenceSession> {
-    val roomTalks: MutableMap<ConferenceRoom, MutableList<ConferenceTalk>> = mutableMapOf()
-
-    for (talk in talks) {
-        val pair = talk.room to talk
-        val orDefault = roomTalks.getOrDefault(pair.first, mutableListOf())
-        orDefault.add(pair.second)
-        roomTalks.put(pair.first, orDefault)
-    }
-
-    roomTalks.forEach {
-        it.value.sortWith { o1, o2 -> o1.startTime.compareTo(o2.startTime) }
-    }
-
-    val sessions = mutableListOf<ConferenceSession>()
-    var prev: ConferenceTalk? = null
-    lateinit var current: MutableList<ConferenceTalk>
-    for (roomTalk in roomTalks) {
-        for (talk in roomTalk.value) {
-            if (prev == null) {
-                current = mutableListOf(talk)
-                prev = talk
-                continue
-            }
-            // For 10 min lightning talks, there is a 5 min breaks between each session.
-            // For 20 min lightning talks, there is a 10 min break.
-            if (prev.endTime.plusMinutes(LIGHTNING_BREAKS).isAfter(talk.startTime)) {
-                current.add(talk)
-                prev = talk
-            } else {
-                sessions.add(ConferenceSession(time = current.first().startTime, talks = current))
-                current = mutableListOf(talk)
-                prev = talk
-            }
+/**
+ * Groups lightning talks into the conference's real time slots rather than by ad-hoc
+ * gaps: every lightning talk is bucketed into the slot it belongs to (see [slotStartFor]),
+ * and each bucket becomes one [ConferenceSession] timestamped with the slot's start. This
+ * keeps a slot's lightning talks together under a single, correct header even though the
+ * talks themselves start at staggered times within the slot.
+ */
+fun groupLightningTalksBySlot(
+    talks: List<ConferenceTalk>,
+    slotStartsByDay: Map<LocalDate, List<OffsetDateTime>>
+): List<ConferenceSession> =
+    talks
+        .groupBy { talk -> slotStartFor(talk, slotStartsByDay) }
+        .map { (slotStart, slotTalks) ->
+            ConferenceSession(
+                time = slotStart,
+                talks = slotTalks.sortedBy { it.startTime }
+            )
         }
-        sessions.add(ConferenceSession(time = current.first().startTime, talks = current))
-        current = mutableListOf()
-        prev = null
-    }
 
-    return sessions
+/**
+ * The grid slot a lightning talk belongs to: the latest non-lightning slot start on the
+ * same day that is at or before the talk's start. Falls back to the talk's own start time
+ * when it precedes every slot, or when the day has no grid (e.g. a lightning-only day).
+ */
+private fun slotStartFor(
+    talk: ConferenceTalk,
+    slotStartsByDay: Map<LocalDate, List<OffsetDateTime>>
+): OffsetDateTime {
+    val daySlots = slotStartsByDay[talk.startTime.toLocalDate()].orEmpty()
+    return daySlots.lastOrNull { !it.isAfter(talk.startTime) } ?: talk.startTime
 }
 
 private fun SessionDto.toModel(): ConferenceTalk? {

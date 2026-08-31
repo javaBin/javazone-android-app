@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MeetingRoom
@@ -39,7 +40,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import no.javazone.scheduler.model.ConferenceTalk
 import no.javazone.scheduler.ui.theme.JavaZoneTheme
+import no.javazone.scheduler.ui.theme.SessionTimeFormat
 import no.javazone.scheduler.utils.sampleTalks
+import no.javazone.scheduler.utils.toLocalString
 
 @Composable
 private fun MetadataBadge(
@@ -93,6 +96,28 @@ fun TalkCard(
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 0.dp)
         ) {
+            // Row 0: The talk's own start–end time. Shown per talk because lightning
+            // talks are merged into one session block whose sticky header only carries
+            // the block's start time; without this a 12:20 talk under an 11:40 header
+            // would look mis-timed.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.AccessTime,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "${talk.startTime.toLocalString(SessionTimeFormat)}" +
+                        "–${talk.endTime.toLocalString(SessionTimeFormat)}",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+
             // Row 1: Room, Length, Type, Language + bookmark
             Row(
                 modifier = Modifier.fillMaxWidth(),
